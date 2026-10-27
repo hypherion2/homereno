@@ -123,7 +123,7 @@ else{B(w,h,d,c,0,0,0,g)}}
 const TINT=n=>{n=(n||'').toLowerCase();return /bed|master/.test(n)?0xd9cfe3:/bath|ensuite/.test(n)?0xcfe3e6:/kitchen|family|eating/.test(n)?0xe8d9b8:/living|dining/.test(n)?0xe3d3c2:/garage/.test(n)?0xcfd4d8:/closet|w\.i\.c|mud|foyer|porch|office/.test(n)?0xd7dfd2:0xe6dccb};
 function clearModel(){if(!S.root)return;S.root.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){const a=Array.isArray(o.material)?o.material:[o.material];a.forEach(m=>{if(m.map)m.map.dispose();m.dispose()})}});sc.remove(S.root);S.root=null}
 function buildModel(D){clearModel();
-S.G={};S.FG={};S.LB={};S.WG={};S.LGp={};S.walls=[];S.gg=[];S.BL=[];S.floors=[];S.el={};S.nm={};
+S.G={};S.FG={};S.LB={};S.WG={};S.LGp={};S.walls=[];S.gg=[];S.BL=[];S.floors=[];S.doors=[];S.el={};S.nm={};
 const root=new THREE.Group();sc.add(root);S.root=root;const{G,FG,LB,WG,LGp,el,nm}=S;
 D.levels.forEach(l=>{el[l[0]]=l[2];nm[l[0]]=l[1];G[l[0]]=new THREE.Group();FG[l[0]]=new THREE.Group();LB[l[0]]=new THREE.Group();WG[l[0]]=new THREE.Group();WG[l[0]].position.y=l[2];G[l[0]].add(FG[l[0]],LB[l[0]],WG[l[0]]);root.add(G[l[0]])});
 S.E1=Math.max(...D.levels.map(l=>l[2]));
@@ -137,7 +137,7 @@ if(r[2]>=3)LB[r[0]].add(lab((r[5]?r[5]+' · ':'')+r[2]+' m²',r[3],el[r[0]]+20,r
 D.furn.forEach(f=>{const[L,x,y,w,d,a,e,h,t,n,s]=f;let o;
 if(t==3){o=new THREE.Group();const N=Math.max(2,Math.round(h/18)),z=d/N;for(let i=0;i<N;i++){const hh=(i+1)*h/N,m=sd(new THREE.Mesh(new THREE.BoxGeometry(w,hh,z),BM(0xa67b50)));m.position.set(0,hh/2,s*(-d/2+(i+.5)*z));o.add(m)}o.position.set(x,el[L]+e,y);G[L].add(o);LB[L].add(lab('Stairs',x,el[L]+e+h+25,y,34))}
 else{const sl=/slid/i.test(n),c=t==1||sl?glass:t==2?BM(0x8a5a33):BM(/fridge/i.test(n)?0xbfc3c7:/cooker|range/i.test(n)?0x25272a:/island|lower|sink|dishwasher|coffee/i.test(n)?0x30343a:/upper/i.test(n)?0xc8a276:/red cab/i.test(n)?0x8a5a36:/fire/i.test(n)?0x7a4a3a:/bath|wash/i.test(n)?0xf5f5f5:0xb9a58a);
-o=sd(new THREE.Mesh(new THREE.BoxGeometry(w,h,t?4:d),c));if(t||sl){o.position.set(x,e+h/2,y);WG[L].add(o)}else{o.position.set(x,el[L]+e+h/2,y);FG[L].add(o)}eo(o);if((!t&&!/post|rail|lower|upper|radiator/i.test(n))||sl)LB[L].add(lab(sl?'Sliding doors':n,x,el[L]+e+h+20,y,30))}
+o=sd(new THREE.Mesh(new THREE.BoxGeometry(w,h,t?4:d),c));if(t||sl){o.position.set(x,e+h/2,y);WG[L].add(o);if(t==2){S.doors.push({o,x,y,L});const fp=new THREE.Mesh(new THREE.BoxGeometry(w,1,40),new THREE.MeshLambertMaterial({color:0xcdb48a}));fp.position.set(x,el[L]+.5,y);fp.rotation.y=-a;G[L].add(fp)}}else{o.position.set(x,el[L]+e+h/2,y);FG[L].add(o)}eo(o);if((!t&&!/post|rail|lower|upper|radiator/i.test(n))||sl)LB[L].add(lab(sl?'Sliding doors':n,x,el[L]+e+h+20,y,30))}
 o.rotation.y=-a});
 (D.lay||[]).forEach(o=>{const[L,k,x,y,w,d,h,e,a,c,lb]=o;if(!LGp[L]){LGp[L]=new THREE.Group();G[L].add(LGp[L])}
 const g=new THREE.Group();g.position.set(x,el[L]+e,y);g.rotation.y=-a;build(k,w,d,h,c,g);LGp[L].add(g);if(lb)LGp[L].add(lab(lb,x,el[L]+e+h+32,y,30))});
@@ -219,6 +219,7 @@ D.boxes.forEach(b=>{add(b[1],el[b[0]]+b[2],el[b[0]]+b[2]+b[3]);W.solids[W.solids
 D.furn.forEach(f=>{const[L,x,y,w,d,a,e,h,t,n,s]=f;if(t==3){W.ramps.push({x,y,w,d,a,base:el[L]+e,h,s});return}if(t==1||t==2||/slid/i.test(n))return;add(rectP(x,y,w,d,a),el[L]+e,el[L]+e+h)});
 (D.lay||[]).forEach(o=>{const[L,k,x,y,w,d,h,e,a]=o;if(k=='rug'||k=='pendant'||k=='pendantbar')return;add(rectP(x,y,w,d,a),el[L]+e,el[L]+e+h)});
 D.rooms.forEach(r=>W.floors.push({poly:r[1].flat(),holes:r[6]||[],h:el[r[0]],n:r[5],cz:r[4],A:r[2]}));
+D.furn.forEach(f=>{if(f[8]==2)W.floors.push({poly:rectP(f[1],f[2],f[3],40,f[5]),holes:[],h:el[f[0]],n:'',cz:f[2],A:0})});
 W.ceil.forEach(m=>{S.root.remove(m);m.geometry.dispose()});W.ceil=[];
 const cm=new THREE.MeshLambertMaterial({color:0xf4f2ee,side:2});
 D.rooms.forEach(r=>{if(nm0(D,r[0])!='Level 1'||r[4]<0)return;const sh=new THREE.Shape(r[1].map(p=>new THREE.Vector2(p[0],p[1])));const m=new THREE.Mesh(new THREE.ShapeGeometry(sh),cm);m.rotation.x=Math.PI/2;m.position.y=el[r[0]]+243;S.root.add(m);W.ceil.push(m)});}
@@ -243,6 +244,7 @@ let f=(k.KeyW||k.ArrowUp?1:0)-(k.KeyS||k.ArrowDown?1:0)-W.mv[1],r=(k.KeyD||k.Arr
 const fx=-Math.sin(W.yaw),fz=-Math.cos(W.yaw),rx=Math.cos(W.yaw),rz=-Math.sin(W.yaw);let dx=(fx*f+rx*r)*sp*dt,dz=(fz*f+rz*r)*sp*dt;
 const st=Math.max(1,Math.ceil(Math.hypot(dx,dz)/8));dx/=st;dz/=st;
 for(let i=0;i<st;i++){if(okAt(W.x+dx,W.z+dz)){W.x+=dx;W.z+=dz}else if(okAt(W.x+dx,W.z)){W.x+=dx}else if(okAt(W.x,W.z+dz)){W.z+=dz}}
+(S.doors||[]).forEach(d=>{d.o.visible=!(Math.hypot(d.x-W.x,d.y-W.z)<120&&Math.abs(S.el[d.L]-W.feet)<150)});
 const g=groundAt(W.x,W.z,W.feet),tg=g===null?W.feet:g;W.feet=tg>W.feet?Math.min(tg,W.feet+350*dt):Math.max(tg,W.feet-500*dt);
 setCam();if((W.tick++)%8==0)hud()}
 function hud(){const fl=W.floors.filter(f=>Math.abs(f.h-W.feet)<70&&pipW(W.x,W.z,f.poly)&&!f.holes.some(h=>pipA(W.x,W.z,h)));const f=fl.sort((a,b)=>b.A-a.A)[0];const lev=W.feet>200?'Upper floor':W.feet>100?'Landing':'Lower floor';
@@ -252,7 +254,7 @@ function enterWalk(sp){if(W.on)return;W.prev={cut:S.cut,level:S.level,pos:cam.po
 S.walk=true;W.on=true;S.cut=1;S.level='both';anim=null;applyAll();document.body.classList.add('walk');cam.clearViewOffset();cam.fov=72;cam.near=6;cam.updateProjectionMatrix();ct.enabled=false;
 prepWalk();W.ceil.forEach(m=>m.visible=true);spawn(sp||'living');setCam();hud();$('whint').style.display='block';requestLock()}
 function exitWalk(){if(!W.on)return;try{document.exitPointerLock&&document.exitPointerLock()}catch(e){}
-S.walk=false;W.on=false;W.keys={};W.mv=[0,0];W.ceil.forEach(m=>m.visible=false);document.body.classList.remove('walk');S.cut=W.prev.cut;$('cut').value=Math.round(S.cut*100);cam.fov=W.prev.fov;cam.near=W.prev.near;cam.updateProjectionMatrix();ct.enabled=true;
+S.walk=false;W.on=false;W.keys={};(S.doors||[]).forEach(d=>d.o.visible=true);W.mv=[0,0];W.ceil.forEach(m=>m.visible=false);document.body.classList.remove('walk');S.cut=W.prev.cut;$('cut').value=Math.round(S.cut*100);cam.fov=W.prev.fov;cam.near=W.prev.near;cam.updateProjectionMatrix();ct.enabled=true;
 cam.position.copy(W.prev.pos);ct.target.copy(W.prev.tgt);fitOffset();setLevel(W.prev.level);$('whint').style.display='none'}
 function walkVersion(d){const n=(S.ver+d+VERS.length)%VERS.length;setVersion(n)}
 function revalidate(){prepWalk();W.ceil.forEach(m=>m.visible=true);const g=groundAt(W.x,W.z,W.feet);if(g===null||hitSolid(W.x,W.z,Math.max(g,0)))place(Object.keys(S.el).find(k=>Math.abs(S.el[k]-W.feet)<60)||Object.keys(S.el)[0],W.x,W.z,[W.x-Math.sin(W.yaw)*100,W.z-Math.cos(W.yaw)*100])}
