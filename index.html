@@ -125,6 +125,9 @@ function clearModel(){if(!S.root)return;S.root.traverse(o=>{if(o.geometry)o.geom
 function buildModel(D){clearModel();
 S.G={};S.FG={};S.LB={};S.WG={};S.LGp={};S.walls=[];S.gg=[];S.BL=[];S.floors=[];S.doors=[];S.el={};S.nm={};
 const root=new THREE.Group();sc.add(root);S.root=root;const{G,FG,LB,WG,LGp,el,nm}=S;
+(()=>{const E=Math.max(...D.levels.map(l=>l[2])),top=D.levels.find(l=>l[2]==E)[0],lo=D.levels.find(l=>l[2]==0)[0];
+D.boxes.forEach(b=>{if(b[0]==lo&&b[2]+b[3]>235&&b[2]+b[3]<E)b[3]=E-b[2]});
+D.furn.forEach(f=>{if(f[8]==3&&Math.abs(f[1]-519.8)<1&&Math.abs(f[2]-885.3)<1&&!f._fx){f._fx=1;const a=f[5],c=Math.cos(a),sn=Math.sin(a);f[3]-=2;f[1]+=-2*c-6*sn;f[2]+=-2*sn+6*c}})})();
 D.levels.forEach(l=>{el[l[0]]=l[2];nm[l[0]]=l[1];G[l[0]]=new THREE.Group();FG[l[0]]=new THREE.Group();LB[l[0]]=new THREE.Group();WG[l[0]]=new THREE.Group();WG[l[0]].position.y=l[2];G[l[0]].add(FG[l[0]],LB[l[0]],WG[l[0]]);root.add(G[l[0]])});
 S.E1=Math.max(...D.levels.map(l=>l[2]));
 let x0=1e9,x1=-1e9,z0=1e9,z1=-1e9;
