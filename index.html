@@ -43,7 +43,16 @@ body.full #panel,body.full #brand,body.full #chip{display:none}
 #modal{position:fixed;inset:0;background:rgba(10,20,15,.6);display:none;place-items:center;z-index:9;padding:20px}#modal.on{display:grid}
 #modal .box{background:var(--panel);border-radius:16px;padding:16px;max-width:min(900px,94vw);max-height:90vh;overflow:auto}#modal img{max-width:100%;border-radius:10px;display:block}
 #modal h4{margin:0 0 8px}#modal li{margin:4px 0}
-@media(max-width:820px){#panel{top:auto;bottom:calc(70px + env(safe-area-inset-bottom,0px));left:12px;right:12px;width:auto;max-height:44vh}#brand{left:12px}#views{right:12px;top:calc(76px + env(safe-area-inset-top,0px));max-width:calc(100vw - 24px)}#compass,#chip{display:none}#br{right:12px}}
+@media(max-width:820px){
+#brand{left:10px;top:calc(10px + env(safe-area-inset-top,0px));padding:6px 12px 6px 8px;gap:8px;border-radius:13px}#brand .ic{width:28px;height:28px;font-size:14px;border-radius:9px}#brand small{display:none}#brand b{font-size:14px}
+#views{left:10px;right:10px;top:calc(56px + env(safe-area-inset-top,0px));max-width:none;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;padding:4px;scrollbar-width:none;border-radius:13px}#views::-webkit-scrollbar{display:none}#views button{padding:8px 10px;font-size:12px;flex:none}#views .sep{flex:none}
+#panel{top:auto;bottom:calc(64px + env(safe-area-inset-bottom,0px));left:10px;right:10px;width:auto;max-height:52vh;padding:14px}#panel h1{font-size:18px}
+body.pc #panel{display:none}#walkb{order:-1}
+#compass,#chip,#modelbl{display:none}
+#br{left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));justify-content:space-between}#br button{padding:11px 14px}#br #ptog{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#hud{top:calc(8px + env(safe-area-inset-top,0px));padding:6px 8px;border-radius:12px;width:calc(100vw - 20px);max-width:none}#hud .sm{display:none}#hud button{padding:6px 8px;font-size:11px;margin:2px 1px}#hud b{font-size:12px}#hud span{display:block;margin:0 0 3px;font-size:11px}
+#whint{bottom:calc(30px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - 30px);text-align:center}}
+#ptog{display:none}@media(max-width:820px){#ptog{display:block}}
 body.walk #panel,body.walk #brand,body.walk #views,body.walk #chip,body.walk #br{display:none}
 #hud,#whint,#cross{display:none;position:fixed;z-index:6}body.walk #hud{display:block}body.walk #cross{display:block}
 #hud{left:50%;transform:translateX(-50%);top:calc(14px + env(safe-area-inset-top,0px));padding:10px 14px;text-align:center;max-width:calc(100vw - 24px)}
@@ -79,7 +88,7 @@ body.walk #panel,body.walk #brand,body.walk #views,body.walk #chip,body.walk #br
 <nav id="views" class="card"><button data-v="3d" class="on">◆ 3D view</button><button data-v="plan">▦ Floor plan</button><button data-v="front">▭ Front</button><button data-v="kitchen" class="ph">◉ Kitchen photo</button><button data-v="patio" class="ph">◉ Patio-side view</button><button id="walkb" class="ph">🚶 Walk through</button><span class="sep"></span><button id="undo" title="Undo view">↶</button><button id="redo" title="Redo view">↷</button><button id="reset">Reset</button></nav>
 <div id="chip" class="card"></div>
 <div id="compass" class="card"><svg viewBox="0 0 40 40" id="needle"><path d="M20 4 L27 22 L20 18 L13 22 Z" fill="var(--acc)"/><path d="M20 36 L13 22 L20 26 L27 22 Z" fill="#b9c4be"/></svg><b>N</b></div>
-<div id="br"><button id="fullb">⛶ Full view</button><span class="lbl" id="modelbl"></span><button id="shot" title="Screenshot">◎</button><button id="help" title="Help">?</button></div>
+<div id="br"><button id="ptog">☰ Designs</button><button id="fullb">⛶ Full view</button><span class="lbl" id="modelbl"></span><button id="shot" title="Screenshot">◎</button><button id="help" title="Help">?</button></div>
 <div id="hud" class="card"><div><b id="hv"></b><span id="hr"></span></div><div class="sm">W A S D move · Shift run · mouse look · 1 Kitchen · 2 Living · 3 Deck · 4 Lower floor · [ ] switch design · Esc exit<br>Touch: drag left half to move, right half to look</div><div><button id="hp">◀ Design</button><button id="hn">Design ▶</button><button id="hk">Kitchen</button><button id="hl">Living</button><button id="hd">Deck</button><button id="hw">Lower floor</button><button id="hx">Exit walk</button></div></div>
 <div id="whint" class="card">Click to look around · WASD to walk</div><div id="cross"></div>
 <div id="modal"><div class="box" id="mbox"></div></div>
@@ -125,8 +134,11 @@ function clearModel(){if(!S.root)return;S.root.traverse(o=>{if(o.geometry)o.geom
 function buildModel(D){clearModel();
 S.G={};S.FG={};S.LB={};S.WG={};S.LGp={};S.walls=[];S.gg=[];S.BL=[];S.floors=[];S.doors=[];S.el={};S.nm={};
 const root=new THREE.Group();sc.add(root);S.root=root;const{G,FG,LB,WG,LGp,el,nm}=S;
+const pipP=(x,y,P)=>{let c=false;for(let i=0,j=P.length-1;i<P.length;j=i++){const a=P[i],b=P[j];if((a[1]>y)!=(b[1]>y)&&x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0])c=!c}return c};
 (()=>{const E=Math.max(...D.levels.map(l=>l[2])),top=D.levels.find(l=>l[2]==E)[0],lo=D.levels.find(l=>l[2]==0)[0];
 D.boxes.forEach(b=>{if(b[0]==lo&&b[2]+b[3]>235&&b[2]+b[3]<E)b[3]=E-b[2]});
+D.furn.forEach(f=>{if(f[8]==3&&Math.abs(f[1]-640)<1&&Math.abs(f[2]-736)<1&&!f._fx){f._fx=1;f[1]=565;f[2]=740;f[3]=88;f[4]=150;
+D.rooms.forEach(r=>{if(r[0]==top&&pipP(590,740,r[1])&&!(r[6]||[]).length)r[6]=[[[541,700],[647,700],[647,780],[541,780]]]})}});
 D.furn.forEach(f=>{if(f[8]==3&&Math.abs(f[1]-519.8)<1&&Math.abs(f[2]-885.3)<1&&!f._fx){f._fx=1;const a=f[5],c=Math.cos(a),sn=Math.sin(a);f[3]-=2;f[1]+=-2*c-6*sn;f[2]+=-2*sn+6*c}})})();
 D.levels.forEach(l=>{el[l[0]]=l[2];nm[l[0]]=l[1];G[l[0]]=new THREE.Group();FG[l[0]]=new THREE.Group();LB[l[0]]=new THREE.Group();WG[l[0]]=new THREE.Group();WG[l[0]].position.y=l[2];G[l[0]].add(FG[l[0]],LB[l[0]],WG[l[0]]);root.add(G[l[0]])});
 S.E1=Math.max(...D.levels.map(l=>l[2]));
@@ -165,7 +177,7 @@ S.floors.forEach(m=>m.material.color.setHex(tn?TINT(m.userData.n):(m.userData.l=
 $('modelbl').textContent=levelName()+' · '+(S.cut<.97?'3D cutaway':'full walls');
 $('cutv').textContent=S.cut<.97?'Cutaway '+Math.round(S.cut*244)+' cm':'Full height';
 $('chip').textContent=VERS[S.ver].chip}
-function setVersion(i,keep){S.ver=i;const v=VERS[i];buildModel(DATA[v.key]);
+function setVersion(i,keep){if(S._pk&&matchMedia('(max-width:820px)').matches)document.body.classList.add('pc');S._pk=1;S.ver=i;const v=VERS[i];{const t=$('ptog');if(t)t.textContent='☰ '+v.chip.replace(/^[^·]*· /,'')}buildModel(DATA[v.key]);
 if(!keep){$('o-ly').checked=v.proposed;$('o-bl').checked=v.blinds;applyAll()}
 $('vlist').querySelectorAll('.ver').forEach((b,k)=>b.classList.toggle('on',k==i));
 $('concept').innerHTML='<div class="t">'+v.kind+'</div><h3>'+v.headline+'</h3><p>'+v.desc+'</p><div class="tags">'+v.tags.map(t=>'<span>'+t+'</span>').join('')+'</div><button class="btn" id="zoomc">'+v.btn+' ↗</button>';
@@ -203,6 +215,8 @@ function saved(){try{return JSON.parse(localStorage.getItem('remodel-saved')||'[
 function drawSaved(){const el=$('saved');el.innerHTML='';saved().forEach((s,i)=>{const d=document.createElement('div');d.className='saved';const a=document.createElement('button');a.textContent=s.name;a.onclick=()=>{if(s.ver!=S.ver)setVersion(s.ver,true);Object.entries(s.o).forEach(([k,v])=>$(k).checked=v);S.cut=s.cut;$('cut').value=Math.round(s.cut*100);setLevel(s.level);fly(s.p,s.t)};const x=document.createElement('button');x.textContent='×';x.onclick=()=>{const l=saved();l.splice(i,1);try{localStorage.setItem('remodel-saved',JSON.stringify(l))}catch(e){}drawSaved()};d.append(a,x);el.appendChild(d)})}
 $('savev').onclick=()=>{const l=saved(),o={};['o-fu','o-ly','o-bl','o-lb','o-tint','o-gh','o-nw','o-st'].forEach(k=>o[k]=$(k).checked);l.push({name:VERS[S.ver].title+' · '+levelName(),ver:S.ver,level:S.level,cut:S.cut,o,p:cam.position.toArray(),t:ct.target.toArray()});try{localStorage.setItem('remodel-saved',JSON.stringify(l))}catch(e){}drawSaved()};
 // ---------- misc UI
+$('ptog').onclick=()=>{document.body.classList.toggle('pc');fitOffset&&fitOffset()};
+if(matchMedia('(max-width:820px)').matches)document.body.classList.add('pc');
 $('fullb').onclick=()=>{document.body.classList.toggle('full');fitOffset();try{if(document.body.classList.contains('full')&&document.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(()=>{});else if(document.fullscreenElement)document.exitFullscreen()}catch(e){}};
 const modal=$('modal');modal.onclick=e=>{if(e.target==modal)modal.classList.remove('on')};
 $('shot').onclick=()=>{rn.render(sc,cam);const u=rn.domElement.toDataURL('image/png');$('mbox').innerHTML='<h4>Screenshot</h4><img src="'+u+'" alt="Screenshot"><p class="fine">Right-click (or long-press) the image to save it.</p>';modal.classList.add('on')};
@@ -252,7 +266,8 @@ const g=groundAt(W.x,W.z,W.feet),tg=g===null?W.feet:g;W.feet=tg>W.feet?Math.min(
 setCam();if((W.tick++)%8==0)hud()}
 function hud(){const fl=W.floors.filter(f=>Math.abs(f.h-W.feet)<70&&pipW(W.x,W.z,f.poly)&&!f.holes.some(h=>pipA(W.x,W.z,h)));const f=fl.sort((a,b)=>b.A-a.A)[0];const lev=W.feet>200?'Upper floor':W.feet>100?'Landing':'Lower floor';
 $('hr').textContent=(f&&f.n?f.n+' · ':'')+lev;$('hv').textContent=VERS[S.ver].chip}
-function requestLock(){const c=rn.domElement;if(!c.requestPointerLock){W.drag=true;return}try{const p=c.requestPointerLock();if(p&&p.catch)p.catch(()=>{W.drag=true})}catch(e){W.drag=true}}
+const COARSE=matchMedia('(pointer:coarse)').matches;
+function requestLock(){if(COARSE){W.drag=false;const h=$('whint');h.textContent='Left thumb: move · right thumb: look';h.style.display='block';setTimeout(()=>{if(W.on)h.style.display='none'},4500);return}const c=rn.domElement;if(!c.requestPointerLock){W.drag=true;return}try{const p=c.requestPointerLock();if(p&&p.catch)p.catch(()=>{W.drag=true})}catch(e){W.drag=true}}
 function enterWalk(sp){if(W.on)return;W.prev={cut:S.cut,level:S.level,pos:cam.position.clone(),tgt:ct.target.clone(),fov:cam.fov,near:cam.near};
 S.walk=true;W.on=true;S.cut=1;S.level='both';anim=null;applyAll();document.body.classList.add('walk');cam.clearViewOffset();cam.fov=72;cam.near=6;cam.updateProjectionMatrix();ct.enabled=false;
 prepWalk();W.ceil.forEach(m=>m.visible=true);spawn(sp||'living');setCam();hud();$('whint').style.display='block';requestLock()}
