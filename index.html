@@ -200,10 +200,14 @@ $('chip').textContent=VERS[S.ver].chip}
 function setVersion(i,keep){if(S._pk&&matchMedia('(max-width:820px)').matches)document.body.classList.add('pc');S._pk=1;S.ver=i;const v=VERS[i];{const t=$('ptog');if(t)t.textContent='☰ '+v.chip.replace(/^[^·]*· /,'')}buildModel(DATA[v.key]);
 if(!keep){$('o-ly').checked=v.proposed;$('o-bl').checked=v.blinds;applyAll()}
 $('vlist').querySelectorAll('.ver').forEach((b,k)=>b.classList.toggle('on',k==i));
-$('concept').innerHTML='<div class="t">'+v.kind+'</div><h3>'+v.headline+'</h3><p>'+v.desc+'</p><div class="tags">'+v.tags.map(t=>'<span>'+t+'</span>').join('')+'</div><button class="btn" id="zoomc">'+v.btn+' ↗</button>';
+$('concept').innerHTML='<div class="t">'+v.kind+'</div><h3>'+v.headline+'</h3><p>'+v.desc+'</p><div class="tags">'+v.tags.map(t=>'<span>'+t+'</span>').join('')+'</div><button class="btn" id="zoomc">'+v.btn+' ↗</button> <button class="btn" id="copyl" style="background:transparent;color:inherit;border:1px solid currentColor;opacity:.8">Copy link</button>';
 $('zoomc').onclick=()=>fly(...focusCam());
+$('copyl').onclick=()=>{const u=location.href.split('#')[0]+'#'+verSlug(v),b=$('copyl');const ok=()=>{b.textContent='Link copied';setTimeout(()=>b.textContent='Copy link',1400)};try{navigator.clipboard.writeText(u).then(ok,()=>{prompt('Copy this link',u)})}catch(e){const t=document.createElement('textarea');t.value=u;document.body.appendChild(t);t.select();try{document.execCommand('copy');ok()}catch(_){}t.remove()}};
 try{localStorage.setItem('remodel-ver',String(i))}catch(e){}
+try{const h='#'+verSlug(v);if(location.hash!==h)history.replaceState(null,'',h)}catch(e){}
 if(W.on)revalidate()}
+function verSlug(v){if(v.key=='orig')return'original';const m=/^(\d+)/.exec(v.chip);return m?'concept-'+m[1]:v.key}
+function verFromHash(){const h=(location.hash||'').slice(1).toLowerCase().replace(/^concept-0+(?=\d)/,'concept-');if(!h)return -1;const nz=x=>x.replace(/^concept-0+(?=\d)/,'concept-');let i=VERS.findIndex(v=>nz(verSlug(v))==h);if(i<0&&/^\d+$/.test(h))i=VERS.findIndex(v=>nz(verSlug(v))=='concept-'+parseInt(h,10));if(i<0)i=VERS.findIndex(v=>v.key==h);return i}
 function renderVList(){const vl=$('vlist');vl.innerHTML='';VERS.forEach((v,i)=>{const b=document.createElement('button');b.className='ver'+(i==S.ver?' on':'');b.innerHTML='<span class="n'+(i?'':' as')+'">'+(i?String(i).padStart(2,'0'):'AS-IS')+'</span><span><b>'+v.title+'</b><i>'+v.sub+'</i></span><span class="d"></span>';b.onclick=()=>setVersion(i);vl.appendChild(b)})}
 renderVList();
 // ---------- camera
@@ -499,8 +503,8 @@ $('o-real').onchange=e=>setReal(e.target.checked);
 
 // ---------- start
 let start=0;try{start=Math.min(VERS.length-1,Math.max(0,parseInt(localStorage.getItem('remodel-ver')||'0')||0))}catch(e){}
-start=0;
-setVersion(start);resize();drawSaved();
+start=0;{const hv=verFromHash();if(hv>=0)start=hv}
+setVersion(start);addEventListener('hashchange',()=>{const i=verFromHash();if(i>=0&&i!=S.ver)setVersion(i)});resize();drawSaved();
 {const P=presets()['3d'];cam.position.set(...P[0]);ct.target.set(...P[1]);ct.update();pushHist()}
 let lastT=performance.now();(function loop(){requestAnimationFrame(loop);const nowT=performance.now(),dt=Math.min(.05,(nowT-lastT)/1000);lastT=nowT;if(S.walk){walkStep(dt);$('needle').style.transform='rotate('+W.yaw+'rad)'}else{stepAnim();ct.update();$('needle').style.transform='rotate('+ct.getAzimuthalAngle()+'rad)'}rn.render(sc,cam)})();
 </script></body></html>
