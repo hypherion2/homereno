@@ -434,6 +434,18 @@ T.conc={map:mkTex(conc,1/300),bump:mkTex(conc,1/300),rough:.85};
 // plaster noise for walls
 const pl=mkCanvas(256,(g,n)=>{g.fillStyle='#bbb';g.fillRect(0,0,n,n);noiseDots(g,n,rnd(9),.35,5000,80,220)});
 T.plaster={bump:mkTex(pl,1/90)};
+// stone/quartz: 512px = 150 cm
+const stoneC=mkCanvas(512,(g,n)=>{const R=rnd(31);g.fillStyle='#f3f1ec';g.fillRect(0,0,n,n);noiseDots(g,n,R,.06,5000,200,250);for(let k=0;k<7;k++){g.strokeStyle='rgba(120,124,130,'+(.16+R()*.2)+')';g.lineWidth=.8+R()*2.2;g.beginPath();let x=R()*n,y=0;g.moveTo(x,y);for(let t=0;t<9;t++){x+=R()*70-35;y+=n/9;g.quadraticCurveTo(x+R()*30-15,y-n/18,x,y)}g.stroke()}});
+T.stone={map:mkTex(stoneC,1/150),rough:.16};
+// wood grain for furniture / cabinet doors: long streaks, 512px = 90 cm
+const grainC=mkCanvas(512,(g,n)=>{const R=rnd(41);g.fillStyle='#d6d6d6';g.fillRect(0,0,n,n);for(let i=0;i<340;i++){const v=150+R()*80|0;g.strokeStyle='rgba('+v+','+v+','+v+','+(.15+R()*.25)+')';g.lineWidth=.6+R()*2.2;const x=R()*n,w=R()*10-5;g.beginPath();g.moveTo(x,0);g.bezierCurveTo(x+w,n*.3,x-w,n*.6,x+w*.5,n);g.stroke()}for(let k=0;k<4;k++){g.fillStyle='rgba(90,90,90,.18)';g.beginPath();g.ellipse(R()*n,R()*n,3+R()*4,18+R()*20,0,0,6.3);g.fill()}});
+T.grain={map:mkTex(grainC,1/90),bump:mkTex(grainC,1/90),rough:.55};
+// fabric weave: 256px = 8 cm
+const weaveC=mkCanvas(256,(g,n)=>{const R=rnd(51);g.fillStyle='#d4d4d4';g.fillRect(0,0,n,n);const st=8;for(let y=0;y<n;y+=st)for(let x=0;x<n;x+=st){const v=((x+y)/st&1)?236:190;g.fillStyle='rgb('+v+','+v+','+v+')';g.fillRect(x,y,st-1,st-1)}noiseDots(g,n,R,.25,6000,150,240)});
+T.fabric={map:mkTex(weaveC,1/8),bump:mkTex(weaveC,1/8),rough:.95};
+// rug pile: 256px = 30 cm
+const pileC=mkCanvas(256,(g,n)=>{const R=rnd(61);g.fillStyle='#cfcfcf';g.fillRect(0,0,n,n);noiseDots(g,n,R,.5,16000,110,250)});
+T.pile={map:mkTex(pileC,1/30),bump:mkTex(pileC,1/30),rough:1};
 // grass
 const gr=mkCanvas(512,(g,n)=>{g.fillStyle='#7c9a6b';g.fillRect(0,0,n,n);const R=rnd(21);for(let i=0;i<9000;i++){const v=R();g.fillStyle=v<.5?'rgba(88,118,70,.5)':'rgba(140,168,112,.45)';g.fillRect(R()*n,R()*n,2,3)}});
 T.grass={map:mkTex(gr,1/300)};
@@ -454,7 +466,17 @@ let n;
 if(m===glass){n=RL.glassM}
 else if(S.floors.includes(mesh)){const k=floorKind(mesh.userData.n),t=RL.tx[k]||RL.tx.wood;const dk0=mesh.userData.n&&/deck/i.test(mesh.userData.n);n=stdFrom(m,{color:0xffffff,map:t.map,bumpMap:t.bump,bumpScale:.8,roughness:t.rough,envMapIntensity:.35});mesh.userData._isFloor=1}
 else if(S.walls.includes(mesh)){n=stdFrom(m,{roughness:.95,bumpMap:RL.tx.plaster.bump,bumpScale:.25,envMapIntensity:.4})}
-else{const L=lumOf(m.color);let r=.7,mt=0;if(L<.05){r=.3;mt=.15}n=stdFrom(m,{roughness:r,metalness:mt})}
+else{const L=lumOf(m.color);let r=.7,mt=0;if(L<.05){r=.3;mt=.15}
+const gm=mesh.geometry,isBox=gm&&gm.type=='BoxGeometry',c=m.color,hue=Math.max(c.r,c.g,c.b)-Math.min(c.r,c.g,c.b);
+let kind=null;if(isBox&&!m.transparent){const P=gm.parameters,wy=new THREE.Vector3();mesh.getWorldPosition(wy);const yb=wy.y-P.height/2+1;let e0=0;for(const k in S.el)if(S.el[k]<=yb&&S.el[k]>e0)e0=S.el[k];const bot=yb-1-e0;
+if(P.height<=8&&L>.55&&hue<.12&&bot>70&&bot<130)kind='stone';
+else if(P.height<=9&&bot<20&&L>.2&&L<.95&&P.width>100&&P.depth>100)kind='pile';
+else if(L>.04&&L<.6&&c.r>c.g&&c.g>c.b&&hue>.08)kind='grain';
+else if(L>.12&&L<.93&&hue<.25&&Math.min(P.width,P.depth)>=25&&Math.max(P.width,P.depth)<=300&&P.height>=10&&P.height<=100&&bot<60)kind='fabric'}
+if(kind){const t=RL.tx[kind];if(!gm._uvd){gm._uvd=1;const P=gm.parameters,u=gm.attributes.uv,dm=[[P.depth,P.height],[P.depth,P.height],[P.width,P.depth],[P.width,P.depth],[P.width,P.height],[P.width,P.height]];for(let f=0;f<6;f++)for(let v=0;v<4;v++){const i=f*4+v;u.setXY(i,u.getX(i)*dm[f][0],u.getY(i)*dm[f][1])}u.needsUpdate=true}
+const o={map:t.map,roughness:t.rough,envMapIntensity:.4};if(t.bump){o.bumpMap=t.bump;o.bumpScale=kind=='grain'?.6:1.2}if(kind=='grain')o.color=0xffffff;if(kind=='grain'){o.color=new THREE.Color(c.r*1.25,c.g*1.25,c.b*1.25)}
+n=stdFrom(m,o);if(kind=='grain')n.color.setRGB(Math.min(1,c.r*1.3),Math.min(1,c.g*1.3),Math.min(1,c.b*1.3))}
+else n=stdFrom(m,{roughness:r,metalness:mt})}
 mesh.userData._om=m;mesh.material=n}
 function ensurePlasterUV(mesh){const g=mesh.geometry;if(g.attributes.uv||!g.attributes.position)return;const p=g.attributes.position,uv=new Float32Array(p.count*2);for(let i=0;i<p.count;i++){uv[2*i]=p.getX(i)+p.getZ(i);uv[2*i+1]=p.getY(i)}g.setAttribute('uv',new THREE.BufferAttribute(uv,2))}
 function realRefresh(){if(!RL.on||!S.root)return;S.root.traverse(o=>{if(o.isMesh&&!o.userData._om){if(S.walls.includes(o))ensurePlasterUV(o);realify(o)}else if((o.isLineSegments)&&o.userData._vis===undefined){o.userData._vis=o.visible;o.visible=false}});
