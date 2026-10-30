@@ -147,15 +147,14 @@ const VERS = [
   {
     "key": "v16",
     "title": "Warmer, edited kitchen",
-    "sub": "Less art, oak accents, hidden hood",
+    "sub": "Less art, oak accents, warm whites",
     "chip": "14 · Warmer edit",
     "kind": "Concept 14 · Latest",
     "headline": "Concept 13, edited: fewer focal points and a warmer kitchen.",
-    "desc": "Same layout as concept 13: a one-wall kitchen with a slim island, the double-sided gas fireplace between the kitchen and the lounge, the L-sofa facing the TV nook and the under-stair closet. The art is cut to four pieces in one palette (dining wall, both fireplace faces, lounge wall) so the fireplaces and the view stay the focus. The kitchen warms up with warm-white uppers, oak open shelves either side of the sink window and oak island end panels. The chimney hood is replaced by an insert hidden in a cabinet, so the uppers run unbroken from the pantry to the window.",
+    "desc": "Same layout as concept 13: a one-wall kitchen with a slim island, the double-sided gas fireplace between the kitchen and the lounge, the L-sofa facing the TV nook and the under-stair closet. The art is cut to four pieces in one palette (dining wall, both fireplace faces, lounge wall) so the fireplaces and the view stay the focus. The kitchen warms up with warm-white uppers, oak open shelves either side of the sink window and oak island end panels. The stainless chimney hood stays, with full-height uppers running right up to it on both sides.",
     "tags": [
       "Fewer art pieces",
       "Oak accents",
-      "Hidden hood",
       "Warm white"
     ],
     "btn": "View the kitchen zones",
