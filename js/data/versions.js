@@ -168,11 +168,11 @@ const VERS = [
     "chip": "15 · Warm contemporary",
     "kind": "Concept 15 · Latest",
     "headline": "Concept 14, refined: better clearances, warm contemporary finishes and layout options.",
-    "desc": "Same plan as concept 14 with the fixes from the review. Dining: a 200 × 90 cm pedestal table moved 30 cm north, so the east chairs clear the pantry door with about 90 cm behind seated guests; the linear pendant is centred over it. Kitchen: the island moves 5 cm east for about 95 cm behind seated stools (work aisle still about 118 cm) and the trash pull-out now sits opposite the sink. Finishes: warm off-white walls, greige lower cabinets, a white-oak island, warm-white uppers, black hardware, natural-stone fireplace surrounds, an oak sideboard wall in the old TV nook, under-cabinet lighting and step lights. The TV moves above the lounge side of the fireplace so the lounge has one focal wall; try the two-sofa and U-shaped layouts and the two stair guards below.",
+    "desc": "Same plan as concept 14 with the fixes from the review. Dining: a 200 × 90 cm pedestal table moved 30 cm north, so the east chairs clear the pantry door with about 90 cm behind seated guests; the linear pendant is centred over it. Kitchen: the island moves 5 cm east for about 95 cm behind seated stools (work aisle still about 118 cm) and the trash pull-out now sits opposite the sink. Finishes: warm off-white walls, greige lower cabinets, a white-oak island, warm-white uppers, black hardware, natural-stone fireplace surrounds, an oak media wall around the TV in the nook, under-cabinet lighting and step lights. The TV stays in the nook as the main focal wall and the fireplace is the second focal point; try the three living-room layouts and the two stair guards below.",
     "tags": [
       "Clearances fixed",
       "Warm contemporary",
-      "TV over the fireplace",
+      "Oak media wall",
       "Stair as a feature"
     ],
     "btn": "View the kitchen zones",
