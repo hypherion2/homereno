@@ -8,6 +8,7 @@ function sheetOpen() {
   return !body.classList.contains("pc") && body.dataset.sheet;
 }
 function openSheet(name) {
+  body.classList.remove("full"); // full view hides the panel, so leave it when a sheet is asked for
   body.dataset.sheet = name;
   body.classList.remove("pc");
   $("sheettitle").textContent = name == "designs" ? "Designs" : "Options";

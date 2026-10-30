@@ -131,7 +131,7 @@ const VERS = [
     "title": "Organized kitchen + fireplace",
     "sub": "Kitchen zones, kitchen-wall fireplace",
     "chip": "13 · Organized kitchen",
-    "kind": "Concept 13 · Latest",
+    "kind": "Concept 13",
     "headline": "Concept 11 with a more organized kitchen and a fireplace in the lounge.",
     "desc": "Same layout as concept 11 (kitchen + dining zone, separate lounge). The kitchen is organized into zones: coffee station, cooking, cleanup, a prep island with its own sink and pull-out waste, a tall pantry and oven tower, plus a dry-pantry run along the wall to the lounge with an appliance garage. The lounge gets a linear gas fireplace on the wall it shares with the kitchen (the partition between the dry-pantry run and the lounge), near where the old fireplace was, with two lounge chairs facing it. The TV stays on the alcove wall. A gas fireplace needs a vent and a gas line; the surround and wall are a plan, not a built detail.",
     "tags": [
@@ -139,6 +139,24 @@ const VERS = [
       "Prep sink",
       "Dry pantry",
       "Fireplace on kitchen wall"
+    ],
+    "btn": "View the kitchen zones",
+    "proposed": true,
+    "blinds": true
+  },
+  {
+    "key": "v16",
+    "title": "Warmer, edited kitchen",
+    "sub": "Less art, oak accents, hidden hood",
+    "chip": "14 · Warmer edit",
+    "kind": "Concept 14 · Latest",
+    "headline": "Concept 13, edited: fewer focal points and a warmer kitchen.",
+    "desc": "Same layout as concept 13: a one-wall kitchen with a slim island, the double-sided gas fireplace between the kitchen and the lounge, the L-sofa facing the TV nook and the under-stair closet. The art is cut to four pieces in one palette (dining wall, both fireplace faces, lounge wall) so the fireplaces and the view stay the focus. The kitchen warms up with warm-white uppers, oak open shelves either side of the sink window and oak island end panels. The chimney hood is replaced by an insert hidden in a cabinet, so the uppers run unbroken from the pantry to the window.",
+    "tags": [
+      "Fewer art pieces",
+      "Oak accents",
+      "Hidden hood",
+      "Warm white"
     ],
     "btn": "View the kitchen zones",
     "proposed": true,

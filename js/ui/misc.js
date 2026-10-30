@@ -14,6 +14,11 @@ $("fullb").onclick = () => {
     else if (document.fullscreenElement) document.exitFullscreen();
   } catch (e) {}
 };
+// Leaving browser full screen (Esc, swipe, back) also leaves the studio's full view.
+document.addEventListener("fullscreenchange", () => {
+  if (!document.fullscreenElement) document.body.classList.remove("full");
+  fitOffset();
+});
 const modal = $("modal");
 modal.onclick = (e) => {
   if (e.target == modal) modal.classList.remove("on");
