@@ -31,6 +31,7 @@ function clearModel() {
   S.root = null;
 }
 function buildModel(D) {
+  if (typeof applyVariants == "function") applyVariants(D); // pick the chosen layout options first
   clearModel();
   S.G = {};
   S.FG = {};
@@ -116,7 +117,7 @@ function buildModel(D) {
     z1 = -1e9;
   D.boxes.forEach((b) => {
     const m = sd(
-      new THREE.Mesh(prism(b[1], b[2], b[3], b[5]), new THREE.MeshLambertMaterial({ color: WALL, side: 2 })),
+      new THREE.Mesh(prism(b[1], b[2], b[3], b[5]), new THREE.MeshLambertMaterial({ color: (!dk && D.wallColor) || WALL, side: 2 })),
     );
     m.userData.c = b[4];
     S.walls.push(m);
@@ -256,15 +257,25 @@ function buildModel(D) {
       o = new THREE.Group();
       const N = Math.max(2, Math.round(h / 18)),
         z = d / N,
-        ri = h / N;
+        ri = h / N,
+        tread = D.treadColor || 0xa67b50; // per-concept tread colour (e.g. white oak)
       for (let i = 0; i < N; i++) {
-        const m = sd(new THREE.Mesh(new THREE.BoxGeometry(w, ri, z), BM(0xa67b50)));
+        const m = sd(new THREE.Mesh(new THREE.BoxGeometry(w, ri, z), BM(tread)));
         m.position.set(0, (i + 0.5) * ri, s * (-d / 2 + (i + 0.5) * z));
         o.add(m);
+        // optional low step light on every second riser
+        if (D.stepLights && i % 2 == 0) {
+          const lt = new THREE.Mesh(
+            new THREE.BoxGeometry(7, 1.6, 1),
+            new THREE.MeshLambertMaterial({ color: 0xfff6e0, emissive: 0xffe2a8 }),
+          );
+          lt.position.set(w / 2 - 10, (i + 1) * ri - 5, s * (-d / 2 + i * z) - s * 0.6);
+          o.add(lt);
+        }
       }
       {
         const Ls = Math.hypot(d, h - ri),
-          sf = sd(new THREE.Mesh(new THREE.BoxGeometry(w, 4, Ls), BM(0xa67b50)));
+          sf = sd(new THREE.Mesh(new THREE.BoxGeometry(w, 4, Ls), BM(tread)));
         sf.rotation.x = -s * Math.atan2(h - ri, d);
         sf.position.set(0, (h - ri) / 2 - 2, 0);
         o.add(sf);
@@ -300,7 +311,7 @@ function buildModel(D) {
       o = sd(new THREE.Mesh(new THREE.BoxGeometry(w, h, t ? 4 : rl ? 1.4 : d), rl ? RGL : c));
       if (!t && /^fireplace$/i.test(n)) {
         const tall = h > 150;
-        o.material = BM(tall ? WALL : 0x3c3c3c);
+        o.material = BM(tall ? (!dk && D.wallColor) || WALL : D.fireStone || 0x3c3c3c);
         const fm = (ww, hh, dd, col, yy, zz) => {
             const m = sd(new THREE.Mesh(new THREE.BoxGeometry(ww, hh, dd), BM(col)));
             m.position.set(0, yy, zz);
@@ -308,14 +319,27 @@ function buildModel(D) {
           },
           b0 = -h / 2;
         if (tall) {
-          fm(w * 0.8, 95, 3, 0x3c3c3c, b0 + 47.5, d / 2 + 1.5);
+          fm(w * 0.8, 95, 3, D.fireStone || 0x3c3c3c, b0 + 47.5, d / 2 + 1.5);
           fm(w * 0.9, 5, 14, 0x6b4a2f, b0 + 112.5, d / 2 + 7);
         }
         fm(w * 0.5, 58, 2, 0x141414, b0 + 20 + 29, d / 2 + (tall ? 4 : 1));
         fm(w * 0.32, 4, 1, 0xd98a3a, b0 + 24, d / 2 + (tall ? 5.2 : 2.2));
-        fm(w * 0.85, 4, 26, 0x3c3c3c, b0 + 2, d / 2 + 13);
+        fm(w * 0.85, 4, 26, D.fireStone || 0x3c3c3c, b0 + 2, d / 2 + 13);
       }
-      if (rl) {
+      if (rl && D.stair == "bars") {
+        // slim black metal guard: top rail, bottom rail and vertical bars (no glass)
+        o.material = new THREE.MeshBasicMaterial({ visible: false });
+        const mt = BM(0x1e1e1e),
+          bar = (ww, hh, dd, px, py) => {
+            const m = sd(new THREE.Mesh(new THREE.BoxGeometry(ww, hh, dd), mt));
+            m.position.set(px, py, 0);
+            o.add(m);
+          };
+        bar(w, 3, 4, 0, h / 2 + 1.5);
+        bar(w, 2.5, 2.5, 0, -h / 2 + 5);
+        const nb = Math.max(1, Math.round(w / 10.5));
+        for (let i = 0; i <= nb; i++) bar(1.4, h - 6, 1.4, -w / 2 + 2 + (i * (w - 4)) / nb, 0.5);
+      } else if (rl) {
         const mt = BM(0x2b2d30);
         const tp = new THREE.Mesh(new THREE.BoxGeometry(w, 3.2, 4), mt);
         tp.position.y = h / 2 + 1.6;

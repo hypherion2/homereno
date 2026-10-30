@@ -226,6 +226,9 @@ def block(L, name, x, y, w, d, h, e, a, col):
 
 def export(key, slug):
     D = DATA[key]; CTR[0] = 0; CTR[1] = slug
+    if D.get('variants'):  # export each layout option's default choice
+        D = dict(D); D['lay'] = list(D['lay'])
+        for vr in D['variants']: D['lay'] += vr['options'][vr.get('choose', 0)].get('lay', [])
     root = ET.Element('home', dict(broot.attrib)); root.set('name', slug + '.sh3d')
     lvh = {}
     for el in broot:

@@ -46,6 +46,11 @@ function build(k, w, d, h, c, g) {
     p.position.set(0, h / 2, d / 2 + 0.12);
     g.add(p);
     g.userData.art = 1;
+  } else if (k == "led") {
+    // thin glowing LED strip (under-cabinet / toe-kick lighting)
+    const m = B(w, h, d, c, 0, 0, 0, g);
+    m.material = new THREE.MeshLambertMaterial({ color: 0xfff6e0, emissive: 0xffe2a8 });
+    m.castShadow = false;
   } else if (k == "chair") {
     B(w, 4, d, c, 0, 44, 0, g);
     B(w, 40, 3, c, 0, 48, -(d / 2 - 1.5), g);

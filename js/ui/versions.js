@@ -24,7 +24,7 @@ function applyAll() {
   $("skey").style.display = st ? "block" : "none";
   S.walls.forEach((m) => {
     const c = m.userData.c;
-    m.material.color.setHex(st ? CLS[c] : c == 5 && nw ? 0x5cb85c : WALL);
+    m.material.color.setHex(st ? CLS[c] : c == 5 && nw ? 0x5cb85c : (!dk && D.wallColor) || WALL);
   });
   S.floors.forEach((m) =>
     m.material.color.setHex(tn ? TINT(m.userData.n) : m.userData.l == "Level 1" ? 0xd8c29b : 0xc9ced1),

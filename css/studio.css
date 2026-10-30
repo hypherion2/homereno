@@ -922,3 +922,12 @@ body.walk #cross {
     bottom: calc(86px + env(safe-area-inset-bottom, 0px));
   }
 }
+
+/* Layout options (variants) inside a concept */
+#varui .varseg {
+  flex-wrap: wrap;
+}
+#varui .varseg button {
+  flex: 1 1 auto;
+  white-space: nowrap;
+}
