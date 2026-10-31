@@ -93,6 +93,7 @@ function prepWalk() {
     add(b[1], el[b[0]] + b[2], el[b[0]] + b[2] + b[3]);
     W.solids[W.solids.length - 1].w = 1;
   });
+  W.winder = D.winder ? Object.assign({ el: el[D.winder.L] }, D.winder) : null;
   D.furn.forEach((f) => {
     const [L, x, y, w, d, a, e, h, t, n, s] = f;
     if (t == 3) {
@@ -168,9 +169,14 @@ function cands(x, z) {
       c.push(r.base + t * r.h);
     }
   });
+  if (W.winder) {
+    const hw = winderHeight(W.winder, x, z, 0);
+    if (hw !== null) c.push(W.winder.el + hw);
+  }
   return c;
 }
 function onRamp(x, z) {
+  if (W.winder && winderHeight(W.winder, x, z, 0) !== null) return true;
   return W.ramps.some((r) => {
     const dx = x - r.x,
       dz = z - r.y,

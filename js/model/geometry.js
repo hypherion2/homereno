@@ -71,3 +71,51 @@ function ftin(cm) {
 function sqft(m2) {
   return Math.round(m2 * 10.7639) + " ft\u00b2";
 }
+
+// A quad wall box (optionally sloped: b[5] = height at the far end) drawn as vertical oak battens.
+function oakScreen(b, grp) {
+  const q = b[1],
+    mid = (i, j) => [(q[2 * i] + q[2 * j]) / 2, (q[2 * i + 1] + q[2 * j + 1]) / 2],
+    a = mid(0, 3),
+    c = mid(1, 2),
+    L = Math.hypot(c[0] - a[0], c[1] - a[1]),
+    ang = Math.atan2(c[1] - a[1], c[0] - a[0]),
+    n = Math.max(2, Math.round(L / 9)),
+    mt = BM(0xd2b48c);
+  for (let i = 0; i <= n; i++) {
+    const t = i / n,
+      h = b[3] + ((b[5] == null ? b[3] : b[5]) - b[3]) * t,
+      m = sd(new THREE.Mesh(new THREE.BoxGeometry(4.5, h, 3.5), mt));
+    m.position.set(a[0] + (c[0] - a[0]) * t, b[2] + h / 2, a[1] + (c[1] - a[1]) * t);
+    m.rotation.y = -ang;
+    grp.add(m);
+  }
+}
+
+// Winder helpers. W = { K: inner corner, m: first-edge direction, u: last-edge direction, w: size, n: steps }
+function winderPt(W, th) {
+  const c = Math.cos(th),
+    s = Math.sin(th),
+    r = W.w / Math.max(c, s);
+  return [W.K[0] + r * (c * W.m[0] + s * W.u[0]), W.K[1] + r * (c * W.m[1] + s * W.u[1])];
+}
+// Quad (8 numbers) for winder k: the inner corner plus its slice of the square's edge.
+function winderWedge(W, k) {
+  const a0 = (Math.PI / 2) * (k / W.n),
+    a1 = (Math.PI / 2) * ((k + 1) / W.n),
+    A = winderPt(W, a0),
+    B = winderPt(W, a1),
+    corner = [W.K[0] + W.w * (W.m[0] + W.u[0]), W.K[1] + W.w * (W.m[1] + W.u[1])],
+    mid = a0 < Math.PI / 4 && a1 > Math.PI / 4 ? corner : winderPt(W, (a0 + a1) / 2);
+  return [W.K[0], W.K[1], A[0], A[1], mid[0], mid[1], B[0], B[1]];
+}
+// Walking height on the winders: rises smoothly with the angle around the inner corner.
+function winderHeight(W, x, z, margin) {
+  const dx = x - W.K[0],
+    dz = z - W.K[1],
+    a = dx * W.m[0] + dz * W.m[1],
+    b = dx * W.u[0] + dz * W.u[1];
+  if (a < -margin || b < -2 || a > W.w + 2 || b > W.w + 2) return null;
+  const th = Math.atan2(Math.max(0, b), Math.max(0.001, a));
+  return W.base + W.ri * (W.n + 1) * Math.min(1, th / (Math.PI / 2));
+}

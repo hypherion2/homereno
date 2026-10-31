@@ -116,6 +116,17 @@ function buildModel(D) {
     z0 = 1e9,
     z1 = -1e9;
   D.boxes.forEach((b) => {
+    if (b[5] != null && D.divider == "slats") {
+      // sloped stair divider shown as an open screen of oak battens (gaps under 10 cm)
+      oakScreen(b, WG[b[0]]);
+      for (let i = 0; i < 4; i++) {
+        x0 = Math.min(x0, b[1][2 * i]);
+        x1 = Math.max(x1, b[1][2 * i]);
+        z0 = Math.min(z0, b[1][2 * i + 1]);
+        z1 = Math.max(z1, b[1][2 * i + 1]);
+      }
+      return;
+    }
     const m = sd(
       new THREE.Mesh(prism(b[1], b[2], b[3], b[5]), new THREE.MeshLambertMaterial({ color: (!dk && D.wallColor) || WALL, side: 2 })),
     );
@@ -267,7 +278,15 @@ function buildModel(D) {
         m.position.set(0, (i + 0.5) * ri, s * (-d / 2 + (i + 0.5) * z));
         o.add(m);
         // optional low step light on every second riser
-        if (D.stepLights && i % 2 == 0) {
+        if (D.stepLights == "nosing") {
+          // continuous LED strip tucked under each tread nosing
+          const lt = new THREE.Mesh(
+            new THREE.BoxGeometry(w - 8, 1.2, 1.2),
+            new THREE.MeshLambertMaterial({ color: 0xfff6e0, emissive: 0xffe2a8 }),
+          );
+          lt.position.set(0, (i + 1) * ri - 2, s * (-d / 2 + i * z) - s * 0.8);
+          o.add(lt);
+        } else if (D.stepLights && i % 2 == 0) {
           const lt = new THREE.Mesh(
             new THREE.BoxGeometry(7, 1.6, 1),
             new THREE.MeshLambertMaterial({ color: 0xfff6e0, emissive: 0xffe2a8 }),
@@ -329,7 +348,21 @@ function buildModel(D) {
         fm(w * 0.32, 4, 1, 0xd98a3a, b0 + 24, d / 2 + (tall ? 5.2 : 2.2));
         fm(w * 0.85, 4, 26, D.fireStone || 0x3c3c3c, b0 + 2, d / 2 + 13);
       }
-      if (rl && D.stair == "bars") {
+      if (rl && D.stair == "slats") {
+        // floor-to-ceiling white-oak slat screen along the stairwell edge
+        o.material = new THREE.MeshBasicMaterial({ visible: false });
+        const H = 243 - e,
+          mt = BM(0xd2b48c),
+          n = Math.max(2, Math.round(w / 9));
+        for (let i = 0; i <= n; i++) {
+          const m = sd(new THREE.Mesh(new THREE.BoxGeometry(4.5, H, 3.5), mt));
+          m.position.set(-w / 2 + 2.25 + (i * (w - 4.5)) / n, -h / 2 + H / 2, 0);
+          o.add(m);
+        }
+        const rail = sd(new THREE.Mesh(new THREE.BoxGeometry(w, 3, 2), BM(0x1e1e1e)));
+        rail.position.set(0, -h / 2 + 91.4, 2.8);
+        o.add(rail);
+      } else if (rl && D.stair == "bars") {
         // slim black metal guard: top rail, bottom rail and vertical bars (no glass)
         o.material = new THREE.MeshBasicMaterial({ visible: false });
         const mt = BM(0x1e1e1e),
@@ -381,6 +414,26 @@ function buildModel(D) {
     }
     o.rotation.y = -a;
   });
+  if (D.winder) {
+    // stair-top winders: wedge treads fanning around the inner corner of the turn
+    const Wd = D.winder,
+      tread = D.treadColor || 0xa67b50;
+    for (let k = 0; k < Wd.n; k++) {
+      const q = winderWedge(Wd, k),
+        top = el[Wd.L] + Wd.base + (k + 1) * Wd.ri,
+        m = sd(new THREE.Mesh(prism(q, top - Wd.ri, Wd.ri), BM(tread)));
+      G[Wd.L].add(m);
+      if (D.stepLights == "nosing") {
+        const a0 = (Math.PI / 2) * (k / Wd.n),
+          B = winderPt(Wd, a0),
+          lt = new THREE.Mesh(
+            new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(Wd.K[0], top - Wd.ri - 2, Wd.K[1]), new THREE.Vector3(B[0], top - Wd.ri - 2, B[1])]),
+            new THREE.LineBasicMaterial({ color: 0xffe2a8 }),
+          );
+        G[Wd.L].add(new THREE.Line(lt.geometry, lt.material));
+      }
+    }
+  }
   (D.lay || []).forEach((o) => {
     const [L, k, x, y, w, d, h, e, a, c, lb] = o;
     if (!LGp[L]) {

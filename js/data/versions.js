@@ -166,7 +166,7 @@ const VERS = [
     "title": "Warm contemporary",
     "sub": "Refined plan, layout options",
     "chip": "15 · Warm contemporary",
-    "kind": "Concept 15 · Latest",
+    "kind": "Concept 15",
     "headline": "Concept 14, refined: better clearances, warm contemporary finishes and layout options.",
     "desc": "Same plan as concept 14 with the fixes from the review. Dining: your existing 90 × 35 in (229 × 89 cm) black pedestal table, moved about 1 ft north, so the east chairs clear the pantry door with about 3 ft behind seated guests; the linear pendant is centred over it. Kitchen: the island moves 5 cm east for about 95 cm behind seated stools (work aisle still about 118 cm) and the trash pull-out now sits opposite the sink. Finishes: warm off-white walls, greige lower cabinets, a white-oak island, warm-white uppers, black hardware, natural-stone fireplace surrounds, an oak media wall around the TV in the nook, under-cabinet lighting and step lights. The TV stays in the nook as the main focal wall and the fireplace is the second focal point; try the three living-room layouts and the two stair guards below.",
     "tags": [
@@ -174,6 +174,24 @@ const VERS = [
       "Warm contemporary",
       "Oak media wall",
       "Stair as a feature"
+    ],
+    "btn": "View the kitchen zones",
+    "proposed": true,
+    "blinds": true
+  },
+  {
+    "key": "v18",
+    "title": "Stairs land in the kitchen",
+    "sub": "Upper flight turns into the kitchen",
+    "chip": "16 · Kitchen landing",
+    "kind": "Concept 16 · Latest",
+    "headline": "Concept 15 with the stairs turning into the kitchen.",
+    "desc": "From the existing landing the upper flight now turns toward the kitchen, so you arrive in the open area by the south end of the island, facing the lounge, with a direct route from the garage and front door up to the kitchen. Upper floor: the wall between the hall and the kitchen comes out (it is probably bearing, so it needs an engineered beam), the double-sided fireplace chase and the dry-pantry run go, and the old stair opening is floored over. A single-sided gas fireplace moves to the lounge west wall with two fireside chairs; the TV stays in the oak nook. Ground floor: the top of the new flight passes over the garage corner, so that corner is boxed in with fire-rated walls (about 0.9 m² of garage), the wall between the stair and the garage is rebuilt around it, and the closet under the old flight becomes full height. Most expensive option: beam, new floor opening, gas line and permits.",
+    "tags": [
+      "Stair to kitchen",
+      "Bearing wall: beam",
+      "Fireplace on lounge wall",
+      "Garage corner boxed in"
     ],
     "btn": "View the kitchen zones",
     "proposed": true,
