@@ -287,7 +287,10 @@ function hud() {
   );
   const f = fl.sort((a, b) => b.A - a.A)[0];
   const lev = W.feet > 200 ? "Upper floor" : W.feet > 100 ? "Landing" : "Lower floor";
-  $("hr").textContent = (f && f.n ? f.n + " · " : "") + lev;
+  {
+    const rn = f && f.n ? f.n.replace(/\s*\[[a-z]+\]$/, "") : "";
+    $("hr").textContent = (rn ? rn + " · " : "") + lev;
+  }
   $("hv").textContent = VERS[S.ver].chip;
 }
 const COARSE = matchMedia("(pointer:coarse)").matches;

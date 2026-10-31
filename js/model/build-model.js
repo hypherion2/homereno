@@ -214,7 +214,7 @@ function buildModel(D) {
         sq(B[0] - ox * 8, B[1] - oz * 8, B[0] + ox * 8, B[1] + oz * 8, 1.1);
         MS[Lv].add(
           lab(
-            (len / 100).toFixed(2) + " m",
+            ftin(len),
             (A[0] + B[0]) / 2 + ox * 16,
             y0 + 1,
             (A[1] + B[1]) / 2 + oz * 16,
@@ -239,7 +239,7 @@ function buildModel(D) {
       if (r[2] >= 2)
         MS[Lv].add(
           lab(
-            "\u2194 " + ((mxx - mnx) / 100).toFixed(2) + " \u00d7 " + ((mxz - mnz) / 100).toFixed(2) + " m",
+            "\u2194 " + ftin(mxx - mnx) + " \u00d7 " + ftin(mxz - mnz),
             r[3],
             y0 + 2,
             r[4] + 52,
@@ -248,7 +248,10 @@ function buildModel(D) {
         );
     }
     if (r[2] >= 3)
-      LB[r[0]].add(lab((r[5] ? r[5] + " · " : "") + r[2] + " m²", r[3], el[r[0]] + 20, r[4], 34));
+      {
+        const rn = (r[5] || "").replace(/\s*\[[a-z]+\]$/, ""); // hide floor tags such as [oak]
+        LB[r[0]].add(lab((rn ? rn + " · " : "") + sqft(r[2]), r[3], el[r[0]] + 20, r[4], 34));
+      }
   });
   D.furn.forEach((f) => {
     const [L, x, y, w, d, a, e, h, t, n, s] = f;
@@ -400,7 +403,7 @@ function buildModel(D) {
     if (lb && Math.max(w, d) >= 120 && k != "rug")
       MS[L].add(
         lab(
-          (Math.max(w, d) / 100).toFixed(2) + " × " + (Math.min(w, d) / 100).toFixed(2) + " m",
+          ftin(Math.max(w, d)) + " × " + ftin(Math.min(w, d)),
           x,
           el[L] + e + h + 14,
           y,

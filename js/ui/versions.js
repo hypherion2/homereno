@@ -30,7 +30,7 @@ function applyAll() {
     m.material.color.setHex(tn ? TINT(m.userData.n) : m.userData.l == "Level 1" ? 0xd8c29b : 0xc9ced1),
   );
   $("modelbl").textContent = levelName() + " · " + (S.cut < 0.97 ? "3D cutaway" : "full walls");
-  $("cutv").textContent = S.cut < 0.97 ? "Cutaway " + Math.round(S.cut * 244) + " cm" : "Full height";
+  $("cutv").textContent = S.cut < 0.97 ? "Cutaway " + ftin(S.cut * 244) : "Full height";
   $("chip").textContent = VERS[S.ver].chip;
 }
 function setVersion(i, keep) {

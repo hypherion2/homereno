@@ -60,3 +60,14 @@ function Cy(r, h, c, x, y, z, g, r2) {
   g.add(m);
   return m;
 }
+
+// Imperial labels: cm -> feet and inches (e.g. 229 -> 7\' 6"), m² -> ft².
+function ftin(cm) {
+  let i = Math.round(cm / 2.54),
+    f = Math.floor(i / 12);
+  i -= f * 12;
+  return f ? f + "\u2032 " + i + "\u2033" : i + "\u2033";
+}
+function sqft(m2) {
+  return Math.round(m2 * 10.7639) + " ft\u00b2";
+}
