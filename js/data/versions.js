@@ -184,7 +184,7 @@ const VERS = [
     "title": "Stairs land in the kitchen",
     "sub": "Upper flight turns into the kitchen",
     "chip": "16 · Kitchen landing",
-    "kind": "Concept 16 · Latest",
+    "kind": "Concept 16",
     "headline": "Concept 15 with the stairs turning into the kitchen.",
     "desc": "At the landing the stair now turns right on winders toward the kitchen, so you arrive in the open area by the south end of the island, facing the lounge, with a direct route from the garage and front door up to the kitchen. Upper floor: the wall between the hall and the kitchen comes out (it is probably bearing, so it needs an engineered beam), the double-sided fireplace chase and the dry-pantry run go, and the old stair opening is floored over. A single-sided gas fireplace moves to the lounge west wall with two fireside chairs; the TV stays in the oak nook. Ground floor: the flat landing becomes three winders that make the right turn, so the upper flight is short and stops before the garage; the garage keeps its square corner and the door from the mud-room vestibule keeps full headroom. The space under the old flight and the landing becomes a storage closet off the foyer. Most expensive option: beam, new floor opening, gas line and permits.",
     "tags": [
@@ -192,6 +192,24 @@ const VERS = [
       "Winder turn",
       "Bearing wall: beam",
       "Garage untouched"
+    ],
+    "btn": "View the kitchen zones",
+    "proposed": true,
+    "blinds": true
+  },
+  {
+    "key": "v21",
+    "title": "Compact stair into the kitchen",
+    "sub": "Stair moved west, lands in the kitchen",
+    "chip": "17 · Compact stair",
+    "kind": "Concept 17 · Latest",
+    "headline": "Concept 15 with the stair moved west into a compact L that lands in the kitchen.",
+    "desc": "The diagonal switchback is replaced by a compact L-stair (two 100 cm flights, 6 + 8 steps, 18 cm rise and 26 cm treads) set against the east side of the foyer. The partition between the foyer and the office moves 20 cm west (the office door stays) to make room for the full-width stair. You climb north from the front door, turn right at a square landing and the upper flight runs east along the north wall, arriving in the kitchen about 1.2 m from the island stools. Ground floor: the route from the front door to the laundry and to the hall beside it stays about 1 m wide past the foot of the stair, and the utility room is reached through the existing hall door into a 1 m passage (with a shallow linen cupboard). The old stairwell becomes a storage room off the mud-room vestibule that runs under the top of the stair. Upper floor: the wall between the hall and the kitchen comes out (beam needed), the hall to the west bedrooms widens to about 1.5 m and the old stairwell becomes floor that joins the lounge. Needs an engineer for the beam and the new floor opening; the walls under the top steps are cut down to the stair soffit.",
+    "tags": [
+      "Compact L-stair",
+      "Lands in the kitchen",
+      "Storage room",
+      "Arrive in the kitchen"
     ],
     "btn": "View the kitchen zones",
     "proposed": true,
