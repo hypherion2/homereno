@@ -164,7 +164,9 @@ function cands(x, z) {
       sa = Math.sin(r.a),
       lx = dx * ca + dz * sa,
       lz = -dx * sa + dz * ca;
-    if (Math.abs(lx) <= r.w / 2 && Math.abs(lz) <= r.d / 2 + 40) {
+    // the 40 cm run-out past each end lets you step on and off; not over winders, which carry their own height
+    const ext = W.winder && winderHeight(W.winder, x, z, 0) !== null ? 0 : 40;
+    if (Math.abs(lx) <= r.w / 2 && Math.abs(lz) <= r.d / 2 + ext) {
       const t = Math.max(0, Math.min(1, (lz * r.s + r.d / 2) / r.d));
       c.push(r.base + t * r.h);
     }

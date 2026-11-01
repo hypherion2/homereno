@@ -186,12 +186,12 @@ const VERS = [
     "chip": "16 · Kitchen landing",
     "kind": "Concept 16 · Latest",
     "headline": "Concept 15 with the stairs turning into the kitchen.",
-    "desc": "From the existing landing the upper flight now turns toward the kitchen, so you arrive in the open area by the south end of the island, facing the lounge, with a direct route from the garage and front door up to the kitchen. Upper floor: the wall between the hall and the kitchen comes out (it is probably bearing, so it needs an engineered beam), the double-sided fireplace chase and the dry-pantry run go, and the old stair opening is floored over. A single-sided gas fireplace moves to the lounge west wall with two fireside chairs; the TV stays in the oak nook. Ground floor: the top of the new flight passes over the garage corner, so that corner is boxed in with fire-rated walls (about 0.9 m² of garage), the wall between the stair and the garage is rebuilt around it, and the closet under the old flight becomes full height. Most expensive option: beam, new floor opening, gas line and permits.",
+    "desc": "At the landing the stair now turns right on winders toward the kitchen, so you arrive in the open area by the south end of the island, facing the lounge, with a direct route from the garage and front door up to the kitchen. Upper floor: the wall between the hall and the kitchen comes out (it is probably bearing, so it needs an engineered beam), the double-sided fireplace chase and the dry-pantry run go, and the old stair opening is floored over. A single-sided gas fireplace moves to the lounge west wall with two fireside chairs; the TV stays in the oak nook. Ground floor: the flat landing becomes three winders that make the right turn, so the upper flight is short and stops before the garage; the garage keeps its square corner and the door from the mud-room vestibule keeps full headroom. The space under the old flight and the landing becomes a storage closet off the foyer. Most expensive option: beam, new floor opening, gas line and permits.",
     "tags": [
       "Stair to kitchen",
+      "Winder turn",
       "Bearing wall: beam",
-      "Fireplace on lounge wall",
-      "Garage corner boxed in"
+      "Garage untouched"
     ],
     "btn": "View the kitchen zones",
     "proposed": true,

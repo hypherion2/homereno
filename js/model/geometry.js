@@ -96,7 +96,7 @@ function oakScreen(b, grp) {
 function winderPt(W, th) {
   const c = Math.cos(th),
     s = Math.sin(th),
-    r = W.w / Math.max(c, s);
+    r = W.shape == "tri" ? W.w / (c + s) : W.w / Math.max(c, s);
   return [W.K[0] + r * (c * W.m[0] + s * W.u[0]), W.K[1] + r * (c * W.m[1] + s * W.u[1])];
 }
 // Quad (8 numbers) for winder k: the inner corner plus its slice of the square's edge.
@@ -106,7 +106,7 @@ function winderWedge(W, k) {
     A = winderPt(W, a0),
     B = winderPt(W, a1),
     corner = [W.K[0] + W.w * (W.m[0] + W.u[0]), W.K[1] + W.w * (W.m[1] + W.u[1])],
-    mid = a0 < Math.PI / 4 && a1 > Math.PI / 4 ? corner : winderPt(W, (a0 + a1) / 2);
+    mid = W.shape != "tri" && a0 < Math.PI / 4 && a1 > Math.PI / 4 ? corner : winderPt(W, (a0 + a1) / 2);
   return [W.K[0], W.K[1], A[0], A[1], mid[0], mid[1], B[0], B[1]];
 }
 // Walking height on the winders: rises smoothly with the angle around the inner corner.
@@ -116,6 +116,8 @@ function winderHeight(W, x, z, margin) {
     a = dx * W.m[0] + dz * W.m[1],
     b = dx * W.u[0] + dz * W.u[1];
   if (a < -margin || b < -2 || a > W.w + 2 || b > W.w + 2) return null;
+  if (W.shape == "tri" && a + b > W.w + 2) return null;
   const th = Math.atan2(Math.max(0, b), Math.max(0.001, a));
-  return W.base + W.ri * (W.n + 1) * Math.min(1, th / (Math.PI / 2));
+  // exitUp: the winders end one riser below a floor (stair top); otherwise they feed the next flight
+  return W.base + W.ri * (W.n + (W.exitUp ? 1 : 0)) * Math.min(1, th / (Math.PI / 2));
 }

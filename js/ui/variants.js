@@ -3,7 +3,10 @@
 // The chosen option's proposed items are added to the concept's base items, and its "set" values
 // (e.g. stair: "bars") are copied onto the concept before the model is built.
 function applyVariants(D) {
-  if (!D.variants) return;
+  if (!D.variants) {
+    D.winder = D.winderSpec || null;
+    return;
+  }
   if (!D._base) D._base = { lay: D.lay.slice(), set: {}, furn: JSON.stringify(D.furn) };
   D.lay = D._base.lay.slice();
   D.furn = JSON.parse(D._base.furn);
@@ -16,7 +19,7 @@ function applyVariants(D) {
       D[k] = v;
     }
   });
-  D.winder = null;
+  D.winder = D.winderSpec || null;
   if (D.winderTop) makeWinderTop(D);
 }
 
@@ -61,7 +64,7 @@ function makeWinderTop(D) {
   D.furn = D.furn.filter((g) => !(g[0] == L1 && /rail/i.test(g[9]) && nearExit(g[1], g[2])));
   const gc = P(t0 + w, 0);
   D.furn.push([L1, gc[0], gc[1], w, 6.3, Math.atan2(v[1], v[0]), 0, 91.4, 0, "Rounded edges railing", 0]);
-  D.winder = { L, K, u, m: [-v[0], -v[1]], w, base: e + nS * ri, ri, n: 3 };
+  D.winder = { L, K, u, m: [-v[0], -v[1]], w, base: e + nS * ri, ri, n: 3, exitUp: true };
 }
 
 // Option buttons under the concept description (only for concepts that have variants).
