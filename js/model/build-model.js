@@ -424,7 +424,7 @@ function buildModel(D) {
         m = sd(new THREE.Mesh(prism(q, top - Wd.ri, Wd.ri), BM(tread)));
       G[Wd.L].add(m);
       if (D.stepLights == "nosing") {
-        const a0 = (Math.PI / 2) * (k / Wd.n),
+        const a0 = (Wd.turn || Math.PI / 2) * (k / Wd.n),
           B = winderPt(Wd, a0),
           lt = new THREE.Mesh(
             new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(Wd.K[0], top - Wd.ri - 2, Wd.K[1]), new THREE.Vector3(B[0], top - Wd.ri - 2, B[1])]),

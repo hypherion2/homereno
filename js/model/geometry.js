@@ -94,6 +94,17 @@ function oakScreen(b, grp) {
 
 // Winder helpers. W = { K: inner corner, m: first-edge direction, u: last-edge direction, w: size, n: steps }
 function winderPt(W, th) {
+  if (W.shape == "seg") {
+    // one or more winders filling the triangle K-P1-P2 (turn of W.turn between m and u)
+    const T = W.turn,
+      st = Math.sin(T),
+      d = [(W.m[0] * Math.sin(T - th) + W.u[0] * Math.sin(th)) / st, (W.m[1] * Math.sin(T - th) + W.u[1] * Math.sin(th)) / st],
+      e = [W.P2[0] - W.P1[0], W.P2[1] - W.P1[1]],
+      q = [W.P1[0] - W.K[0], W.P1[1] - W.K[1]],
+      den = d[0] * e[1] - d[1] * e[0],
+      t = (q[0] * e[1] - q[1] * e[0]) / den;
+    return [W.K[0] + d[0] * t, W.K[1] + d[1] * t];
+  }
   const c = Math.cos(th),
     s = Math.sin(th),
     r = W.shape == "tri" ? W.w / (c + s) : W.w / Math.max(c, s);
@@ -101,16 +112,32 @@ function winderPt(W, th) {
 }
 // Quad (8 numbers) for winder k: the inner corner plus its slice of the square's edge.
 function winderWedge(W, k) {
-  const a0 = (Math.PI / 2) * (k / W.n),
-    a1 = (Math.PI / 2) * ((k + 1) / W.n),
+  const T = W.turn || Math.PI / 2,
+    a0 = T * (k / W.n),
+    a1 = T * ((k + 1) / W.n),
     A = winderPt(W, a0),
     B = winderPt(W, a1),
     corner = [W.K[0] + W.w * (W.m[0] + W.u[0]), W.K[1] + W.w * (W.m[1] + W.u[1])],
-    mid = W.shape != "tri" && a0 < Math.PI / 4 && a1 > Math.PI / 4 ? corner : winderPt(W, (a0 + a1) / 2);
+    mid = W.shape != "tri" && W.shape != "seg" && a0 < Math.PI / 4 && a1 > Math.PI / 4 ? corner : winderPt(W, (a0 + a1) / 2);
   return [W.K[0], W.K[1], A[0], A[1], mid[0], mid[1], B[0], B[1]];
 }
 // Walking height on the winders: rises smoothly with the angle around the inner corner.
 function winderHeight(W, x, z, margin) {
+  if (W.shape == "seg") {
+    // inside the triangle K-P1-P2 (signed distances to its three edges, 2 cm tolerance)
+    const sd = (p, q) => {
+        const L = Math.hypot(q[0] - p[0], q[1] - p[1]);
+        return ((q[0] - p[0]) * (z - p[1]) - (q[1] - p[1]) * (x - p[0])) / L;
+      },
+      sg = (((W.P1[0] - W.K[0]) * (W.P2[1] - W.K[1]) - (W.P1[1] - W.K[1]) * (W.P2[0] - W.K[0])) > 0 ? 1 : -1);
+    if (sg * sd(W.K, W.P1) < -2 || sg * sd(W.P1, W.P2) < -2 || sg * sd(W.P2, W.K) < -2) return null;
+    const dx = x - W.K[0],
+      dz = z - W.K[1],
+      a = dx * W.m[0] + dz * W.m[1],
+      c = Math.abs(W.m[0] * dz - W.m[1] * dx),
+      th = Math.max(0, Math.min(W.turn, Math.atan2(c, a)));
+    return W.base + W.ri * (W.n + (W.exitUp ? 1 : 0)) * (th / W.turn);
+  }
   const dx = x - W.K[0],
     dz = z - W.K[1],
     a = dx * W.m[0] + dz * W.m[1],
