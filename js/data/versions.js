@@ -204,7 +204,7 @@ const VERS = [
     "chip": "17 · Compact stair",
     "kind": "Concept 17",
     "headline": "Concept 15 with the stair moved west into a compact L that lands in the kitchen.",
-    "desc": "The diagonal switchback is replaced by a compact L-stair (two 100 cm flights, 6 + 8 steps, 18 cm rise and 26 cm treads) set against the east side of the foyer. The partition between the foyer and the office moves 20 cm west (the office door stays) to make room for the full-width stair. You climb north from the front door, turn right at a square landing and the upper flight runs east along the north wall, arriving in the kitchen about 1.2 m from the island stools. Ground floor: the route from the front door to the laundry and to the hall beside it stays about 1 m wide past the foot of the stair, and the utility room is reached through the existing hall door into a 1 m passage (with a shallow linen cupboard). The old stairwell becomes a storage room off the mud-room vestibule that runs under the top of the stair. Upper floor: the wall between the hall and the kitchen comes out (beam needed), the hall to the west bedrooms widens to about 1.5 m and the old stairwell becomes floor that joins the lounge. Needs an engineer for the beam and the new floor opening; the walls under the top steps are cut down to the stair soffit.",
+    "desc": "The diagonal switchback is replaced by a compact L-stair (two 100 cm flights, 6 + 8 steps, 18 cm rise and 26 cm treads) set against the east side of the foyer. The partition between the foyer and the office moves 20 cm west (the office door stays) to make room for the full-width stair. You climb north from the front door, turn right at a square landing and the upper flight runs east along the north wall, arriving in the kitchen about 1.2 m from the island stools. Ground floor: the route from the front door to the laundry and to the hall beside it stays about 1 m wide past the foot of the stair, and the utility room is reached through the existing hall door into a 1 m passage (with a shallow linen cupboard). The old stairwell becomes a walk-in bulk pantry off the mud-room vestibule, right by the garage entry (about 3 m², about 1.8 m² of it full height): shelving, low shelves and a chest freezer under the top of the stair. Upstairs, a 1.6 m wall of full-height pull-out pantry cabinets faces the island for everyday food. Upper floor: the wall between the hall and the kitchen comes out (beam needed), the hall to the west bedrooms widens to about 1.5 m and the old stairwell becomes floor that joins the lounge. Needs an engineer for the beam and the new floor opening; the walls under the top steps are cut down to the stair soffit.",
     "tags": [
       "Compact L-stair",
       "Lands in the kitchen",
@@ -220,7 +220,7 @@ const VERS = [
     "title": "Corner winder into the kitchen",
     "sub": "Corner winder, walk-in pantry, original kitchen-lounge wall",
     "chip": "18 · Corner winder",
-    "kind": "Concept 18 · Latest",
+    "kind": "Concept 18",
     "headline": "Concept 16 with the stair turning straight into the kitchen on a single corner step.",
     "desc": "The lower flight stays where it is today (8 steps, diagonal from the foyer). Instead of a flat landing, one wedge-shaped step cuts the corner and turns the stair 45° to the east, then 5 straight steps carry you up into the kitchen. The island moves about 1.1 m north toward the dining table (about 1.1 m clear between the table end and the island), so the top of the stair opens onto clear floor. All 14 risers are the same 18.3 cm. The upper flight is short, so it stops before the mud-room to garage passage, which keeps about 2.2 m of headroom; the wall tops under the stair (including the top of the bathroom wall) are cut to the stair soffit. Upper floor: the kitchen-lounge wall is back on its original line with its original doorway, and the double-sided fireplace stays in it, and a square walk-in pantry (about 1.0 × 1.0 m, shelving on two walls) sits between the stair and that wall, with its door in the original hall-kitchen wall line; the corner beside it stays open to the lounge with a glass guard over the stair. The wall between the old hall and the kitchen comes out (beam needed) and the old stair opening is floored over. A single 45° winder is normally allowed in a house stair, but confirm with the stair builder and inspector.",
     "tags": [
@@ -230,6 +230,24 @@ const VERS = [
       "Garage untouched"
     ],
     "btn": "View the stair",
+    "proposed": true,
+    "blinds": true
+  },
+  {
+    "key": "v23",
+    "title": "Open kitchen, pantry wall",
+    "sub": "Concept 14 plan, big island, open to the lounge",
+    "chip": "19 · Open kitchen",
+    "kind": "Concept 19 · Latest",
+    "headline": "Concept 14 reworked: full-size island, pantry wall behind the stools, wider patio door, kitchen open to the lounge.",
+    "desc": "Same layout as concept 13: a one-wall kitchen with a full-size island (2.8 m, four stools), moved about 70 cm north: about 1.0 m from the dining table, which sits about 1.25 m from the patio door, with the kitchen open to the lounge beside the fireplace chase. Storage moves to the hall wall behind the stools: two full-height pantry units and a bar with a beverage fridge, next to the tall cabinets and drawers along the main kitchen wall. The tall pantry beside the fridge and the corner bar are gone. The gas fireplace uses the existing flue on the lounge side, in a squared-off chase (the angled corner walls go, adding about 0.4 m\u00b2 of lounge floor on each side). The patio door becomes a standard 10 ft (305 cm) slider, centred on the dining wall (the opening needs a longer header). The art is cut to a few pieces in one palette, and the kitchen warms up with warm-white uppers, oak open shelves either side of the sink window and oak island end panels. The stainless chimney hood stays, with full-height uppers running right up to it on both sides.",
+    "tags": [
+      "Current stair",
+      "Pantry wall + bar",
+      "10 ft patio door",
+      "Open to the lounge"
+    ],
+    "btn": "View the kitchen",
     "proposed": true,
     "blinds": true
   }
