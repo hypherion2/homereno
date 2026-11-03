@@ -236,17 +236,12 @@ const VERS = [
   {
     "key": "v23",
     "title": "Open kitchen, pantry wall",
-    "sub": "Concept 14 plan, big island, open to the lounge",
+    "sub": "Concept 14 plan, big island, TV nook",
     "chip": "19 · Open kitchen",
     "kind": "Concept 19 · Latest",
     "headline": "Concept 14 reworked: full-size island, pantry wall behind the stools, wider patio door, kitchen open to the lounge.",
-    "desc": "Same layout as concept 13: a one-wall kitchen with a full-size island (2.8 m, four stools), moved about 70 cm north: about 1.0 m from the dining table, which sits about 1.25 m from the patio door, with the kitchen open to the lounge beside the fireplace chase. Storage moves to the hall wall behind the stools: two full-height pantry units and a bar with a beverage fridge, next to the tall cabinets and drawers along the main kitchen wall. The tall pantry beside the fridge and the corner bar are gone. The gas fireplace uses the existing flue on the lounge side, in a squared-off chase (the angled corner walls go, adding about 0.4 m\\u00b2 of lounge floor on each side). The patio door becomes a standard 10 ft (305 cm) slider, centred on the dining wall (the opening needs a longer header). The art is cut to a few pieces in one palette, and the kitchen warms up with warm-white uppers, oak open shelves either side of the sink window and oak island end panels. The stainless chimney hood stays, with full-height uppers running right up to it on both sides. Lounge: the TV moves to the west wall (75 in on a low console) and a big sofa with a chaise faces it straight on from about 3.3 m, open on the north so the walk from the stairs to the kitchen stays about 1 m wide; the alcove gets a queen Murphy bed (try it open or folded up below).",
-    "tags": [
-      "Current stair",
-      "Pantry wall + bar",
-      "10 ft patio door",
-      "Open to the lounge"
-    ],
+    "desc": "Concept 14's plan with the current stair. Kitchen: full-size island (2.8 m, four stools) about 1.0 m from the dining table, which sits about 1.25 m from a standard 10 ft patio slider centred on the dining wall; two full-height pantry units and a bar with a beverage fridge on the hall wall behind the stools. The fireplace and its chase are removed and the kitchen-lounge wall is extended from the outside wall, leaving a 1.2 m opening at the stair end, so the way from the stairs to the kitchen crosses only the west end of the lounge. The east end becomes a TV nook: a 75 in TV in the alcove and a big sofa with a chaise facing it straight on from about 2.9 m. The west end, where the fireplace was, is a sitting corner with a window bench. Ground floor: the under-stair storage gets 1.2 m double doors from the garage (fire-rated, self-closing) as well as its foyer door.",
+    "tags": ["Current stair", "Pantry wall + bar", "TV nook", "10 ft patio door"],
     "btn": "View the kitchen",
     "proposed": true,
     "blinds": true
