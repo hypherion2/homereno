@@ -239,7 +239,7 @@ const VERS = [
     "sub": "Concept 14 plan, big island, TV nook",
     "chip": "19 · Open kitchen",
     "kind": "Concept 19 · Latest",
-    "headline": "Concept 14 reworked: full-size island, pantry wall behind the stools, wider patio door, kitchen open to the lounge.",
+    "headline": "Concept 14 reworked: full-size island, pantry wall behind the stools, wider patio door, and a TV nook where the fireplace wall was.",
     "desc": "Concept 14's plan with the current stair. Kitchen: full-size island (2.8 m, four stools) about 1.0 m from the dining table, which sits about 1.25 m from a standard 10 ft patio slider centred on the dining wall; two full-height pantry units and a bar with a beverage fridge on the hall wall behind the stools. The fireplace and its chase are removed and the kitchen-lounge wall is extended from the outside wall, leaving a 1.2 m opening at the stair end, so the way from the stairs to the kitchen crosses only the west end of the lounge. The east end becomes a TV nook: a 75 in TV in the alcove and a big sofa with a chaise facing it straight on from about 2.9 m. The west end, where the fireplace was, is a sitting corner with a window bench. Ground floor: the under-stair storage gets 1.2 m double doors from the garage (fire-rated, self-closing) as well as its foyer door.",
     "tags": ["Current stair", "Pantry wall + bar", "TV nook", "10 ft patio door"],
     "btn": "View the kitchen",
