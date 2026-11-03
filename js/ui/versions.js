@@ -60,7 +60,9 @@ function setVersion(i, keep) {
     v.desc +
     '</p><div class="tags">' +
     v.tags.map((t) => "<span>" + t + "</span>").join("") +
-    '</div><button class="btn" id="zoomc">' +
+    "</div>" +
+    costHtml(v.key) +
+    '<button class="btn" id="zoomc">' +
     v.btn +
     ' ↗</button> <button class="btn" id="copyl" style="background:transparent;color:inherit;border:1px solid currentColor;opacity:.8">Copy link</button>' +
     (SH3D_KEYS.has(v.key)
@@ -141,3 +143,18 @@ function renderVList() {
   });
 }
 renderVList();
+
+// Rough cost estimate for a concept (js/data/costs.js), shown under the tags with a breakdown.
+function costHtml(key) {
+  const c = typeof COSTS != "undefined" && COSTS[key];
+  if (!c) return "";
+  const k = (n) => "$" + (n >= 1000 ? Math.round(n / 1000) + "k" : n);
+  if (!c.high) return '<div class="cost"><b>Rough cost:</b> ' + (c.label || "baseline, no work") + "</div>";
+  const row = (i) => "<tr><td>" + i.item + "</td><td>" + k(i.low) + "–" + k(i.high) + "</td></tr>";
+  return (
+    '<details class="cost"><summary><b>Rough cost:</b> ' + k(c.low) + "–" + k(c.high) + " CAD <span>details</span></summary>" +
+    "<table>" + c.items.map(row).join("") + "</table>" +
+    (c.optional && c.optional.length ? '<div class="fine">Optional, not in the total:</div><table>' + c.optional.map(row).join("") + "</table>" : "") +
+    '<div class="fine">' + (c.notes || "") + " Metro Vancouver 2026 ballpark for planning only; get contractor quotes.</div></details>"
+  );
+}

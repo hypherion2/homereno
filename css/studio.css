@@ -931,3 +931,10 @@ body.walk #cross {
   flex: 1 1 auto;
   white-space: nowrap;
 }
+
+.cost { margin: 6px 0 10px; font-size: 12px; }
+.cost summary { cursor: pointer; list-style: none; }
+.cost summary span { opacity: 0.6; font-size: 11px; margin-left: 4px; text-decoration: underline; }
+.cost table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 11.5px; }
+.cost td { padding: 2px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.cost td:last-child { text-align: right; white-space: nowrap; padding-left: 8px; }
