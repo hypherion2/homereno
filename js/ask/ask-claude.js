@@ -275,7 +275,8 @@ function renderVList() {
       }
       setVersion(i);
     };
-    vl.appendChild(b);
+    b.dataset.i = i;
+    vlistSlot(vl, v).appendChild(b);
   });
 }
 function toast(t, ms) {

@@ -1,5 +1,7 @@
 // Rough cost estimates per concept (CAD, Metro Vancouver 2026, mid-range, incl. 15% contingency).
-// Produced by one pricing pass per concept from a shared set of unit costs; planning only.
+// One pricing pass per concept from shared unit costs; planning only.
+// cat: kitchen (cabinets/counters, discountable), finish (flooring/paint/lights, DIY-able), elec (DIY-able in part),
+// walls (partition removal and patching, some DIY), pro (structural, stair, fireplace, doors, appliances), cont.
 const COSTS = {
  "orig": {
   "key": "orig",
@@ -15,47 +17,56 @@ const COSTS = {
    {
     "item": "Remove 4.8 m dividing wall: flush beam, posts to footing, engineer",
     "low": 12000,
-    "high": 25000
+    "high": 25000,
+    "cat": "pro"
    },
    {
     "item": "Remove corner fireplace and chase (cap gas, remove flue) and stair-landing wall; reroute wiring/ducts",
     "low": 4500,
-    "high": 12000
+    "high": 12000,
+    "cat": "pro"
    },
    {
     "item": "Rebuild stair: upper flight turned to land in kitchen, new floor opening, floor over old opening",
     "low": 15000,
-    "high": 35000
+    "high": 35000,
+    "cat": "pro"
    },
    {
     "item": "Glass guards with metal rail along new opening (~6 m)",
     "low": 3000,
-    "high": 6000
+    "high": 6000,
+    "cat": "pro"
    },
    {
     "item": "Kitchen tie-in where stair arrives (cabinet adjustments, patching)",
     "low": 2000,
-    "high": 6000
+    "high": 6000,
+    "cat": "pro"
    },
    {
     "item": "Continuous engineered oak flooring across opened area (~800 sq ft)",
     "low": 8000,
-    "high": 13000
+    "high": 13000,
+    "cat": "finish"
    },
    {
     "item": "Paint upper floor and ~8 new pot lights",
     "low": 7000,
-    "high": 12000
+    "high": 12000,
+    "cat": "finish"
    },
    {
     "item": "Permits, stair designer, structural review",
     "low": 2500,
-    "high": 6000
+    "high": 6000,
+    "cat": "pro"
    },
    {
     "item": "Contingency (15%)",
     "low": 8000,
-    "high": 17500
+    "high": 17500,
+    "cat": "cont"
    }
   ],
   "optional": [],
@@ -69,47 +80,56 @@ const COSTS = {
    {
     "item": "Remove the 4.8 m dividing wall with a flush beam and posts (assumed bearing, engineer included)",
     "low": 10000,
-    "high": 25000
+    "high": 25000,
+    "cat": "pro"
    },
    {
     "item": "Remove the corner fireplace and chase (cap gas, deal with flue, patch)",
     "low": 2000,
-    "high": 6000
+    "high": 6000,
+    "cat": "pro"
    },
    {
     "item": "Rebuild the stair so the upper flight lands in the kitchen, remove the stair-landing wall, floor over the old opening",
     "low": 17000,
-    "high": 39000
+    "high": 39000,
+    "cat": "pro"
    },
    {
     "item": "Glass guards with metal rail along the new stair opening (about 4-6 m)",
     "low": 2000,
-    "high": 6000
+    "high": 6000,
+    "cat": "pro"
    },
    {
     "item": "Engineered oak flooring across the opened-up living area and over the old stair opening",
     "low": 6500,
-    "high": 13000
+    "high": 13000,
+    "cat": "finish"
    },
    {
     "item": "Paint the whole upper floor",
     "low": 5000,
-    "high": 9000
+    "high": 9000,
+    "cat": "finish"
    },
    {
     "item": "Electrical: move switches and outlets out of removed walls, TV wall power and cable conduit, about 6 pot lights",
     "low": 3000,
-    "high": 6500
+    "high": 6500,
+    "cat": "finish"
    },
    {
     "item": "Stair designer, permits and inspections",
     "low": 3000,
-    "high": 7000
+    "high": 7000,
+    "cat": "pro"
    },
    {
     "item": "Contingency (15%)",
     "low": 7500,
-    "high": 16500
+    "high": 16500,
+    "cat": "cont"
    }
   ],
   "optional": [
@@ -134,47 +154,56 @@ const COSTS = {
    {
     "item": "Remove 4.8 m dividing wall (beam, posts, engineer) and stair-landing wall",
     "low": 10000,
-    "high": 29000
+    "high": 29000,
+    "cat": "pro"
    },
    {
     "item": "Remove corner fireplace and chase (cap gas, flue, patch)",
     "low": 2000,
-    "high": 6000
+    "high": 6000,
+    "cat": "pro"
    },
    {
     "item": "Relocate upper stair flight to land in kitchen, floor over old opening, glass guards, stair designer",
     "low": 17500,
-    "high": 40000
+    "high": 40000,
+    "cat": "pro"
    },
    {
     "item": "Kitchen remodel: about 7 m base cabinets, uppers, oven/pantry tower, 2.8 m island, quartz, backsplash, sink at existing window plumbing, lighting",
     "low": 40000,
-    "high": 75000
+    "high": 75000,
+    "cat": "kitchen"
    },
    {
     "item": "Appliance package: induction range, hood, fridge, dishwasher, wall oven",
     "low": 8000,
-    "high": 18000
+    "high": 18000,
+    "cat": "pro"
    },
    {
     "item": "New electrical in the floor for the island",
     "low": 3000,
-    "high": 6000
+    "high": 6000,
+    "cat": "elec"
    },
    {
     "item": "Second pantry tower plus bar with beverage fridge by the patio doors",
     "low": 4000,
-    "high": 8000
+    "high": 8000,
+    "cat": "kitchen"
    },
    {
     "item": "Engineered oak flooring across the opened area, paint upper floor, pot lights, TV wall power",
     "low": 15000,
-    "high": 28500
+    "high": 28500,
+    "cat": "finish"
    },
    {
     "item": "Contingency (15%)",
     "low": 15000,
-    "high": 31500
+    "high": 31500,
+    "cat": "cont"
    }
   ],
   "optional": [
@@ -194,47 +223,56 @@ const COSTS = {
    {
     "item": "Remove non-bearing partitions (4.8 m kitchen/living wall and small room at stair top), patch",
     "low": 5000,
-    "high": 12000
+    "high": 12000,
+    "cat": "walls"
    },
    {
     "item": "Remove corner gas fireplace and chase (cap gas, abandon flue, patch)",
     "low": 2000,
-    "high": 6000
+    "high": 6000,
+    "cat": "pro"
    },
    {
     "item": "Full kitchen remodel, mid-range (about 7 m base cabinets, uppers, oven tower, quartz, sink at existing window plumbing, lighting)",
     "low": 40000,
-    "high": 75000
+    "high": 75000,
+    "cat": "kitchen"
    },
    {
     "item": "Second pantry tower and beverage bar with fridge by patio doors",
     "low": 5500,
-    "high": 11000
+    "high": 11000,
+    "cat": "kitchen"
    },
    {
     "item": "Appliance package (induction range, hood, fridge, dishwasher)",
     "low": 8000,
-    "high": 18000
+    "high": 18000,
+    "cat": "pro"
    },
    {
     "item": "Island 2.8 m: new electrical through the floor (no plumbing)",
     "low": 3000,
-    "high": 6000
+    "high": 6000,
+    "cat": "elec"
    },
    {
     "item": "Engineered oak flooring across the opened living area (about 700 sq ft)",
     "low": 7000,
-    "high": 11000
+    "high": 11000,
+    "cat": "finish"
    },
    {
     "item": "Paint upper floor, about 8 pot lights, power and data for TV on alcove wall",
     "low": 7500,
-    "high": 13000
+    "high": 13000,
+    "cat": "finish"
    },
    {
     "item": "Contingency (15%)",
     "low": 11500,
-    "high": 23000
+    "high": 23000,
+    "cat": "cont"
    }
   ],
   "optional": [
@@ -254,47 +292,56 @@ const COSTS = {
    {
     "item": "Full kitchen remodel: about 7 m of base cabinets, uppers, oak oven tower, quartz, backsplash, sink at the existing window plumbing, plus 2 tall pantry towers",
     "low": 43000,
-    "high": 81000
+    "high": 81000,
+    "cat": "kitchen"
    },
    {
     "item": "Appliance package (induction range, hood, fridge, dishwasher)",
     "low": 8000,
-    "high": 18000
+    "high": 18000,
+    "cat": "pro"
    },
    {
     "item": "Island power in the floor, plus a bar with a beverage fridge by the patio doors",
     "low": 5500,
-    "high": 11000
+    "high": 11000,
+    "cat": "elec"
    },
    {
     "item": "Remove the non-bearing partitions at the stair-top room; rebuild the kitchen-lounge wall with a wide cased opening",
     "low": 6000,
-    "high": 14000
+    "high": 14000,
+    "cat": "walls"
    },
    {
     "item": "Remove the corner gas fireplace (cap gas, deal with flue, patch)",
     "low": 2000,
-    "high": 6000
+    "high": 6000,
+    "cat": "pro"
    },
    {
     "item": "Engineered oak flooring across kitchen, dining and patched wall lines (about 550 sq ft)",
     "low": 6000,
-    "high": 10000
+    "high": 10000,
+    "cat": "finish"
    },
    {
     "item": "Paint the upper floor, about 10 pot lights, TV wall power and mount in the alcove",
     "low": 8000,
-    "high": 14000
+    "high": 14000,
+    "cat": "finish"
    },
    {
     "item": "Permits (non-structural renovation, electrical, gas)",
     "low": 1000,
-    "high": 2500
+    "high": 2500,
+    "cat": "pro"
    },
    {
     "item": "Contingency (15%)",
     "low": 12000,
-    "high": 23500
+    "high": 23500,
+    "cat": "cont"
    }
   ],
   "optional": [
@@ -314,47 +361,56 @@ const COSTS = {
    {
     "item": "Remove non-bearing partitions (kitchen-living wall, small room at stair top), patch",
     "low": 3000,
-    "high": 8000
+    "high": 8000,
+    "cat": "walls"
    },
    {
     "item": "Remove corner gas fireplace and chase (cap gas, abandon flue, patch)",
     "low": 2000,
-    "high": 6000
+    "high": 6000,
+    "cat": "pro"
    },
    {
     "item": "Full kitchen remodel: ~7 m base cabinets, uppers, oven tower and 2 pantry towers, 2.8 m island, quartz, backsplash, sink at window, lighting",
     "low": 50000,
-    "high": 75000
+    "high": 75000,
+    "cat": "kitchen"
    },
    {
     "item": "Appliance package (induction range, hood, fridge, dishwasher, wall oven)",
     "low": 8000,
-    "high": 18000
+    "high": 18000,
+    "cat": "pro"
    },
    {
     "item": "Island floor electrical plus bar with beverage fridge by patio doors",
     "low": 5500,
-    "high": 11000
+    "high": 11000,
+    "cat": "elec"
    },
    {
     "item": "Engineered oak flooring across the open great room (~550 sq ft)",
     "low": 5500,
-    "high": 9000
+    "high": 9000,
+    "cat": "finish"
    },
    {
     "item": "Paint upper floor and ~10 pot lights",
     "low": 7500,
-    "high": 13000
+    "high": 13000,
+    "cat": "finish"
    },
    {
     "item": "Built-in media wall: floating console, shelving both sides, TV mount, power/data",
     "low": 5000,
-    "high": 12000
+    "high": 12000,
+    "cat": "pro"
    },
    {
     "item": "Contingency (15%)",
     "low": 13000,
-    "high": 23000
+    "high": 23000,
+    "cat": "cont"
    }
   ],
   "optional": [
@@ -374,42 +430,50 @@ const COSTS = {
    {
     "item": "Take out the non-bearing partitions and the old corner fireplace; rebuild the kitchen-lounge wall with a wide cased opening",
     "low": 7000,
-    "high": 18000
+    "high": 18000,
+    "cat": "walls"
    },
    {
     "item": "Zoned kitchen remodel: cabinets incl. coffee station, dry-pantry run with appliance garage, quartz, backsplash, lighting",
     "low": 50000,
-    "high": 80000
+    "high": 80000,
+    "cat": "kitchen"
    },
    {
     "item": "Tall pantry and oven tower units",
     "low": 3000,
-    "high": 6000
+    "high": 6000,
+    "cat": "kitchen"
    },
    {
     "item": "Appliance package incl. wall oven",
     "low": 9000,
-    "high": 20000
+    "high": 20000,
+    "cat": "pro"
    },
    {
     "item": "Island prep sink with plumbing, pull-out waste and floor electrical",
     "low": 5000,
-    "high": 10000
+    "high": 10000,
+    "cat": "pro"
    },
    {
     "item": "New linear gas fireplace in the kitchen-lounge wall (framed chase, vent, gas line, surround)",
     "low": 12000,
-    "high": 22000
+    "high": 22000,
+    "cat": "pro"
    },
    {
     "item": "Engineered oak flooring in open areas, paint upper floor, pot lights, TV power/blocking",
     "low": 14000,
-    "high": 24000
+    "high": 24000,
+    "cat": "finish"
    },
    {
     "item": "Contingency (15%)",
     "low": 15000,
-    "high": 27000
+    "high": 27000,
+    "cat": "cont"
    }
   ],
   "optional": [
@@ -429,47 +493,56 @@ const COSTS = {
    {
     "item": "Remove non-bearing partitions and the old corner fireplace/chase (cap gas, flue, patch)",
     "low": 5000,
-    "high": 14000
+    "high": 14000,
+    "cat": "walls"
    },
    {
     "item": "Rebuild kitchen-lounge wall with wide cased opening",
     "low": 3000,
-    "high": 7000
+    "high": 7000,
+    "cat": "walls"
    },
    {
     "item": "Kitchen remodel: one-wall run, slim island with oak end panels, warm-white full-height uppers, oak open shelves, pantry/oven tower, dry-pantry run with appliance garage",
     "low": 49000,
-    "high": 84000
+    "high": 84000,
+    "cat": "kitchen"
    },
    {
     "item": "Appliance package (induction range, chimney hood, fridge, dishwasher)",
     "low": 8000,
-    "high": 18000
+    "high": 18000,
+    "cat": "pro"
    },
    {
     "item": "Island services: prep sink plumbing and floor electrical",
     "low": 5000,
-    "high": 10000
+    "high": 10000,
+    "cat": "pro"
    },
    {
     "item": "New double-sided gas fireplace with chase, venting, gas line and surrounds",
     "low": 12000,
-    "high": 25000
+    "high": 25000,
+    "cat": "pro"
    },
    {
     "item": "Engineered oak flooring, paint upper floor, pot lights",
     "low": 15500,
-    "high": 26000
+    "high": 26000,
+    "cat": "finish"
    },
    {
     "item": "Under-stair closet fit-out and TV nook wall mount/wiring",
     "low": 1500,
-    "high": 4500
+    "high": 4500,
+    "cat": "pro"
    },
    {
     "item": "Contingency (15%)",
     "low": 15000,
-    "high": 28500
+    "high": 28500,
+    "cat": "cont"
    }
   ],
   "optional": [
@@ -489,47 +562,56 @@ const COSTS = {
    {
     "item": "Remove non-bearing partitions and old corner fireplace/chase, rebuild kitchen-lounge wall with wide cased opening",
     "low": 9000,
-    "high": 22000
+    "high": 22000,
+    "cat": "walls"
    },
    {
     "item": "Kitchen remodel: greige lowers, warm-white uppers to the hood, oak island, open shelves, pantry/oven tower, dry-pantry run, quartz, under-cabinet lighting",
     "low": 45000,
-    "high": 75000
+    "high": 75000,
+    "cat": "kitchen"
    },
    {
     "item": "Island prep sink plumbing and floor electrical",
     "low": 5000,
-    "high": 10000
+    "high": 10000,
+    "cat": "pro"
    },
    {
     "item": "Appliance package (induction range, chimney hood, fridge, dishwasher)",
     "low": 8000,
-    "high": 18000
+    "high": 18000,
+    "cat": "pro"
    },
    {
     "item": "Double-sided gas fireplace with chase, venting, gas line, natural-stone surrounds both faces",
     "low": 15000,
-    "high": 33000
+    "high": 33000,
+    "cat": "pro"
    },
    {
     "item": "Oak media wall around TV in the nook",
     "low": 4000,
-    "high": 10000
+    "high": 10000,
+    "cat": "pro"
    },
    {
     "item": "Stair feature: new guard, step lights, under-stair closet fit-out",
     "low": 4000,
-    "high": 11500
+    "high": 11500,
+    "cat": "pro"
    },
    {
     "item": "Engineered oak flooring, warm off-white paint, pot lights and linear dining pendant (upper floor)",
     "low": 17000,
-    "high": 29500
+    "high": 29500,
+    "cat": "finish"
    },
    {
     "item": "Contingency (15%)",
     "low": 16000,
-    "high": 31500
+    "high": 31500,
+    "cat": "cont"
    }
   ],
   "optional": [
@@ -554,47 +636,56 @@ const COSTS = {
    {
     "item": "Remove partitions and old corner fireplace (cap gas, flue), rebuild kitchen-lounge wall with cased opening",
     "low": 7000,
-    "high": 17000
+    "high": 17000,
+    "cat": "walls"
    },
    {
     "item": "Remove bearing hall-kitchen wall: engineered flush beam, posts to footing, engineer, permits",
     "low": 10000,
-    "high": 25000
+    "high": 25000,
+    "cat": "pro"
    },
    {
     "item": "Stair rebuild with three winders, new floor opening, floor over old stairwell, glass guards, under-stair closet off foyer",
     "low": 20000,
-    "high": 42000
+    "high": 42000,
+    "cat": "pro"
    },
    {
     "item": "Full kitchen remodel in zones: cabinets, pantry/oven towers, quartz, prep-sink island with floor electrical, oak accents",
     "low": 55000,
-    "high": 85000
+    "high": 85000,
+    "cat": "kitchen"
    },
    {
     "item": "Appliance package plus beverage fridge bar",
     "low": 10500,
-    "high": 23000
+    "high": 23000,
+    "cat": "pro"
    },
    {
     "item": "New single-sided gas fireplace on lounge west wall: chase, venting, gas line, stone surround",
     "low": 12000,
-    "high": 22000
+    "high": 22000,
+    "cat": "pro"
    },
    {
     "item": "Oak media wall built-in around TV nook",
     "low": 4000,
-    "high": 10000
+    "high": 10000,
+    "cat": "pro"
    },
    {
     "item": "Engineered oak flooring, paint upper floor, pot lights, under-cabinet and step lighting",
     "low": 18000,
-    "high": 30000
+    "high": 30000,
+    "cat": "finish"
    },
    {
     "item": "Contingency (15%)",
     "low": 20500,
-    "high": 38000
+    "high": 38000,
+    "cat": "cont"
    }
   ],
   "optional": [
@@ -614,47 +705,56 @@ const COSTS = {
    {
     "item": "Kitchen remodel: cabinets, quartz, island with prep sink and floor power, 1.6 m pull-out pantry wall, oak accents, under-cabinet lights",
     "low": 50000,
-    "high": 90000
+    "high": 90000,
+    "cat": "kitchen"
    },
    {
     "item": "Appliance package plus bar with beverage fridge",
     "low": 10500,
-    "high": 23000
+    "high": 23000,
+    "cat": "pro"
    },
    {
     "item": "Upper-floor walls: remove partitions and old corner fireplace, rebuild kitchen-lounge wall with cased opening, widen west hall",
     "low": 10000,
-    "high": 30000
+    "high": 30000,
+    "cat": "walls"
    },
    {
     "item": "Remove bearing hall-kitchen wall: engineered beam, posts to footing, engineer and permits",
     "low": 8000,
-    "high": 25000
+    "high": 25000,
+    "cat": "pro"
    },
    {
     "item": "Double-sided gas fireplace with chase, venting, gas line and natural-stone surrounds",
     "low": 15000,
-    "high": 31000
+    "high": 31000,
+    "cat": "pro"
    },
    {
     "item": "New compact L-stair: new floor opening, floor over old stairwell, walls cut to soffit, glass guard, step lights",
     "low": 18000,
-    "high": 41000
+    "high": 41000,
+    "cat": "pro"
    },
    {
     "item": "Ground floor: move foyer-office wall 20 cm, walk-in bulk pantry fit-out, utility passage with linen cupboard",
     "low": 6000,
-    "high": 14000
+    "high": 14000,
+    "cat": "pro"
    },
    {
     "item": "Finishes: engineered oak flooring (~800 sq ft), paint upper floor, pot lights and pendant, oak media wall",
     "low": 19000,
-    "high": 34000
+    "high": 34000,
+    "cat": "finish"
    },
    {
     "item": "Contingency (15%)",
     "low": 20500,
-    "high": 43000
+    "high": 43000,
+    "cat": "cont"
    }
   ],
   "optional": [
@@ -679,47 +779,56 @@ const COSTS = {
    {
     "item": "Kitchen remodel: cabinets, quartz, island moved north with floor power and prep sink, pantry/oven tower, beverage bar",
     "low": 50000,
-    "high": 90000
+    "high": 90000,
+    "cat": "kitchen"
    },
    {
     "item": "Appliance package (induction range, hood, fridge, dishwasher)",
     "low": 8000,
-    "high": 18000
+    "high": 18000,
+    "cat": "pro"
    },
    {
     "item": "Stair rework: new 45-degree winder and 5-step upper flight into kitchen, floor over old opening, wall tops cut to soffit, glass guard, under-stair closet",
     "low": 18000,
-    "high": 41000
+    "high": 41000,
+    "cat": "pro"
    },
    {
     "item": "Remove bearing hall-kitchen wall with engineered beam, posts, permits; remove small stair-top partitions",
     "low": 10000,
-    "high": 29000
+    "high": 29000,
+    "cat": "pro"
    },
    {
     "item": "Walk-in pantry 1.0 x 1.0 m: framing, door, shelving on two walls",
     "low": 3000,
-    "high": 7000
+    "high": 7000,
+    "cat": "pro"
    },
    {
     "item": "Double-sided gas fireplace replacing corner unit in kitchen-lounge wall, venting, natural-stone surrounds",
     "low": 14000,
-    "high": 28000
+    "high": 28000,
+    "cat": "pro"
    },
    {
     "item": "Oak media wall around TV in alcove nook",
     "low": 4000,
-    "high": 10000
+    "high": 10000,
+    "cat": "pro"
    },
    {
     "item": "Upper-floor engineered oak flooring, paint, pot lights, pendant, under-cabinet and step lights",
     "low": 16000,
-    "high": 30000
+    "high": 30000,
+    "cat": "finish"
    },
    {
     "item": "Contingency (15%)",
     "low": 18500,
-    "high": 38000
+    "high": 38000,
+    "cat": "cont"
    }
   ],
   "optional": [
@@ -739,47 +848,56 @@ const COSTS = {
    {
     "item": "Full kitchen remodel (cabinets, quartz, backsplash, sink, lighting) with 2.8 m island and floor electrical",
     "low": 43000,
-    "high": 81000
+    "high": 81000,
+    "cat": "kitchen"
    },
    {
     "item": "Appliance package (range, hood, fridge, dishwasher)",
     "low": 8000,
-    "high": 18000
+    "high": 18000,
+    "cat": "pro"
    },
    {
     "item": "Two full-height pantry units plus bar with beverage fridge",
     "low": 5500,
-    "high": 11000
+    "high": 11000,
+    "cat": "kitchen"
    },
    {
     "item": "Remove fireplace and chase, take out partitions, extend kitchen-lounge wall, new 107 cm half wall with oak cap",
     "low": 6500,
-    "high": 17000
+    "high": 17000,
+    "cat": "walls"
    },
    {
     "item": "Replace two likely-bearing stairwell walls (1.6 m and 1.2 m) with beams, posts, engineer, permit and glass railings with black top rail",
     "low": 17500,
-    "high": 43000
+    "high": 43000,
+    "cat": "pro"
    },
    {
     "item": "10 ft patio slider replacing existing door, incl. longer header",
     "low": 6000,
-    "high": 12000
+    "high": 12000,
+    "cat": "pro"
    },
    {
     "item": "1.2 m fire-rated self-closing double doors from garage to under-stair storage, plus storage fit-out",
     "low": 4000,
-    "high": 9000
+    "high": 9000,
+    "cat": "pro"
    },
    {
     "item": "Flooring, paint, pot lights and window bench in the open area",
     "low": 14000,
-    "high": 24500
+    "high": 24500,
+    "cat": "finish"
    },
    {
     "item": "Contingency (15%)",
     "low": 15500,
-    "high": 32500
+    "high": 32500,
+    "cat": "cont"
    }
   ],
   "optional": [

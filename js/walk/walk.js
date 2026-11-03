@@ -140,13 +140,46 @@ function prepWalk() {
   D.rooms.forEach((r) => {
     if (nm0(D, r[0]) != "Level 1" || r[4] < 0) return;
     const sh = new THREE.Shape(r[1].map((p) => new THREE.Vector2(p[0], p[1])));
+    const V = D.vault;
+    if (V && V.L == r[0] && pipW((V.x0 + V.x1) / 2, (V.y0 + V.y1) / 2, r[1].flat()))
+      sh.holes.push(new THREE.Path([[V.x0, V.y0], [V.x1, V.y0], [V.x1, V.y1], [V.x0, V.y1]].map((p) => new THREE.Vector2(p[0], p[1]))));
     const m = new THREE.Mesh(new THREE.ShapeGeometry(sh), cm);
     m.rotation.x = Math.PI / 2;
     m.position.y = el[r[0]] + 243;
     S.root.add(m);
     W.ceil.push(m);
   });
+  if (D.vault) {
+    const m = vaultMesh(D.vault, el[D.vault.L], new THREE.MeshLambertMaterial({ color: 0xf7f5f1, side: 2 }));
+    const e = new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry, 8), new THREE.LineBasicMaterial({ color: 0x9a958c }));
+    S.root.add(m, e);
+    W.ceil.push(m, e);
+  }
   if (typeof realRefresh == "function") realRefresh();
+}
+// Raised (hipped) lounge ceiling plus the bulkhead faces dropping to the flat 243 cm ceiling.
+// Two planes: one rising from the window wall (y1), one from the x0 side; they meet on a hip line.
+function vaultMesh(v, base, mat) {
+  const P = [], c0 = 243, H = (x, y) => vaultH(v, x, y);
+  const xh = Math.min(v.x1, v.x0 + (v.y1 - v.y0)); // where the hip reaches the y0 edge
+  const pt = (x, y) => P.push(x, base + H(x, y), y);
+  const tri = (a, b, c) => [a, b, c].forEach((q) => pt(...q));
+  const wall = (a, b) => {
+    // vertical face from the flat ceiling up to the vault along segment a-b
+    const ha = H(...a), hb = H(...b);
+    [[a, c0], [b, c0], [b, hb], [a, c0], [b, hb], [a, ha]].forEach(([q, h]) => P.push(q[0], base + h, q[1]));
+  };
+  tri([v.x0, v.y1], [v.x1, v.y1], [v.x1, v.y0]);
+  tri([v.x0, v.y1], [v.x1, v.y0], [xh, v.y0]);
+  tri([v.x0, v.y1], [xh, v.y0], [v.x0, v.y0]);
+  wall([v.x1, v.y1], [v.x1, v.y0]);
+  wall([v.x0, v.y0], [xh, v.y0]);
+  if (xh < v.x1) wall([xh, v.y0], [v.x1, v.y0]);
+  wall([v.x0, v.y1], [v.x0, v.y0]);
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(P, 3));
+  g.computeVertexNormals();
+  return new THREE.Mesh(g, mat);
 }
 function nm0(D, id) {
   const l = D.levels.find((l) => l[0] == id);
@@ -383,7 +416,9 @@ function exitWalk() {
   $("whint").style.display = "none";
 }
 function walkVersion(d) {
-  const n = (S.ver + d + VERS.length) % VERS.length;
+  let n = S.ver;
+  do n = (n + d + VERS.length) % VERS.length;
+  while (VERS[n].archived && n != S.ver);
   setVersion(n);
 }
 function revalidate() {
