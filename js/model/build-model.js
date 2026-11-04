@@ -510,5 +510,6 @@ function buildModel(D) {
     });
     S.focus = { x: (a + b) / 2, z: (c + d) / 2, r: Math.max(b - a, d - c) };
   } else S.focus = { x: 880, z: 760, r: 600 };
+  if (D.focus) S.focus = Object.assign({}, D.focus);
   applyAll();
 }
