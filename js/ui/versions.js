@@ -104,8 +104,10 @@ function setVersion(i, keep) {
         verSlug(v) +
         '.sh3d" title="Sweet Home 3D file (5.3 or later). Walls, rooms, doors, windows and existing furniture use the original models; proposed items are coloured blocks." style="background:transparent;color:inherit;border:1px solid currentColor;opacity:.8;text-decoration:none;display:inline-block;text-align:center;box-sizing:border-box">Download .sh3d</a>'
       : "") +
+    galleryHtml(v) +
     scopeHtml(v);
   costWire(v.key);
+  galleryWire(v);
   $("zoomc").onclick = () => fly(...focusCam());
   $("copyl").onclick = () => {
     const u = location.href.split("#")[0] + "#" + verSlug(v),
@@ -138,6 +140,52 @@ function setVersion(i, keep) {
     if (location.hash !== h) history.replaceState(null, "", h);
   } catch (e) {}
   if (W.on) revalidate();
+}
+// Mood images (AI renders) for a concept: thumbnails that open a full-screen viewer.
+function galleryHtml(v) {
+  if (!v.gallery || !v.gallery.length) return "";
+  return (
+    '<div class="gal"><div class="galh">Mood images <span>AI renders, not to scale</span></div><div class="galt">' +
+    v.gallery.map((g, i) => '<button data-g="' + i + '" title="Open"><img src="' + (g.thumb || g.src) + '" alt="" loading="lazy"></button>').join("") +
+    "</div></div>"
+  );
+}
+function galleryWire(v) {
+  document.querySelectorAll("#concept .galt button").forEach((b) => (b.onclick = () => galleryOpen(v, +b.dataset.g)));
+}
+function galleryOpen(v, i) {
+  let ov = $("galov");
+  if (!ov) {
+    ov = document.createElement("div");
+    ov.id = "galov";
+    ov.innerHTML = '<button class="gx" title="Close">✕</button><button class="gp" title="Previous">‹</button><figure><img><figcaption></figcaption></figure><button class="gn" title="Next">›</button>';
+    document.body.appendChild(ov);
+  }
+  const G = v.gallery, show = (k) => {
+    i = (k + G.length) % G.length;
+    ov.querySelector("img").src = G[i].src;
+    ov.querySelector("figcaption").textContent = (i + 1) + " / " + G.length + " · " + (G[i].caption || "");
+  };
+  const close = () => {
+    ov.style.display = "none";
+    document.removeEventListener("keydown", key);
+  };
+  const key = (e) => {
+    if (e.key == "Escape") close();
+    else if (e.key == "ArrowLeft") show(i - 1);
+    else if (e.key == "ArrowRight") show(i + 1);
+    else return;
+    e.stopPropagation();
+  };
+  ov.querySelector(".gx").onclick = close;
+  ov.querySelector(".gp").onclick = () => show(i - 1);
+  ov.querySelector(".gn").onclick = () => show(i + 1);
+  ov.onclick = (e) => {
+    if (e.target == ov) close();
+  };
+  document.addEventListener("keydown", key, true);
+  show(i);
+  ov.style.display = "flex";
 }
 // Scope of work vs. the original house, grouped by trade (for contractors). Falls back to the design notes.
 function scopeHtml(v) {

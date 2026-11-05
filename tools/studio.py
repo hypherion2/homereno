@@ -79,8 +79,9 @@ def bundle(out, exclude=()):
 
 def publish(out, exclude=()):
     os.makedirs(out, exist_ok=True)
-    for d in ('css', 'js'):
+    for d in ('css', 'js', 'img'):
         if os.path.exists(os.path.join(out, d)): shutil.rmtree(os.path.join(out, d))
+    if os.path.exists(os.path.join(ROOT, 'img')): shutil.copytree(os.path.join(ROOT, 'img'), os.path.join(out, 'img'))
     shutil.copytree(os.path.join(ROOT, 'css'), os.path.join(out, 'css'))
     shutil.copytree(os.path.join(ROOT, 'js'), os.path.join(out, 'js'), ignore=lambda d, fs: [f for f in fs if f[:-3] in exclude and d.endswith('concepts')])
     if os.path.exists(os.path.join(ROOT, 'tools')):

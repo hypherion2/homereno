@@ -860,6 +860,23 @@ const VERS = [
       "Beam sizes, post locations and footings under the posts.",
       "That the 10 ft header fits under the floor framing above.",
       "Fire-separation requirements for the new garage door (rating, closer, gasketing) with the inspector."
+    ],
+    "gallery": [
+      {
+        "src": "img/v23/1.jpg",
+        "thumb": "img/v23/1_t.jpg",
+        "caption": "Dining toward the kitchen and lounge. The existing dining-wall fireplace stays. Mood image only: the plan has an induction range and no sink in the island."
+      },
+      {
+        "src": "img/v23/2.jpg",
+        "thumb": "img/v23/2_t.jpg",
+        "caption": "From the TV nook toward the kitchen, with the stair pendant and glass guards on the left. Mood image only: the half wall now has a quartz ledge rather than wood."
+      },
+      {
+        "src": "img/v23/3.jpg",
+        "thumb": "img/v23/3_t.jpg",
+        "caption": "Half wall with the quartz ledge, pantry units behind the island stools, and the bar cabinet by the stair."
+      }
     ]
   }
 ];
