@@ -811,7 +811,9 @@ const VERS = [
           "Lighting: about 26 pot lights across the open area, 3 pendants over the island, linear pendant over the dining table, under-cabinet LED.",
           "Relocate switches, receptacles and smoke/CO alarms out of the removed walls.",
           "TV power and data in the alcove.",
-          "Receptacle for the beverage fridge."
+          "Receptacle for the beverage fridge.",
+          "Stairwell: cascade pendant of opal globes (about 55 cm across, 7 globes) from a black canopy over the landing, lowest globe at least 2.1 m above the treads, dimmable, 2700-3000 K; serviceable from the upper floor or a ladder on the landing.",
+          "Recessed LED step lights in the wall beside the lower flight (about 30 cm above the treads), on a motion sensor at low brightness; 3-way switching at the top and bottom of the stair."
         ]
       ],
       [

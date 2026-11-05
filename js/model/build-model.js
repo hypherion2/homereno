@@ -160,6 +160,18 @@ function buildModel(D) {
     m.userData = { n: r[5], l: nm[r[0]] };
     S.floors.push(m);
     G[r[0]].add(m);
+    if (typeof growPoly == "function" && r[4] >= 0) {
+      // same floor grown 8 cm and set just below, to close slivers between room outlines and walls
+      const sg = new THREE.Shape(growPoly(r[1], 8).map((p) => new THREE.Vector2(p[0], p[1])));
+      (r[6] || []).forEach((h) => sg.holes.push(new THREE.Path(h.map((p) => new THREE.Vector2(p[0], p[1])))));
+      const f = new THREE.Mesh(new THREE.ShapeGeometry(sg), m.material);
+      f.rotation.x = Math.PI / 2;
+      f.position.y = el[r[0]] + 0.2;
+      f.receiveShadow = true;
+      f.userData = { n: r[5], l: nm[r[0]], fill: 1 };
+      S.floors.push(f);
+      G[r[0]].add(f);
+    }
     {
       const P = r[1],
         F = P.flat(),

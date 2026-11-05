@@ -151,7 +151,20 @@ DATA["v23"] = {
     ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", "round", 515, 1185, 42, 42, 42, 0, 0, 12032628, "Pouf"],
     ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", "round", 665, 1185, 42, 42, 42, 0, 0, 12032628, "Pouf"],
     ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", "rug", 590, 1200, 240, 170, 1, 0.5, 0, 14077890, ""],
-    ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", "box", 938.6, 911.2, 221, 35, 4, 107, 0, 16250869, "Half wall with quartz ledge (107 cm, overhangs the lounge side)"]
+    ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", "box", 938.6, 911.2, 221, 35, 4, 107, 0, 16250869, "Half wall with quartz ledge (107 cm, overhangs the lounge side)"],
+    ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", "globe", 520, 800, 20, 20, 143, 100, 0, 16774880, "Stair pendant: cascade of opal globes"],
+    ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", "globe", 538, 786, 16, 16, 115, 128, 0, 16774880, "Stair pendant: cascade of opal globes"],
+    ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", "globe", 503, 790, 18, 18, 127, 116, 0, 16774880, "Stair pendant: cascade of opal globes"],
+    ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", "globe", 528, 820, 16, 16, 93, 150, 0, 16774880, "Stair pendant: cascade of opal globes"],
+    ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", "globe", 508, 818, 14, 14, 71, 172, 0, 16774880, "Stair pendant: cascade of opal globes"],
+    ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", "globe", 542, 810, 14, 14, 53, 190, 0, 16774880, "Stair pendant: cascade of opal globes"],
+    ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", "globe", 516, 776, 14, 14, 38, 205, 0, 16774880, "Stair pendant: cascade of opal globes"],
+    ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", "box", 520, 800, 56, 56, 2, 241, 0, 1710618, "Stair pendant canopy (black)"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "led", 337.894, 843.174, 9, 1.5, 4, 46.763999999999996, -0.7854, 16774880, "Step light (on a motion sensor, night mode)"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "led", 365.614, 815.814, 9, 1.5, 4, 71.91, -0.7854, 16774880, "Step light (on a motion sensor, night mode)"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "led", 393.334, 788.454, 9, 1.5, 4, 97.056, -0.7854, 16774880, "Step light (on a motion sensor, night mode)"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "led", 421.054, 761.0939999999999, 9, 1.5, 4, 122.202, -0.7854, 16774880, "Step light (on a motion sensor, night mode)"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "led", 448.774, 733.734, 9, 1.5, 4, 147.34799999999998, -0.7854, 16774880, "Step light (on a motion sensor, night mode)"]
   ],
   "ghost": [
     ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", [855.5, 895.7, 789.3, 960.5, 799.1, 970.5, 865.3, 905.7], 0, 243.84],

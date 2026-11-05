@@ -105,7 +105,7 @@ function prepWalk() {
   });
   (D.lay || []).forEach((o) => {
     const [L, k, x, y, w, d, h, e, a] = o;
-    if (k == "rug" || k == "pendant" || k == "pendantbar" || k == "pot" || k == "art") return;
+    if (k == "rug" || k == "pendant" || k == "pendantbar" || k == "pot" || k == "art" || k == "globe" || k == "led") return;
     add(rectP(x, y, w, d, a), el[L] + e, el[L] + e + h);
     if (k == "lsofa") {
       const lx = -(w / 2 - d / 2),
@@ -149,6 +149,55 @@ function prepWalk() {
     S.root.add(m);
     W.ceil.push(m);
   });
+  {
+    // Ground floor: the underside of every upper-floor room (white, just below the floor), so stair
+    // openings stay open; plus a flat ceiling for ground-floor rooms that are not under the stairwell.
+    const L1 = D.levels.find((l) => l[1] == "Level 1"),
+      L0 = D.levels.find((l) => l[2] == 0);
+    if (L1 && L0) {
+      D.rooms.forEach((r) => {
+        if (r[0] != L1[0] || r[4] < 0) return;
+        // grown by 14 cm so the seams under upper-floor walls are closed too
+        const sh = new THREE.Shape(growPoly(r[1], 14).map((p) => new THREE.Vector2(p[0], p[1])));
+        (r[6] || []).forEach((h) => sh.holes.push(new THREE.Path(h.map((p) => new THREE.Vector2(p[0], p[1])))));
+        const m = new THREE.Mesh(new THREE.ShapeGeometry(sh), cm);
+        m.rotation.x = Math.PI / 2;
+        m.position.y = el[L1[0]] - 0.6;
+        S.root.add(m);
+        W.ceil.push(m);
+      });
+      const stairs = D.furn.filter((f) => f[8] == 3 && f[0] != L1[0] && f[2] > 0).map((f) => rectP(f[1], f[2], f[3], f[4], f[5]));
+      const hitsStair = (P) =>
+        stairs.some((q) => {
+          for (let i = 0; i < q.length; i += 2) if (pipW(q[i], q[i + 1], P)) return true;
+          for (let i = 0; i < P.length; i += 2) if (pipW(P[i], P[i + 1], q)) return true;
+          return false;
+        });
+      D.rooms.forEach((r) => {
+        if (r[0] != L0[0] || r[4] < 0 || hitsStair(r[1].flat())) return;
+        const sh = new THREE.Shape(r[1].map((p) => new THREE.Vector2(p[0], p[1])));
+        const m = new THREE.Mesh(new THREE.ShapeGeometry(sh), cm);
+        m.rotation.x = Math.PI / 2;
+        m.position.y = el[L1[0]] - 0.6; // same plane as the underside above, so heights stay consistent
+        S.root.add(m);
+        W.ceil.push(m);
+      });
+    }
+  }
+  {
+    // fallback ceiling over the whole upper floor (covers the stairwell, which has no room of its own)
+    const L1 = D.levels.find((l) => l[1] == "Level 1");
+    if (L1) {
+      const sh = new THREE.Shape([[0, 0], [1135, 0], [1135, 1312], [0, 1312]].map((p) => new THREE.Vector2(p[0], p[1])));
+      const V = D.vault;
+      if (V) sh.holes.push(new THREE.Path([[V.x0, V.y0], [V.x1, V.y0], [V.x1, V.y1], [V.x0, V.y1]].map((p) => new THREE.Vector2(p[0], p[1]))));
+      const m = new THREE.Mesh(new THREE.ShapeGeometry(sh), cm);
+      m.rotation.x = Math.PI / 2;
+      m.position.y = el[L1[0]] + 243.6;
+      S.root.add(m);
+      W.ceil.push(m);
+    }
+  }
   if (D.vault) {
     const m = vaultMesh(D.vault, el[D.vault.L], new THREE.MeshLambertMaterial({ color: 0xf7f5f1, side: 2 }));
     const e = new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry, 8), new THREE.LineBasicMaterial({ color: 0x9a958c }));
@@ -180,6 +229,28 @@ function vaultMesh(v, base, mat) {
   g.setAttribute("position", new THREE.Float32BufferAttribute(P, 3));
   g.computeVertexNormals();
   return new THREE.Mesh(g, mat);
+}
+// Offset a simple polygon outward by d (mitred, capped at 2d per corner).
+function growPoly(P, d) {
+  const Q = P.filter((p, i) => i == 0 || Math.hypot(p[0] - P[i - 1][0], p[1] - P[i - 1][1]) > 0.5);
+  const n = Q.length;
+  let A = 0;
+  for (let i = 0; i < n; i++) A += Q[i][0] * Q[(i + 1) % n][1] - Q[(i + 1) % n][0] * Q[i][1];
+  const sg = A > 0 ? 1 : -1;
+  return Q.map((p, i) => {
+    const a = Q[(i + n - 1) % n], b = Q[(i + 1) % n];
+    const n1 = norm2(p[1] - a[1], a[0] - p[0]), n2 = norm2(b[1] - p[1], p[0] - b[0]);
+    let mx = n1[0] + n2[0], my = n1[1] + n2[1];
+    const l = Math.hypot(mx, my) || 1;
+    mx /= l; my /= l;
+    const c = mx * n1[0] + my * n1[1];
+    const k = Math.min(2 * d, d / Math.max(c, 0.2));
+    return [p[0] + sg * mx * k, p[1] + sg * my * k];
+  });
+}
+function norm2(x, y) {
+  const l = Math.hypot(x, y) || 1;
+  return [x / l, y / l];
 }
 function nm0(D, id) {
   const l = D.levels.find((l) => l[0] == id);

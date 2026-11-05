@@ -101,6 +101,12 @@ function build(k, w, d, h, c, g) {
     const m = Cy(w / 2, h, c, 0, 0, 0, g, w * 0.22);
     m.material = new THREE.MeshLambertMaterial({ color: c, emissive: 0x6a4a1a });
     Cy(0.5, 78 - h, 0x222222, 0, h, 0, g);
+  } else if (k == "globe") {
+    // glowing opal glass globe (diameter w) on a black cord of length h running up to the ceiling
+    const m = new THREE.Mesh(new THREE.SphereGeometry(w / 2, 20, 14), new THREE.MeshLambertMaterial({ color: 0xfff4dc, emissive: 0xc9a46a }));
+    m.position.set(0, w / 2, 0);
+    g.add(m);
+    Cy(0.4, h - w, 0x1a1a1a, 0, w, 0, g);
   } else if (k == "pendantbar") {
     B(d, 4, w, c, 0, 0, 0, g);
     B(0.8, 78, 0.8, 0x222222, 0, 4, -w * 0.35, g);
