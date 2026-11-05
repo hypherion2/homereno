@@ -995,3 +995,15 @@ body.walk #vstrip { display: none; }
   #vstrip .vs-p button.on span { display: inline-block; max-width: 46vw; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; }
   body:not(.pc) #vstrip { display: none; }
 }
+
+/* Scope of work */
+.sow { font-size: 12px; line-height: 1.45; margin: 12px 0 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+.sow .sowh { font: 700 10.5px system-ui; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; margin: 4px 0 2px; }
+.sow b { display: block; margin: 8px 0 2px; font-size: 12px; }
+.sow b.cf { color: var(--acc); }
+.sow ul { margin: 0; padding-left: 16px; }
+.sow li { margin: 2px 0; }
+.sow em.diy { font-style: normal; font-size: 10px; padding: 0 5px; border-radius: 3px; background: var(--acc2, #e3ece6); color: var(--acc); white-space: nowrap; }
+details.notes { font-size: 12px; margin: 4px 0 8px; }
+details.notes summary { cursor: pointer; opacity: 0.7; }
+details.notes p { margin: 4px 0 0; }

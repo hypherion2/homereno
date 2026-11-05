@@ -89,9 +89,8 @@ function setVersion(i, keep) {
     v.kind +
     "</div><h3>" +
     v.headline +
-    "</h3><p>" +
-    v.desc +
-    '</p><div class="tags">' +
+    "</h3>" +
+    '<div class="tags">' +
     v.tags.map((t) => "<span>" + t + "</span>").join("") +
     "</div>" +
     costHtml(v.key) +
@@ -104,7 +103,8 @@ function setVersion(i, keep) {
         '.sh3d" download="1615mch-' +
         verSlug(v) +
         '.sh3d" title="Sweet Home 3D file (5.3 or later). Walls, rooms, doors, windows and existing furniture use the original models; proposed items are coloured blocks." style="background:transparent;color:inherit;border:1px solid currentColor;opacity:.8;text-decoration:none;display:inline-block;text-align:center;box-sizing:border-box">Download .sh3d</a>'
-      : "");
+      : "") +
+    scopeHtml(v);
   costWire(v.key);
   $("zoomc").onclick = () => fly(...focusCam());
   $("copyl").onclick = () => {
@@ -138,6 +138,21 @@ function setVersion(i, keep) {
     if (location.hash !== h) history.replaceState(null, "", h);
   } catch (e) {}
   if (W.on) revalidate();
+}
+// Scope of work vs. the original house, grouped by trade (for contractors). Falls back to the design notes.
+function scopeHtml(v) {
+  if (!v.scope) return "<p>" + v.desc + "</p>";
+  const esc = (t) => String(t).replace(/</g, "&lt;");
+  const li = (t) => {
+    const d = / \(owner DIY\)\.?$/.test(t);
+    return "<li>" + esc(t.replace(/ \(owner DIY\)\.?$/, ".")) + (d ? ' <em class="diy">owner DIY</em>' : "") + "</li>";
+  };
+  return (
+    '<div class="sow"><div class="sowh">Scope of work vs. the original house</div>' +
+    v.scope.map(([t, items]) => "<b>" + esc(t) + "</b><ul>" + items.map(li).join("") + "</ul>").join("") +
+    (v.confirm && v.confirm.length ? '<b class="cf">Confirm on site</b><ul>' + v.confirm.map(li).join("") + "</ul>" : "") +
+    '</div><details class="notes"><summary>Design notes</summary><p>' + v.desc + "</p></details>"
+  );
 }
 function verSlug(v) {
   if (v.key == "orig") return "original";

@@ -91,7 +91,85 @@ const VERS = [
     ],
     "btn": "View the stair and kitchen",
     "proposed": true,
-    "blinds": true
+    "blinds": true,
+    "scope": [
+      [
+        "Demolition",
+        [
+          "Remove the non-bearing partitions on the upper floor: the 3.2 m kitchen-living wall with its doorway, and the walls of the small room at the top of the stair (about 3 m). Patch ceiling and floor where they stood.",
+          "Remove the corner gas fireplace in the lounge with its chase: gas fitter shuts off and caps the line, remove insert and vent, patch the wall/roof penetration.",
+          "Remove the existing kitchen cabinets, counters and appliances."
+        ]
+      ],
+      [
+        "Structural",
+        [
+          "None planned: the stair, the wall beside it and the walls around the stair top stay. Engineer to confirm the removed partitions carry no load."
+        ]
+      ],
+      [
+        "Kitchen",
+        [
+          "New kitchen on the east exterior wall: pantry tower, induction range with hood, dishwasher, sink in the original spot, fridge, oven/pantry tower; the existing window stays.",
+          "Island 280 x 95 cm with drawers, no plumbing.",
+          "Bar cabinet with beverage fridge by the patio door.",
+          "Quartz counters and backsplash."
+        ]
+      ],
+      [
+        "Plumbing",
+        [
+          "Sink stays on the existing drain and supply lines; new faucet.",
+          "Dishwasher hookup beside the sink (supply, drain, high loop or air gap).",
+          "Fridge water line if the fridge has an ice maker.",
+          "Check removed walls for supply/drain/vent lines before demolition and reroute if found."
+        ]
+      ],
+      [
+        "Gas",
+        [
+          "Cap the line to the removed lounge fireplace."
+        ]
+      ],
+      [
+        "Electrical",
+        [
+          "New 40 A 240 V circuit for the induction range; confirm panel capacity (load calculation).",
+          "Dedicated circuits for dishwasher, fridge and hood; split counter receptacles to current code.",
+          "Island receptacles fed through the floor from below.",
+          "Lighting: pendants over the island and dining table, under-cabinet LED (add pot lights if wanted).",
+          "Relocate switches, receptacles and smoke/CO alarms out of the removed walls.",
+          "TV power and data in the alcove.",
+          "Receptacle for the beverage fridge."
+        ]
+      ],
+      [
+        "Ventilation",
+        [
+          "Duct the range hood straight out the east wall (exterior cap). Check whether make-up air is required for the hood size chosen."
+        ]
+      ],
+      [
+        "Flooring and finishes",
+        [
+          "New flooring across the upper-floor open area (kitchen, dining, lounge, hall), about 70 m² / 750 sq ft; remove existing carpet/flooring, level where walls came out (owner DIY).",
+          "Drywall patching where walls and fixtures were removed; tape, mud, prime (owner DIY).",
+          "Paint the upper floor; caulk trim and counters (owner DIY)."
+        ]
+      ],
+      [
+        "Permits",
+        [
+          "Electrical permit (homeowner permit possible in BC for the owner-done part; inspection required).",
+          "Gas permit by a licensed gas fitter for capping/adding gas appliances."
+        ]
+      ]
+    ],
+    "confirm": [
+      "Which walls are bearing: confirm joist direction and loads in the attic and from below before any wall comes out.",
+      "Ducts, returns, plumbing or wiring inside walls that are being removed.",
+      "That the kitchen-living wall and stair-top room walls are non-bearing."
+    ]
   },
   {
     "key": "v11",
@@ -157,7 +235,7 @@ const VERS = [
     "chip": "14 · Warmer edit",
     "kind": "Concept 14",
     "headline": "Concept 13, edited: fewer focal points and a warmer kitchen.",
-    "desc": "Same layout as concept 13: a one-wall kitchen with a slim island, the double-sided gas fireplace between the kitchen and the lounge, the L-sofa facing the TV nook and the under-stair closet. The art is cut to four pieces in one palette (dining wall, both fireplace faces, lounge wall) so the fireplaces and the view stay the focus. The kitchen warms up with warm-white uppers, oak open shelves either side of the sink window and oak island end panels. The stainless chimney hood stays, with full-height uppers running right up to it on both sides.",
+    "desc": "Same layout as concept 13: a one-wall kitchen with a slim island, the double-sided gas fireplace between the kitchen and the lounge, the L-sofa facing the TV nook and the under-stair closet. The art is cut to four pieces in one palette (dining wall, both fireplace faces, lounge wall) so the fireplaces and the view stay the focus. The kitchen warms up with warm-white uppers, upper cabinets either side of the sink window and oak island end panels. The stainless chimney hood stays, with full-height uppers running right up to it on both sides.",
     "tags": [
       "Fewer art pieces",
       "Oak accents",
@@ -165,7 +243,99 @@ const VERS = [
     ],
     "btn": "View the kitchen zones",
     "proposed": true,
-    "blinds": true
+    "blinds": true,
+    "scope": [
+      [
+        "Demolition",
+        [
+          "Remove the non-bearing partitions on the upper floor: the 3.2 m kitchen-living wall with its doorway, and the walls of the small room at the top of the stair (about 3 m). Patch ceiling and floor where they stood.",
+          "Remove the corner gas fireplace in the lounge with its chase: gas fitter shuts off and caps the line, remove insert and vent, patch the wall/roof penetration.",
+          "Remove the existing kitchen cabinets, counters and appliances."
+        ]
+      ],
+      [
+        "Structural and framing",
+        [
+          "Rebuild the kitchen-lounge wall with a wide cased opening and the fireplace chase.",
+          "Replace the 178 cm patio slider with a 244 cm (8 ft) slider centred on the dining wall. New header in the exterior (bearing) wall sized by the engineer, temporary shoring, flashing to the deck, trim and siding repair.",
+          "Remove the 105 cm slider window on the east kitchen wall (where the range goes) and infill: framing, sheathing, house wrap, insulation, siding and trim to match, drywall inside."
+        ]
+      ],
+      [
+        "Kitchen",
+        [
+          "New one-wall kitchen on the east exterior wall (about 6.3 m, north to south): full-height pantry, fridge/freezer with cabinet above, prep drawers, induction range with stainless chimney hood, dishwasher, sink in the original spot, drawers to the corner. Warm-white uppers to the hood.",
+          "Island 280 x 95 cm with seating for four: drawers, pull-out trash/recycling, oak end panels. No plumbing in the island.",
+          "Quartz counters on the run and island; backsplash.",
+          "Shallow dry-pantry run (32 cm deep, 1.0 m) behind the island stools.",
+          "Bar cabinet with beverage fridge by the patio door.",
+          "Upper cabinets either side of the sink window, matching the rest of the uppers."
+        ]
+      ],
+      [
+        "Plumbing",
+        [
+          "Sink stays on the existing drain and supply lines; new faucet.",
+          "Dishwasher hookup beside the sink (supply, drain, high loop or air gap).",
+          "Fridge water line if the fridge has an ice maker.",
+          "Check removed walls for supply/drain/vent lines before demolition and reroute if found."
+        ]
+      ],
+      [
+        "Gas and fireplace",
+        [
+          "Cap the line to the removed lounge fireplace.",
+          "New double-sided (see-through) direct-vent gas fireplace in a framed chase in the kitchen-lounge wall (about 1.9 m long, 0.7 m deep): new gas line, vent route up through the attic and roof, non-combustible surrounds both sides."
+        ]
+      ],
+      [
+        "Electrical and lighting",
+        [
+          "New 40 A 240 V circuit for the induction range; confirm panel capacity (load calculation).",
+          "Dedicated circuits for dishwasher, fridge and hood; split counter receptacles to current code.",
+          "Island receptacles fed through the floor from below.",
+          "Lighting: about 26 pot lights across the open area, 3 pendants over the island, linear pendant over the dining table, under-cabinet LED.",
+          "Relocate switches, receptacles and smoke/CO alarms out of the removed walls.",
+          "TV power and data in the alcove.",
+          "Receptacle for the beverage fridge."
+        ]
+      ],
+      [
+        "Ventilation",
+        [
+          "Duct the range hood straight out the east wall (exterior cap). Check whether make-up air is required for the hood size chosen."
+        ]
+      ],
+      [
+        "Ground floor",
+        [
+          "Replace the diagonal wall under the stair with short stub walls and a 76 cm door from the foyer into an under-stair closet; add shelving."
+        ]
+      ],
+      [
+        "Flooring and finishes",
+        [
+          "New flooring across the upper-floor open area (kitchen, dining, lounge, hall), about 70 m² / 750 sq ft; remove existing carpet/flooring, level where walls came out (owner DIY).",
+          "Drywall patching where walls and fixtures were removed; tape, mud, prime (owner DIY).",
+          "Paint the upper floor; caulk trim and counters (owner DIY)."
+        ]
+      ],
+      [
+        "Permits and engineering",
+        [
+          "Building permit (structural, stair, window/door openings) with engineer letters for beams and headers.",
+          "Electrical permit (homeowner permit possible in BC for the owner-done part; inspection required).",
+          "Gas permit by a licensed gas fitter for capping/adding gas appliances."
+        ]
+      ]
+    ],
+    "confirm": [
+      "Which walls are bearing: confirm joist direction and loads in the attic and from below before any wall comes out.",
+      "Ducts, returns, plumbing or wiring inside walls that are being removed.",
+      "Header size and any point loads for the wider patio opening.",
+      "That losing the kitchen window is acceptable (range sits where it is now), or shift the range and keep the window.",
+      "Vent route for the see-through fireplace (roof penetration)."
+    ]
   },
   {
     "key": "v17",
@@ -183,7 +353,113 @@ const VERS = [
     ],
     "btn": "View the kitchen zones",
     "proposed": true,
-    "blinds": true
+    "blinds": true,
+    "scope": [
+      [
+        "Demolition",
+        [
+          "Remove the non-bearing partitions on the upper floor: the 3.2 m kitchen-living wall with its doorway, and the walls of the small room at the top of the stair (about 3 m). Patch ceiling and floor where they stood.",
+          "Remove the corner gas fireplace in the lounge with its chase: gas fitter shuts off and caps the line, remove insert and vent, patch the wall/roof penetration.",
+          "Remove the existing kitchen cabinets, counters and appliances."
+        ]
+      ],
+      [
+        "Structural and framing",
+        [
+          "Rebuild the kitchen-lounge wall with a wide cased opening and the fireplace chase.",
+          "Replace the 178 cm patio slider with a 244 cm (8 ft) slider centred on the dining wall. New header in the exterior (bearing) wall sized by the engineer, temporary shoring, flashing to the deck, trim and siding repair.",
+          "Remove the 105 cm slider window on the east kitchen wall (where the range goes) and infill: framing, sheathing, house wrap, insulation, siding and trim to match, drywall inside."
+        ]
+      ],
+      [
+        "Stair",
+        [
+          "New guard at the stair top (glass with black rail, black metal bars, or oak slat screen: pick one), step lights on every second riser.",
+          "Optional: last three steps become 30° winders turning toward the lounge, inside the existing opening."
+        ]
+      ],
+      [
+        "Kitchen",
+        [
+          "New one-wall kitchen on the east exterior wall (about 6.3 m, north to south): full-height pantry, fridge/freezer with cabinet above, prep drawers, induction range with stainless chimney hood, dishwasher, sink in the original spot, drawers to the corner. Warm-white uppers to the hood.",
+          "Island 280 x 95 cm with seating for four: drawers, pull-out trash/recycling, oak end panels. No plumbing in the island.",
+          "Quartz counters on the run and island; backsplash.",
+          "Greige lowers, warm-white uppers, white-oak island.",
+          "Shallow dry-pantry run behind the island stools.",
+          "Bar cabinet with beverage fridge by the patio door."
+        ]
+      ],
+      [
+        "Plumbing",
+        [
+          "Sink stays on the existing drain and supply lines; new faucet.",
+          "Dishwasher hookup beside the sink (supply, drain, high loop or air gap).",
+          "Fridge water line if the fridge has an ice maker.",
+          "Check removed walls for supply/drain/vent lines before demolition and reroute if found."
+        ]
+      ],
+      [
+        "Gas and fireplace",
+        [
+          "Cap the line to the removed lounge fireplace.",
+          "New double-sided (see-through) direct-vent gas fireplace in a framed chase in the kitchen-lounge wall (about 1.9 m long, 0.7 m deep): new gas line, vent route up through the attic and roof, non-combustible surrounds both sides.",
+          "Natural-stone surrounds on both faces."
+        ]
+      ],
+      [
+        "Electrical and lighting",
+        [
+          "New 40 A 240 V circuit for the induction range; confirm panel capacity (load calculation).",
+          "Dedicated circuits for dishwasher, fridge and hood; split counter receptacles to current code.",
+          "Island receptacles fed through the floor from below.",
+          "Lighting: about 26 pot lights across the open area, 3 pendants over the island, linear pendant over the dining table, under-cabinet LED.",
+          "Relocate switches, receptacles and smoke/CO alarms out of the removed walls.",
+          "TV power and data in the alcove.",
+          "Step lights at the stair, receptacle for the beverage fridge."
+        ]
+      ],
+      [
+        "Ventilation",
+        [
+          "Duct the range hood straight out the east wall (exterior cap). Check whether make-up air is required for the hood size chosen."
+        ]
+      ],
+      [
+        "Ground floor",
+        [
+          "Replace the diagonal wall under the stair with short stub walls and a 76 cm door from the foyer into an under-stair closet; add shelving."
+        ]
+      ],
+      [
+        "Millwork",
+        [
+          "Oak media wall around the TV in the alcove."
+        ]
+      ],
+      [
+        "Flooring and finishes",
+        [
+          "New flooring across the upper-floor open area (kitchen, dining, lounge, hall), about 70 m² / 750 sq ft; remove existing carpet/flooring, level where walls came out (owner DIY).",
+          "Drywall patching where walls and fixtures were removed; tape, mud, prime (owner DIY).",
+          "Paint the upper floor; caulk trim and counters (owner DIY)."
+        ]
+      ],
+      [
+        "Permits and engineering",
+        [
+          "Building permit (structural, stair, window/door openings) with engineer letters for beams and headers.",
+          "Electrical permit (homeowner permit possible in BC for the owner-done part; inspection required).",
+          "Gas permit by a licensed gas fitter for capping/adding gas appliances."
+        ]
+      ]
+    ],
+    "confirm": [
+      "Which walls are bearing: confirm joist direction and loads in the attic and from below before any wall comes out.",
+      "Ducts, returns, plumbing or wiring inside walls that are being removed.",
+      "Header size and any point loads for the wider patio opening.",
+      "That losing the kitchen window is acceptable (range sits where it is now), or shift the range and keep the window.",
+      "Vent route for the see-through fireplace (roof penetration)."
+    ]
   },
   {
     "key": "v18",
@@ -201,7 +477,114 @@ const VERS = [
     ],
     "btn": "View the kitchen zones",
     "proposed": true,
-    "blinds": true
+    "blinds": true,
+    "scope": [
+      [
+        "Demolition",
+        [
+          "Remove the non-bearing partitions on the upper floor: the 3.2 m kitchen-living wall with its doorway, and the walls of the small room at the top of the stair (about 3 m). Patch ceiling and floor where they stood.",
+          "Remove the corner gas fireplace in the lounge with its chase: gas fitter shuts off and caps the line, remove insert and vent, patch the wall/roof penetration.",
+          "Remove the existing kitchen cabinets, counters and appliances.",
+          "Remove the hall-kitchen wall (about 2.3 m)."
+        ]
+      ],
+      [
+        "Structural and framing",
+        [
+          "Engineered beam and posts to replace the hall-kitchen wall (probably bearing), with posts carried to footings.",
+          "New stair opening in the upper floor (headers, trimmers); frame and sheathe over the old stair opening.",
+          "Replace the 178 cm patio slider with a 244 cm (8 ft) slider centred on the dining wall. New header in the exterior (bearing) wall sized by the engineer, temporary shoring, flashing to the deck, trim and siding repair.",
+          "Remove the 105 cm slider window on the east kitchen wall (where the range goes) and infill: framing, sheathing, house wrap, insulation, siding and trim to match, drywall inside."
+        ]
+      ],
+      [
+        "Stair",
+        [
+          "Rebuild the stair: the flat landing becomes three winders turning right, and the upper flight lands in the kitchen by the south end of the island.",
+          "New guard at the top, white-oak treads, step lights.",
+          "Ground floor: cut the walls under the new flight to the stair soffit; keep 2.0 m+ headroom at the mud room to garage door."
+        ]
+      ],
+      [
+        "Kitchen",
+        [
+          "New one-wall kitchen on the east exterior wall (about 6.3 m, north to south): full-height pantry, fridge/freezer with cabinet above, prep drawers, induction range with stainless chimney hood, dishwasher, sink in the original spot, drawers to the corner. Warm-white uppers to the hood.",
+          "Island 280 x 95 cm with seating for four: drawers, pull-out trash/recycling, oak end panels. No plumbing in the island.",
+          "Quartz counters on the run and island; backsplash.",
+          "Bar cabinet with beverage fridge by the patio door."
+        ]
+      ],
+      [
+        "Plumbing",
+        [
+          "Sink stays on the existing drain and supply lines; new faucet.",
+          "Dishwasher hookup beside the sink (supply, drain, high loop or air gap).",
+          "Fridge water line if the fridge has an ice maker.",
+          "Check removed walls for supply/drain/vent lines before demolition and reroute if found."
+        ]
+      ],
+      [
+        "Gas and fireplace",
+        [
+          "Cap the line to the removed lounge fireplace.",
+          "New single-sided direct-vent gas fireplace on the lounge west (exterior) wall: gas line, vent through the wall, surround and hearth."
+        ]
+      ],
+      [
+        "Electrical and lighting",
+        [
+          "New 40 A 240 V circuit for the induction range; confirm panel capacity (load calculation).",
+          "Dedicated circuits for dishwasher, fridge and hood; split counter receptacles to current code.",
+          "Island receptacles fed through the floor from below.",
+          "Lighting: about 26 pot lights across the open area, 3 pendants over the island, linear pendant over the dining table, under-cabinet LED.",
+          "Relocate switches, receptacles and smoke/CO alarms out of the removed walls.",
+          "TV power and data in the alcove.",
+          "Step lights at the stair, receptacle for the beverage fridge."
+        ]
+      ],
+      [
+        "Ventilation",
+        [
+          "Duct the range hood straight out the east wall (exterior cap). Check whether make-up air is required for the hood size chosen."
+        ]
+      ],
+      [
+        "Ground floor",
+        [
+          "Replace the diagonal wall under the stair with short stub walls and a 76 cm door from the foyer into a storage closet under the old flight and landing; add shelving."
+        ]
+      ],
+      [
+        "Millwork",
+        [
+          "Oak media wall around the TV in the alcove."
+        ]
+      ],
+      [
+        "Flooring and finishes",
+        [
+          "New flooring across the upper-floor open area (kitchen, dining, lounge, hall), about 70 m² / 750 sq ft; remove existing carpet/flooring, level where walls came out (owner DIY).",
+          "Drywall patching where walls and fixtures were removed; tape, mud, prime (owner DIY).",
+          "Paint the upper floor; caulk trim and counters (owner DIY)."
+        ]
+      ],
+      [
+        "Permits and engineering",
+        [
+          "Building permit (structural, stair, window/door openings) with engineer letters for beams and headers.",
+          "Electrical permit (homeowner permit possible in BC for the owner-done part; inspection required).",
+          "Gas permit by a licensed gas fitter for capping/adding gas appliances."
+        ]
+      ]
+    ],
+    "confirm": [
+      "Which walls are bearing: confirm joist direction and loads in the attic and from below before any wall comes out.",
+      "Ducts, returns, plumbing or wiring inside walls that are being removed.",
+      "Header size and any point loads for the wider patio opening.",
+      "That losing the kitchen window is acceptable (range sits where it is now), or shift the range and keep the window.",
+      "Beam size, post locations and footings under the posts.",
+      "Stair geometry (winder treads, headroom) with the stair builder and inspector."
+    ]
   },
   {
     "key": "v21",
@@ -238,7 +621,119 @@ const VERS = [
     ],
     "btn": "View the stair",
     "proposed": true,
-    "blinds": true
+    "blinds": true,
+    "scope": [
+      [
+        "Demolition",
+        [
+          "Remove the non-bearing partitions on the upper floor: the 3.2 m kitchen-living wall with its doorway, and the walls of the small room at the top of the stair (about 3 m). Patch ceiling and floor where they stood.",
+          "Remove the corner gas fireplace in the lounge with its chase: gas fitter shuts off and caps the line, remove insert and vent, patch the wall/roof penetration.",
+          "Remove the existing kitchen cabinets, counters and appliances.",
+          "Remove the hall-kitchen wall (about 2.3 m) and the 1.7 m stairwell wall beside it."
+        ]
+      ],
+      [
+        "Structural and framing",
+        [
+          "Engineered beams and posts for the hall-kitchen wall and the stairwell wall (both probably bearing), posts to footings.",
+          "Frame and sheathe over the old stair opening; new opening for the upper flight.",
+          "Ground floor: lower the tops of the walls under the new flight to the stair soffit, including the bathroom wall; header where a cut wall carries load.",
+          "Kitchen-lounge wall rebuilt on its original line, keeping the original doorway, with the fireplace chase.",
+          "Walk-in pantry about 1.0 x 1.0 m between the stair and the kitchen-lounge wall: framing, 76 cm door in the old hall-wall line, shelving on two walls.",
+          "Replace the 178 cm patio slider with a 244 cm (8 ft) slider centred on the dining wall. New header in the exterior (bearing) wall sized by the engineer, temporary shoring, flashing to the deck, trim and siding repair.",
+          "Remove the 105 cm slider window on the east kitchen wall (where the range goes) and infill: framing, sheathing, house wrap, insulation, siding and trim to match, drywall inside."
+        ]
+      ],
+      [
+        "Stair",
+        [
+          "Rebuild the stair: lower flight kept on its line with new equal risers (14 x 18.3 cm), one 45° winder instead of the landing, 5-step upper flight into the kitchen.",
+          "Glass guard over the stair at the open corner by the pantry; white-oak treads, step lights."
+        ]
+      ],
+      [
+        "Kitchen",
+        [
+          "New one-wall kitchen on the east exterior wall (about 6.3 m, north to south): full-height pantry, fridge/freezer with cabinet above, prep drawers, induction range with stainless chimney hood, dishwasher, sink in the original spot, drawers to the corner. Warm-white uppers to the hood.",
+          "Island 280 x 95 cm with seating for four: drawers, pull-out trash/recycling, oak end panels. No plumbing in the island.",
+          "Quartz counters on the run and island; backsplash.",
+          "Island moved about 1.1 m north toward the dining table.",
+          "Bar cabinet with beverage fridge by the patio door."
+        ]
+      ],
+      [
+        "Plumbing",
+        [
+          "Sink stays on the existing drain and supply lines; new faucet.",
+          "Dishwasher hookup beside the sink (supply, drain, high loop or air gap).",
+          "Fridge water line if the fridge has an ice maker.",
+          "Check removed walls for supply/drain/vent lines before demolition and reroute if found."
+        ]
+      ],
+      [
+        "Gas and fireplace",
+        [
+          "Cap the line to the removed lounge fireplace.",
+          "New double-sided (see-through) direct-vent gas fireplace in a framed chase in the kitchen-lounge wall (about 1.9 m long, 0.7 m deep): new gas line, vent route up through the attic and roof, non-combustible surrounds both sides."
+        ]
+      ],
+      [
+        "Electrical and lighting",
+        [
+          "New 40 A 240 V circuit for the induction range; confirm panel capacity (load calculation).",
+          "Dedicated circuits for dishwasher, fridge and hood; split counter receptacles to current code.",
+          "Island receptacles fed through the floor from below.",
+          "Lighting: about 26 pot lights across the open area, 3 pendants over the island, linear pendant over the dining table, under-cabinet LED.",
+          "Relocate switches, receptacles and smoke/CO alarms out of the removed walls.",
+          "TV power and data in the alcove.",
+          "Pantry light, step lights, receptacle for the beverage fridge."
+        ]
+      ],
+      [
+        "Ventilation",
+        [
+          "Duct the range hood straight out the east wall (exterior cap). Check whether make-up air is required for the hood size chosen."
+        ]
+      ],
+      [
+        "Ground floor",
+        [
+          "Replace the diagonal wall under the stair with short stub walls and a 76 cm door from the foyer into an under-stair closet; add shelving."
+        ]
+      ],
+      [
+        "Millwork",
+        [
+          "Oak media wall around the TV in the alcove."
+        ]
+      ],
+      [
+        "Flooring and finishes",
+        [
+          "New flooring across the upper-floor open area (kitchen, dining, lounge, hall), about 70 m² / 750 sq ft; remove existing carpet/flooring, level where walls came out (owner DIY).",
+          "Drywall patching where walls and fixtures were removed; tape, mud, prime (owner DIY).",
+          "Paint the upper floor; caulk trim and counters (owner DIY)."
+        ]
+      ],
+      [
+        "Permits and engineering",
+        [
+          "Building permit (structural, stair, window/door openings) with engineer letters for beams and headers.",
+          "Electrical permit (homeowner permit possible in BC for the owner-done part; inspection required).",
+          "Gas permit by a licensed gas fitter for capping/adding gas appliances."
+        ]
+      ]
+    ],
+    "confirm": [
+      "Which walls are bearing: confirm joist direction and loads in the attic and from below before any wall comes out.",
+      "Ducts, returns, plumbing or wiring inside walls that are being removed.",
+      "Header size and any point loads for the wider patio opening.",
+      "That losing the kitchen window is acceptable (range sits where it is now), or shift the range and keep the window.",
+      "Beam sizes, post locations and footings.",
+      "The single 45° winder with the stair builder and inspector.",
+      "Load on the ground-floor bathroom wall before its top is cut.",
+      "Vent route for the see-through fireplace (roof penetration)."
+    ]
   },
   {
     "key": "v23",
@@ -247,7 +742,7 @@ const VERS = [
     "chip": "19 · Open kitchen",
     "kind": "Concept 19 · Latest",
     "headline": "Concept 14 reworked: full-size island, pantry wall behind the stools, wider patio door, and a TV nook where the fireplace wall was.",
-    "desc": "Concept 14's plan with the current stair. Kitchen: full-size island (2.8 m, four stools) about 1.0 m from the dining table, which sits about 1.25 m from a standard 10 ft patio slider centred on the dining wall; two full-height pantry units and a bar with a beverage fridge on the hall wall behind the stools. The fireplace and its chase are removed and the kitchen-lounge wall is extended from the outside wall, leaving a 1.2 m opening at the stair end, so the way from the stairs to the kitchen crosses only the west end of the lounge. The east end becomes a TV nook: a 75 in TV in the alcove and a big 8 ft sofa with its chaise end against the window wall; the left-most seat faces the TV straight on from about 3.6 m, with about 1.4 m of open floor between the sofa arm and the half wall. The west end, where the fireplace was, is a sitting corner with a window bench. Around the stairwell, the hall-side and north walls are replaced by glass railings with a black top rail (they look bearing, so beams are needed); the half wall between the kitchen and the TV nook is 107 cm high with an oak cap. Ground floor: the under-stair storage gets 1.2 m double doors from the garage (fire-rated, self-closing) as well as its foyer door.",
+    "desc": "Concept 14's plan with the current stair. Kitchen: full-size island (2.8 m, four stools) about 1.0 m from the dining table, which sits about 1.25 m from a standard 10 ft patio slider centred on the dining wall; two full-height pantry units and a bar with a beverage fridge on the hall wall behind the stools. The fireplace and its chase are removed and the kitchen-lounge wall is extended from the outside wall, leaving a 1.2 m opening at the stair end, so the way from the stairs to the kitchen crosses only the west end of the lounge. The east end becomes a TV nook: a 75 in TV in the alcove and a big 8 ft sofa with its chaise end against the window wall; the left-most seat faces the TV straight on from about 3.6 m, with about 1.4 m of open floor between the sofa arm and the half wall. The west end, where the fireplace was, is a sitting corner with a window bench. Around the stairwell, the hall-side and north walls are replaced by glass railings with a black top rail (they look bearing, so beams are needed); the half wall between the kitchen and the TV nook is 107 cm high with a 35 cm quartz ledge matching the kitchen counters, overhanging the lounge side for drinks. Ground floor: the under-stair storage gets 1.2 m double doors from the garage (fire-rated, self-closing) as well as its foyer door.",
     "tags": [
       "Current stair",
       "Pantry wall + bar",
@@ -256,7 +751,114 @@ const VERS = [
     ],
     "btn": "View the kitchen",
     "proposed": true,
-    "blinds": true
+    "blinds": true,
+    "scope": [
+      [
+        "Demolition",
+        [
+          "Remove the non-bearing partitions on the upper floor: the 3.2 m kitchen-living wall with its doorway, and the walls of the small room at the top of the stair (about 3 m). Patch ceiling and floor where they stood.",
+          "Remove the corner gas fireplace in the lounge with its chase: gas fitter shuts off and caps the line, remove insert and vent, patch the wall/roof penetration.",
+          "Remove the existing kitchen cabinets, counters and appliances.",
+          "Remove the two stairwell walls on the hall side and north side (about 1.7 m and 1.0 m) and the low wall at the stair."
+        ]
+      ],
+      [
+        "Structural and framing",
+        [
+          "Engineered beams and posts where the two stairwell walls come out (they look bearing), posts to footings.",
+          "Extend the kitchen-lounge wall from the outside wall as a 2.2 m half wall, 107 cm high, topped with a 35 cm deep quartz ledge (same stone as the counters) overhanging about 20 cm on the lounge side, with a receptacle on the lounge face; 1.2 m opening at the stair end.",
+          "Ground floor: new 1.2 m opening from the garage into the under-stair storage with header (about 185 cm clear).",
+          "Replace the 178 cm patio slider with a 305 cm (10 ft) slider centred on the dining wall. New header in the exterior (bearing) wall sized by the engineer, temporary shoring, flashing to the deck, trim and siding repair.",
+          "Remove the 105 cm slider window on the east kitchen wall (where the range goes) and infill: framing, sheathing, house wrap, insulation, siding and trim to match, drywall inside."
+        ]
+      ],
+      [
+        "Stair",
+        [
+          "Glass guards with a black top rail where the stairwell walls come out (code height, tempered/laminated glass, anchored to blocking). About 4.5 m of guard around the stairwell."
+        ]
+      ],
+      [
+        "Kitchen",
+        [
+          "New one-wall kitchen on the east exterior wall (about 6.3 m, north to south): full-height pantry, fridge/freezer with cabinet above, prep drawers, induction range with stainless chimney hood, dishwasher, sink in the original spot, drawers to the corner. Warm-white uppers to the hood.",
+          "Island 280 x 95 cm with seating for four: drawers, pull-out trash/recycling, oak end panels. No plumbing in the island.",
+          "Quartz counters on the run and island; backsplash.",
+          "Hall wall behind the island stools: two full-height pantry units and a bar cabinet with beverage fridge."
+        ]
+      ],
+      [
+        "Plumbing",
+        [
+          "Sink stays on the existing drain and supply lines; new faucet.",
+          "Dishwasher hookup beside the sink (supply, drain, high loop or air gap).",
+          "Fridge water line if the fridge has an ice maker.",
+          "Check removed walls for supply/drain/vent lines before demolition and reroute if found."
+        ]
+      ],
+      [
+        "Gas and fireplace",
+        [
+          "Cap the line to the removed lounge fireplace."
+        ]
+      ],
+      [
+        "Electrical and lighting",
+        [
+          "New 40 A 240 V circuit for the induction range; confirm panel capacity (load calculation).",
+          "Dedicated circuits for dishwasher, fridge and hood; split counter receptacles to current code.",
+          "Island receptacles fed through the floor from below.",
+          "Lighting: about 26 pot lights across the open area, 3 pendants over the island, linear pendant over the dining table, under-cabinet LED.",
+          "Relocate switches, receptacles and smoke/CO alarms out of the removed walls.",
+          "TV power and data in the alcove.",
+          "Receptacle for the beverage fridge."
+        ]
+      ],
+      [
+        "Ventilation",
+        [
+          "Duct the range hood straight out the east wall (exterior cap). Check whether make-up air is required for the hood size chosen."
+        ]
+      ],
+      [
+        "Ground floor",
+        [
+          "Replace the diagonal walls under the stair with stub walls; 76 cm door from the foyer and 1.2 m fire-rated, self-closing, gasketed double doors from the garage into under-stair storage (garage side finished as a fire separation, Type X drywall)."
+        ]
+      ],
+      [
+        "Millwork",
+        [
+          "Window bench with storage in the west sitting corner.",
+          "Console behind the sofa (furniture, not built-in)."
+        ]
+      ],
+      [
+        "Flooring and finishes",
+        [
+          "New flooring across the upper-floor open area (kitchen, dining, lounge, hall), about 70 m² / 750 sq ft; remove existing carpet/flooring, level where walls came out (owner DIY).",
+          "Drywall patching where walls and fixtures were removed; tape, mud, prime (owner DIY).",
+          "Paint the upper floor; caulk trim and counters (owner DIY)."
+        ]
+      ],
+      [
+        "Permits and engineering",
+        [
+          "Building permit (structural, stair, window/door openings) with engineer letters for beams and headers.",
+          "Electrical permit (homeowner permit possible in BC for the owner-done part; inspection required).",
+          "Gas permit by a licensed gas fitter for capping/adding gas appliances."
+        ]
+      ]
+    ],
+    "confirm": [
+      "Which walls are bearing: confirm joist direction and loads in the attic and from below before any wall comes out.",
+      "Ducts, returns, plumbing or wiring inside walls that are being removed.",
+      "Header size and any point loads for the wider patio opening.",
+      "That losing the kitchen window is acceptable (range sits where it is now), or shift the range and keep the window.",
+      "Beam sizes, post locations and footings under the posts.",
+      "That the 10 ft header fits under the floor framing above.",
+      "Fire-separation requirements for the new garage door (rating, closer, gasketing) with the inspector."
+    ]
   }
 ];
 const DATA = {};
