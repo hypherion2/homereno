@@ -766,7 +766,7 @@ const VERS = [
         "Structural and framing",
         [
           "Engineered beams and posts where the two stairwell walls come out (they look bearing), posts to footings.",
-          "Extend the kitchen-lounge wall from the outside wall as a 2.2 m half wall, 107 cm high, topped with a 35 cm deep quartz ledge (same stone as the counters) overhanging about 20 cm on the lounge side, with a receptacle on the lounge face; 1.2 m opening at the stair end.",
+          "Extend the kitchen-lounge wall from the outside wall as a 2.2 m half wall, 107 cm high, topped with a 35 cm deep quartz ledge (same stone as the counters) overhanging about 20 cm on the lounge side, with a receptacle on the lounge face; 1.2 m opening at the stair end. Option: leave the half wall out for a fully open room.",
           "Ground floor: new 1.2 m opening from the garage into the under-stair storage with header (about 185 cm clear).",
           "Replace the 178 cm patio slider with a 305 cm (10 ft) slider centred on the dining wall. New header in the exterior (bearing) wall sized by the engineer, temporary shoring, flashing to the deck, trim and siding repair.",
           "Remove the 105 cm slider window on the east kitchen wall (where the range goes) and infill: framing, sheathing, house wrap, insulation, siding and trim to match, drywall inside."
@@ -832,6 +832,7 @@ const VERS = [
         "Millwork",
         [
           "Window bench with storage in the west sitting corner.",
+          "Laundry: floating oak folding counter (90 cm, 55 cm deep) over a cabinet with a litter box (cat opening, pull-out tray, vent) and a tilt-out hamper; hanging rod and oak shelf above; upper cabinet over the existing laundry sink.",
           "Console behind the sofa (furniture, not built-in)."
         ]
       ],

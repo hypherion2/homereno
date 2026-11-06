@@ -164,7 +164,18 @@ DATA["v23"] = {
     ["level-05858acb-0b22-4364-9c6b-23988ea317da", "led", 365.614, 815.814, 9, 1.5, 4, 71.91, -0.7854, 16774880, "Step light (on a motion sensor, night mode)"],
     ["level-05858acb-0b22-4364-9c6b-23988ea317da", "led", 393.334, 788.454, 9, 1.5, 4, 97.056, -0.7854, 16774880, "Step light (on a motion sensor, night mode)"],
     ["level-05858acb-0b22-4364-9c6b-23988ea317da", "led", 421.054, 761.0939999999999, 9, 1.5, 4, 122.202, -0.7854, 16774880, "Step light (on a motion sensor, night mode)"],
-    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "led", 448.774, 733.734, 9, 1.5, 4, 147.34799999999998, -0.7854, 16774880, "Step light (on a motion sensor, night mode)"]
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "led", 448.774, 733.734, 9, 1.5, 4, 147.34799999999998, -0.7854, 16774880, "Step light (on a motion sensor, night mode)"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "washer", 65, 716, 68, 84, 80, 0, 0, 0, "Laundry: washer (existing)"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "washer", 65, 716, 68, 84, 80, 85, 0, 0, "Laundry: dryer stacked (existing)"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "utilsink", 155.6, 786, 73, 62, 90, 0, 0, 0, "Laundry: sink cabinet (existing)"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "box", 69.5, 892.5, 87, 55, 3, 88, 0, 14271392, "Laundry: floating oak folding counter (90 cm high)"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "box", 53, 894, 52, 52, 62, 8, 0, 15657699, "Laundry: litter cabinet: door with cat opening, pull-out tray, vent"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "box", 94, 894, 34, 52, 62, 8, 0, 15657699, "Laundry: tilt-out hamper"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "box", 69.5, 913, 82, 2, 2, 168, 0, 2829099, "Laundry: hanging rod"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "box", 69.5, 906, 87, 24, 3, 195, 0, 14271392, "Laundry: oak shelf above the rod"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "box", 155.6, 772, 76, 30, 62, 165, 0, 15657699, "Laundry: upper cabinet above the sink"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "box", 53, 867.6, 20, 1, 22, 12, 0, 2763306, "Laundry: cat opening"],
+    ["level-05858acb-0b22-4364-9c6b-23988ea317da", "box", 53, 867.6, 30, 1, 4, 58, 0, 9079434, "Laundry: cat opening vent slot"]
   ],
   "ghost": [
     ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", [855.5, 895.7, 789.3, 960.5, 799.1, 970.5, 865.3, 905.7], 0, 243.84],
@@ -510,8 +521,6 @@ DATA["v23"] = {
     ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", 916.2, 9.6, 305, 4, 0.0027, 10.8, 209.9, 1, "Patio door (10 ft slider)"],
     ["level-05858acb-0b22-4364-9c6b-23988ea317da", 264.1, 824.9, 114.9, 6.5, 3.1416, 0, 247.9, 0, "Sliding doors", 0],
     ["level-05858acb-0b22-4364-9c6b-23988ea317da", 135.2, 1285.2, 91.4, 12.1, 3.1327, 12.7, 30.5, 0, "Electric radiator", 0],
-    ["level-05858acb-0b22-4364-9c6b-23988ea317da", 65.1, 715.2, 68.6, 88.9, 0, 0, 85.1, 0, "Washer dryer", 0],
-    ["level-05858acb-0b22-4364-9c6b-23988ea317da", 155.6, 785.1, 73, 63.5, 0, 0, 106, 0, "Sink", 0],
     ["level-05858acb-0b22-4364-9c6b-23988ea317da", 444.4, 534.1, 66.7, 97.8, 0, 0, 125.7, 0, "Furnace", 0],
     ["level-05858acb-0b22-4364-9c6b-23988ea317da", 374.2, 553.7, 45.7, 46, 0, 0, 152.4, 0, "Electric water heater", 0],
     ["level-05858acb-0b22-4364-9c6b-23988ea317da", 572.9, 640.4, 150.5, 69.2, 3.1416, 0, 71.1, 0, "Fitted bath", 0],
@@ -524,7 +533,6 @@ DATA["v23"] = {
     ["level-05858acb-0b22-4364-9c6b-23988ea317da", 43.5, 326.6, 91.4, 63.5, 4.7124, 0, 96.5, 0, "Cooker", 0],
     ["level-05858acb-0b22-4364-9c6b-23988ea317da", 43.8, 255, 51.8, 64.1, 4.7124, 0, 86, 0, "Wood lower cabinet", 0],
     ["level-05858acb-0b22-4364-9c6b-23988ea317da", 44.8, 189.8, 78.7, 66, 4.7124, 0, 185.4, 0, "Fridge & Freezer", 0],
-    ["level-05858acb-0b22-4364-9c6b-23988ea317da", 64.9, 715.7, 66, 83.8, 0, 85.1, 84.1, 0, "Dryer machine", 0],
     ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", 108.4, 266.4, 91.4, 118.1, 1.5728, 0, 213.4, 0, "Shower cabin", 0],
     ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", 44.7, 171.6, 53.3, 64.8, 4.7124, 0, 62.2, 0, "Toilet unit", 0],
     ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", 43.6, 60.7, 96.5, 63.5, 4.7095, 0, 207.6, 0, "Vanity", 0],
@@ -550,5 +558,8 @@ DATA["v23"] = {
     ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", 561.5, 698.0, 155.0, 6.3, 3.141592653589793, 0, 91.4, 0, "Rounded edges railing", 0],
     ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", 443.0, 739.0, 115.96551211459379, 6.3, 2.356194490192345, 0, 91.4, 0, "Rounded edges railing", 0],
     ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", 373.5, 808.0, 79.90619500389191, 6.3, 2.3650438167086025, 0, 91.4, 0, "Rounded edges railing", 0]
+  ],
+  "variants": [
+    {"id": "halfwall", "label": "Kitchen-lounge wall", "choose": 0, "options": [{"name": "Half wall with quartz ledge", "note": "2.2 m half wall, 107 cm high, with a 35 cm quartz ledge overhanging the lounge side for drinks. Screens the sink and counters from the sofa and gives the TV nook an edge."}, {"name": "No wall (fully open)", "note": "The half wall comes out: one open room from the kitchen to the TV nook, the widest route from the stairs, and about $1.5-3k less (no framing, quartz ledge or outlet). From the sofa you see the island and sink side of the kitchen.", "drop": {"box": [["level-e7276441-09e6-40e5-b0fe-e49e557499fc", 938.6, 900.7]], "lay": ["Half wall with quartz ledge"]}}]}
   ]
 };

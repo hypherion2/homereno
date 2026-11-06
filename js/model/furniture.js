@@ -107,6 +107,24 @@ function build(k, w, d, h, c, g) {
     m.position.set(0, w / 2, 0);
     g.add(m);
     Cy(0.4, h - w, 0x1a1a1a, 0, w, 0, g);
+  } else if (k == "washer") {
+    // front-load washer or dryer: white cabinet, dark round door on the front (+z), control strip on top
+    B(w, h, d, 0xf3f3f1, 0, 0, 0, g);
+    const r = Math.min(w, h) * 0.36;
+    const door = Cy(r, 3, 0x2c3338, 0, 0, 0, g, r);
+    door.rotation.x = Math.PI / 2;
+    door.position.set(0, h * 0.44, d / 2 + 1);
+    const ring = Cy(r + 3, 1.5, 0xbfc3c6, 0, 0, 0, g, r + 3);
+    ring.rotation.x = Math.PI / 2;
+    ring.position.set(0, h * 0.44, d / 2 + 0.3);
+    B(w - 4, 9, 1, 0x2a2a2a, 0, h - 13, d / 2 + 0.2, g);
+  } else if (k == "utilsink") {
+    // white base cabinet with a stainless utility basin set into the top
+    B(w, h - 22, d, 0xf3f3f1, 0, 0, 0, g);
+    B(w, 22, d, 0xb9bec2, 0, h - 22, 0, g);
+    B(w - 10, 2, d - 12, 0x8a9096, 0, h - 1.5, 0, g);
+    B(w - 16, 1.2, 2, 0x9aa0a6, 0, (h - 22) * 0.55, d / 2 + 0.5, g);
+    const f = Cy(1.6, 62, 0xc9ccce, 0, h, -d / 2 + 6, g);
   } else if (k == "pendantbar") {
     B(d, 4, w, c, 0, 0, 0, g);
     B(0.8, 78, 0.8, 0x222222, 0, 4, -w * 0.35, g);

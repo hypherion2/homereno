@@ -7,13 +7,22 @@ function applyVariants(D) {
     D.winder = D.winderSpec || null;
     return;
   }
-  if (!D._base) D._base = { lay: D.lay.slice(), set: {}, furn: JSON.stringify(D.furn) };
+  if (!D._base) D._base = { lay: D.lay.slice(), set: {}, furn: JSON.stringify(D.furn), boxes: JSON.stringify(D.boxes) };
   D.lay = D._base.lay.slice();
   D.furn = JSON.parse(D._base.furn);
+  D.boxes = JSON.parse(D._base.boxes);
   for (const k in D._base.set) D[k] = D._base.set[k];
   D.variants.forEach((vr) => {
     const o = vr.options[vr.choose || 0];
     (o.lay || []).forEach((x) => D.lay.push(x));
+    // an option can take things out: wall boxes by level + centre point, layout items by label prefix
+    if (o.drop) {
+      const cen = (b) => [0, 2, 4, 6].reduce((a, i) => [a[0] + b[1][i] / 4, a[1] + b[1][i + 1] / 4], [0, 0]);
+      (o.drop.box || []).forEach(([L, x, y]) => {
+        D.boxes = D.boxes.filter((b) => !(b[0] == L && Math.hypot(cen(b)[0] - x, cen(b)[1] - y) < 15));
+      });
+      (o.drop.lay || []).forEach((pre) => (D.lay = D.lay.filter((x) => !String(x[10] || "").startsWith(pre))));
+    }
     for (const [k, v] of Object.entries(o.set || {})) {
       if (!(k in D._base.set)) D._base.set[k] = D[k];
       D[k] = v;
