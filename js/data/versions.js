@@ -813,6 +813,7 @@ const VERS = [
           "TV power and data in the alcove.",
           "Receptacle for the beverage fridge.",
           "Stairwell: cascade pendant of opal globes (about 55 cm across, 7 globes) from a black canopy over the landing, lowest globe at least 2.1 m above the treads, dimmable, 2700-3000 K; serviceable from the upper floor or a ladder on the landing.",
+          "SE bedroom (teen room): desk-height receptacle with USB-C and a wired network drop at the 2 m desk under the window; LED strip behind the headboard on a switched receptacle.",
           "Recessed LED step lights in the wall beside the lower flight (about 30 cm above the treads), on a motion sensor at low brightness; 3-way switching at the top and bottom of the stair."
         ]
       ],
@@ -832,6 +833,7 @@ const VERS = [
         "Millwork",
         [
           "Window bench with storage in the west sitting corner.",
+          "SE bedroom: sound insulation (mineral wool) in the walls shared with the lounge and the main bath while the drywall is open (owner DIY).",
           "Laundry: floating oak folding counter (90 cm, 55 cm deep) over a cabinet with a litter box (cat opening, pull-out tray, vent) and a tilt-out hamper; hanging rod and oak shelf above; upper cabinet over the existing laundry sink.",
           "Console behind the sofa (furniture, not built-in)."
         ]
