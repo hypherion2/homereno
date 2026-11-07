@@ -889,11 +889,12 @@ const VERS = [
     "chip": "20 · Oven tower + bar",
     "kind": "Concept 20 · Latest",
     "headline": "Concept 19 with a wall-oven and microwave tower beside the fridge, a drinks bar in the dining corner, an optional fireplace in the kitchen-lounge separator, and a furnished teen bedroom.",
-    "desc": "Everything from concept 19, plus: a full-height oven tower (30 in wall oven with a built-in microwave above) beside the fridge; the induction cooktop stays under the hood with three pot drawers where the range oven was, and a built-in stainless trivet in the island end nearest the oven. A drinks bar sits in the dining corner between the patio door and the dining-room fireplace: oak base with a glass-door wine/beverage fridge, quartz top, lit glass-front upper for stemware and a bottle shelf. The small bar behind the island stools becomes snack drawers. Kitchen-lounge wall options: half wall with quartz ledge, no wall, or a single-sided linear gas fireplace in a 2 m chase at the outside-wall end (vents through the east wall) with a short half wall by the stairs. SE bedroom set up for a teenager: queen storage bed with its headboard on the bathroom wall so both drawer sides open, 115 cm desk on the side wall with the window to the right, low dresser under the small window.",
+    "desc": "Everything from concept 19, plus: a full-height oven tower (30 in wall oven with a built-in microwave above) beside the fridge; the induction cooktop stays under the hood with three pot drawers where the range oven was, and a built-in stainless trivet in the island end nearest the oven. A drinks bar sits in the dining corner between the patio door and the dining-room fireplace: oak base with a glass-door wine/beverage fridge, quartz top, lit glass-front upper for stemware and a bottle shelf. The small bar behind the island stools becomes snack drawers. Kitchen-lounge wall options: half wall with quartz ledge, no wall, or a single-sided linear gas fireplace in a 2 m chase at the outside-wall end (vents through the east wall) with the rest left open. SE bedroom set up for a teenager: queen storage bed with its headboard on the bathroom wall so both drawer sides open, 115 cm desk on the side wall with the window to the right, low dresser under the small window. Cooktop option: on the wall under a chimney hood (window removed), or on the island with a ceiling-hung hood, with the wall oven tower moved to the old range spot facing it.",
     "tags": [
       "Oven tower",
       "Drinks bar",
       "Fireplace option",
+      "Island cooktop option",
       "Teen room"
     ],
     "btn": "View the kitchen",
@@ -949,7 +950,7 @@ const VERS = [
         "Gas and fireplace",
         [
           "Cap the line to the removed lounge fireplace.",
-          "Option: single-sided linear direct-vent gas fireplace (about 100 cm) in a 2 m full-height chase at the outside-wall end of the kitchen-lounge separator, facing the TV nook; horizontal vent through the east wall, new gas line, porcelain surround and flush hearth; the remaining 85 cm by the stairs stays a half wall with the quartz ledge."
+          "Option: single-sided linear direct-vent gas fireplace (about 100 cm) in a 2 m full-height chase at the outside-wall end of the kitchen-lounge separator, facing the TV nook; horizontal vent through the east wall, new gas line, porcelain surround and flush hearth; the rest of the separator line toward the stairs is left open."
         ]
       ],
       [
@@ -970,7 +971,8 @@ const VERS = [
       [
         "Ventilation",
         [
-          "Duct the range hood straight out the east wall (exterior cap). Check whether make-up air is required for the hood size chosen."
+          "Duct the range hood straight out the east wall (exterior cap). Check whether make-up air is required for the hood size chosen.",
+          "Option: island cooktop with a ceiling-hung island hood ducted through the attic to the roof or a side wall (make-up air if required); the wall hood is then not needed, the oven tower moves to the old range spot and the tower beside the fridge becomes a pantry."
         ]
       ],
       [

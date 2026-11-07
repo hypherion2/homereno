@@ -14,7 +14,6 @@ function applyVariants(D) {
   for (const k in D._base.set) D[k] = D._base.set[k];
   D.variants.forEach((vr) => {
     const o = vr.options[vr.choose || 0];
-    (o.lay || []).forEach((x) => D.lay.push(x));
     // an option can take things out: wall boxes by level + centre point, layout items by label prefix
     if (o.drop) {
       const cen = (b) => [0, 2, 4, 6].reduce((a, i) => [a[0] + b[1][i] / 4, a[1] + b[1][i + 1] / 4], [0, 0]);
@@ -22,7 +21,11 @@ function applyVariants(D) {
         D.boxes = D.boxes.filter((b) => !(b[0] == L && Math.hypot(cen(b)[0] - x, cen(b)[1] - y) < 15));
       });
       (o.drop.lay || []).forEach((pre) => (D.lay = D.lay.filter((x) => !String(x[10] || "").startsWith(pre))));
+      (o.drop.layAt || []).forEach(([k, x, y]) => (D.lay = D.lay.filter((q) => !(q[1] == k && Math.abs(q[2] - x) < 1 && Math.abs(q[3] - y) < 1))));
     }
+    (o.boxes || []).forEach((b) => D.boxes.push(JSON.parse(JSON.stringify(b))));
+    (o.furn || []).forEach((f) => D.furn.push(f.slice()));
+    (o.lay || []).forEach((x) => D.lay.push(x));
     for (const [k, v] of Object.entries(o.set || {})) {
       if (!(k in D._base.set)) D._base.set[k] = D[k];
       D[k] = v;
