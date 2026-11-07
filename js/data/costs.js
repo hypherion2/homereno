@@ -1003,8 +1003,8 @@ const COSTS = {
   "notes": "The kitchen and the two beam openings at the stairwell drive most of the cost. The main uncertainty is whether those stairwell walls really are bearing and what the engineer specifies for beams and posts."
  },
  "v25": {
-  "low": 98000.0,
-  "high": 186000.0,
+  "low": 101000.0,
+  "high": 194000.0,
   "items": [
    {
     "item": "Kitchen: cabinets, quartz, island, oven/microwave tower, tall cabinet, backsplash, sink",
@@ -1035,6 +1035,12 @@ const COSTS = {
     "low": 3500,
     "high": 7000,
     "cat": "walls"
+   },
+   {
+    "item": "Widen the kitchen-lounge opening to 1.8 m full height (flush beam if the wall is bearing)",
+    "low": 2500,
+    "high": 7000,
+    "cat": "pro"
    },
    {
     "item": "Island hood ducting through the attic, make-up air if needed",
@@ -1074,8 +1080,8 @@ const COSTS = {
    },
    {
     "item": "Contingency (15%)",
-    "low": 12800.0,
-    "high": 24300.0,
+    "low": 13100.0,
+    "high": 25300.0,
     "cat": "cont"
    }
   ],

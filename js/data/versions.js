@@ -1028,13 +1028,13 @@ const VERS = [
     "chip": "21 · Original + pantry",
     "kind": "Concept 21 · Latest",
     "headline": "The original floor plan kept, with a slim gas fireplace set into the kitchen-lounge wall, a walk-in pantry behind it on the kitchen side, and the concept 20 kitchen.",
-    "desc": "Original walls and stair are kept; the kitchen-lounge doorway loses its door and header and becomes a full-height opening. The corner fireplace chase that stuck about 85 cm into the lounge is removed and replaced by a slim direct-vent gas fireplace (about 38 cm deep) set into the kitchen-lounge wall, flush with the lounge, so the lounge gains that floor. On the kitchen side of the same wall, where the fridge stood, is a walk-in pantry (about 1.2 x 1.2 m inside, shelving on two walls, pocket door on its east side, about 2.5 m in a straight line from the lounge opening) whose back wall encloses the fireplace. The fridge (counter-depth, French doors) moves onto the kitchen side of the kitchen-lounge wall, right beside the pantry. Cooktop in the island at the dining end under a ceiling-hung hood, with the oven/microwave tower directly opposite on the wall run (tall cabinet on one side, coffee station counter on the other). The island and dining table each move toward the other (about 85 cm between them). Three stools at the south end of the island; drinks bar in the dining corner. The kitchen window on the wall run is removed.",
+    "desc": "Original walls and stair are kept; the kitchen-lounge doorway loses its door and header and is widened to a full-height opening about 1.8 m wide, from the fridge to the corner cabinets. The corner fireplace chase that stuck about 85 cm into the lounge is removed and replaced by a slim direct-vent gas fireplace (about 38 cm deep) set into the kitchen-lounge wall, flush with the lounge, so the lounge gains that floor. On the kitchen side of the same wall, where the fridge stood, is a walk-in pantry (about 1.2 x 1.2 m inside, shelving on two walls, pocket door on its east side, about 2.5 m in a straight line from the lounge opening) whose back wall encloses the fireplace. The fridge (counter-depth, French doors) moves onto the kitchen side of the kitchen-lounge wall, right beside the pantry. Cooktop in the island at the dining end under a ceiling-hung hood, with the oven/microwave tower directly opposite on the wall run (tall cabinet on one side, coffee station counter on the other). The island and dining table each move toward the other (about 85 cm between them). Three stools at the south end of the island; drinks bar in the dining corner. The kitchen window on the wall run is removed.",
     "tags": [
       "Original walls",
       "Slim fireplace",
       "Walk-in pantry",
       "Island cooktop",
-      "Full-height opening"
+      "1.8 m opening"
     ],
     "btn": "View the kitchen",
     "proposed": true,
@@ -1045,7 +1045,7 @@ const VERS = [
         [
           "Remove the existing kitchen cabinets, counters and appliances.",
           "Remove the corner gas fireplace and its angled chase in the lounge (about 3 m of chase walls); gas fitter shuts off and caps the line; patch floor and ceiling.",
-          "Remove the door and header in the kitchen-lounge doorway and open it to the ceiling (about 92 cm wide); wrap the opening in drywall corner bead.",
+          "Remove the door and header in the kitchen-lounge doorway, take out about 85 cm of the wall west of it, and open the whole width to the ceiling (about 1.8 m wide, from the fridge to the corner cabinets); wrap the opening in drywall corner bead.",
           "Open the kitchen-lounge wall for the new fireplace and chase (bearing check first)."
         ]
       ],
@@ -1053,7 +1053,7 @@ const VERS = [
         "Structural and framing",
         [
           "Fill in the 105 cm kitchen window on the east wall (framing, sheathing, house wrap, insulation, siding to match, drywall inside).",
-          "Full-height opening: if the kitchen-lounge wall is bearing, a flush beam in the ceiling above the opening carries the load (engineer to size).",
+          "1.8 m full-height opening: if the kitchen-lounge wall is bearing, a flush beam in the ceiling over the opening with posts at each end carries the load (engineer to size).",
           "Walk-in pantry about 1.2 x 1.2 m inside on the kitchen side of the kitchen-lounge wall: two new walls, 66 cm pocket door on the east side facing the lounge opening (beside the fridge).",
           "Fireplace chase framed into the kitchen-lounge wall, backing into the pantry (clearances per the unit chosen; no shelving on that wall)."
         ]
@@ -1126,7 +1126,8 @@ const VERS = [
       "Existing fireplace vent type (B-vent cannot be reused for a direct-vent unit) and that the new unit allows the attic offset.",
       "Clearances from the fireplace chase to the pantry and fridge.",
       "About 85 cm between the dining table end and the island is the minimum; confirm with the real table.",
-      "Island hood duct route in the attic and make-up air requirement."
+      "Island hood duct route in the attic and make-up air requirement.",
+      "Finished end panel on the fridge side facing the opening."
     ]
   }
 ];
