@@ -740,7 +740,7 @@ const VERS = [
     "title": "Open kitchen, pantry wall",
     "sub": "Concept 14 plan, big island, TV nook",
     "chip": "19 · Open kitchen",
-    "kind": "Concept 19 · Latest",
+    "kind": "Concept 19",
     "headline": "Concept 14 reworked: full-size island, pantry wall behind the stools, wider patio door, and a TV nook where the fireplace wall was.",
     "desc": "Concept 14's plan with the current stair. Kitchen: full-size island (2.8 m, four stools) about 1.0 m from the dining table, which sits about 1.25 m from a standard 10 ft patio slider centred on the dining wall; two full-height pantry units and a bar with a beverage fridge on the hall wall behind the stools. The fireplace and its chase are removed and the kitchen-lounge wall is extended from the outside wall, leaving a 1.2 m opening at the stair end, so the way from the stairs to the kitchen crosses only the west end of the lounge. The east end becomes a TV nook: a 75 in TV in the alcove and a big 8 ft sofa with its chaise end against the window wall; the left-most seat faces the TV straight on from about 3.6 m, with about 1.4 m of open floor between the sofa arm and the half wall. The west end, where the fireplace was, is a sitting corner with a window bench. Around the stairwell, the hall-side and north walls are replaced by glass railings with a black top rail (they look bearing, so beams are needed); the half wall between the kitchen and the TV nook is 107 cm high with a 35 cm quartz ledge matching the kitchen counters, overhanging the lounge side for drinks. Ground floor: the under-stair storage gets 1.2 m double doors from the garage (fire-rated, self-closing) as well as its foyer door.",
     "tags": [
@@ -880,6 +880,143 @@ const VERS = [
         "thumb": "img/v23/3_t.jpg",
         "caption": "Half wall with the quartz ledge, pantry units behind the island stools, and the bar cabinet by the stair."
       }
+    ]
+  },
+  {
+    "key": "v24",
+    "title": "Oven tower, drinks bar, fireplace option",
+    "sub": "Concept 19 + wall oven, bar, teen room",
+    "chip": "20 · Oven tower + bar",
+    "kind": "Concept 20 · Latest",
+    "headline": "Concept 19 with a wall-oven and microwave tower beside the fridge, a drinks bar in the dining corner, an optional fireplace in the kitchen-lounge separator, and a furnished teen bedroom.",
+    "desc": "Everything from concept 19, plus: a full-height oven tower (30 in wall oven with a built-in microwave above) beside the fridge; the induction cooktop stays under the hood with three pot drawers where the range oven was, and a built-in stainless trivet in the island end nearest the oven. A drinks bar sits in the dining corner between the patio door and the dining-room fireplace: oak base with a glass-door wine/beverage fridge, quartz top, lit glass-front upper for stemware and a bottle shelf. The small bar behind the island stools becomes snack drawers. Kitchen-lounge wall options: half wall with quartz ledge, no wall, or a single-sided linear gas fireplace in a 2 m chase at the outside-wall end (vents through the east wall) with a short half wall by the stairs. SE bedroom set up for a teenager: queen storage bed with its headboard on the bathroom wall so both drawer sides open, 115 cm desk on the side wall with the window to the right, low dresser under the small window.",
+    "tags": [
+      "Oven tower",
+      "Drinks bar",
+      "Fireplace option",
+      "Teen room"
+    ],
+    "btn": "View the kitchen",
+    "proposed": true,
+    "blinds": true,
+    "scope": [
+      [
+        "Demolition",
+        [
+          "Remove the non-bearing partitions on the upper floor: the 3.2 m kitchen-living wall with its doorway, and the walls of the small room at the top of the stair (about 3 m). Patch ceiling and floor where they stood.",
+          "Remove the corner gas fireplace in the lounge with its chase: gas fitter shuts off and caps the line, remove insert and vent, patch the wall/roof penetration.",
+          "Remove the existing kitchen cabinets, counters and appliances.",
+          "Remove the two stairwell walls on the hall side and north side (about 1.7 m and 1.0 m) and the low wall at the stair."
+        ]
+      ],
+      [
+        "Structural and framing",
+        [
+          "Engineered beams and posts where the two stairwell walls come out (they look bearing), posts to footings.",
+          "Extend the kitchen-lounge wall from the outside wall as a 2.2 m half wall, 107 cm high, topped with a 35 cm deep quartz ledge (same stone as the counters) overhanging about 20 cm on the lounge side, with a receptacle on the lounge face; 1.2 m opening at the stair end. Option: leave the half wall out for a fully open room.",
+          "Ground floor: new 1.2 m opening from the garage into the under-stair storage with header (about 185 cm clear).",
+          "Replace the 178 cm patio slider with a 305 cm (10 ft) slider centred on the dining wall. New header in the exterior (bearing) wall sized by the engineer, temporary shoring, flashing to the deck, trim and siding repair.",
+          "Remove the 105 cm slider window on the east kitchen wall (where the range goes) and infill: framing, sheathing, house wrap, insulation, siding and trim to match, drywall inside."
+        ]
+      ],
+      [
+        "Stair",
+        [
+          "Glass guards with a black top rail where the stairwell walls come out (code height, tempered/laminated glass, anchored to blocking). About 4.5 m of guard around the stairwell."
+        ]
+      ],
+      [
+        "Kitchen",
+        [
+          "New one-wall kitchen on the east exterior wall (about 6.3 m, north to south): oven tower (30 in wall oven with built-in microwave above, drawer below, side panel against the fridge), fridge/freezer with cabinet above, prep drawers, induction cooktop with three pot drawers under it and the stainless chimney hood above, dishwasher, sink in the original spot, drawers to the corner. Warm-white uppers to the hood.",
+          "Island 280 x 95 cm with seating for four: drawers, pull-out trash/recycling, oak end panels. No plumbing in the island.",
+          "Quartz counters on the run and island; backsplash.",
+          "Hall wall behind the island stools: two full-height pantry units and a snack-drawer base with an upper for everyday glasses.",
+          "Built-in stainless trivet (hot rods) set into the island top at the end nearest the oven; optional pull-out landing shelf under the oven.",
+          "Drinks bar in the dining corner between the patio door and the dining fireplace: 100 x 45 cm oak base with a glass-door wine/beverage fridge and glass drawers, quartz top, LED-lit glass-front upper, bottle shelf."
+        ]
+      ],
+      [
+        "Plumbing",
+        [
+          "Sink stays on the existing drain and supply lines; new faucet.",
+          "Dishwasher hookup beside the sink (supply, drain, high loop or air gap).",
+          "Fridge water line if the fridge has an ice maker.",
+          "Check removed walls for supply/drain/vent lines before demolition and reroute if found."
+        ]
+      ],
+      [
+        "Gas and fireplace",
+        [
+          "Cap the line to the removed lounge fireplace.",
+          "Option: single-sided linear direct-vent gas fireplace (about 100 cm) in a 2 m full-height chase at the outside-wall end of the kitchen-lounge separator, facing the TV nook; horizontal vent through the east wall, new gas line, porcelain surround and flush hearth; the remaining 85 cm by the stairs stays a half wall with the quartz ledge."
+        ]
+      ],
+      [
+        "Electrical and lighting",
+        [
+          "New 40 A 240 V circuit for the induction cooktop and a separate 30-40 A 240 V circuit for the wall oven; dedicated circuit for the built-in microwave; confirm panel capacity (load calculation).",
+          "Dedicated circuits for dishwasher, fridge and hood; split counter receptacles to current code.",
+          "Island receptacles fed through the floor from below.",
+          "Lighting: about 26 pot lights across the open area, 3 pendants over the island, linear pendant over the dining table, under-cabinet LED.",
+          "Relocate switches, receptacles and smoke/CO alarms out of the removed walls.",
+          "TV power and data in the alcove.",
+          "Receptacle for the wine/beverage fridge and LED under-cabinet light at the dining-corner bar.",
+          "Stairwell: cascade pendant of opal globes (about 55 cm across, 7 globes) from a black canopy over the landing, lowest globe at least 2.1 m above the treads, dimmable, 2700-3000 K; serviceable from the upper floor or a ladder on the landing.",
+          "SE bedroom (teen room): desk-height receptacle with USB-C and a wired network drop at the 2 m desk under the window; LED strip behind the headboard on a switched receptacle.",
+          "Recessed LED step lights in the wall beside the lower flight (about 30 cm above the treads), on a motion sensor at low brightness; 3-way switching at the top and bottom of the stair."
+        ]
+      ],
+      [
+        "Ventilation",
+        [
+          "Duct the range hood straight out the east wall (exterior cap). Check whether make-up air is required for the hood size chosen."
+        ]
+      ],
+      [
+        "Ground floor",
+        [
+          "Replace the diagonal walls under the stair with stub walls; 76 cm door from the foyer and 1.2 m fire-rated, self-closing, gasketed double doors from the garage into under-stair storage (garage side finished as a fire separation, Type X drywall)."
+        ]
+      ],
+      [
+        "Millwork",
+        [
+          "Window bench with storage in the west sitting corner.",
+          "SE bedroom: sound insulation (mineral wool) in the walls shared with the lounge and the main bath while the drywall is open (owner DIY).",
+          "Laundry: floating oak folding counter (90 cm, 55 cm deep) over a cabinet with a litter box (cat opening, pull-out tray, vent) and a tilt-out hamper; hanging rod and oak shelf above; upper cabinet over the existing laundry sink.",
+          "Console behind the sofa (furniture, not built-in).",
+          "SE bedroom: queen storage bed with the headboard on the bathroom wall (drawers clear on both sides), 115 x 60 cm desk on the side wall with the window to the right, low dresser under the small window."
+        ]
+      ],
+      [
+        "Flooring and finishes",
+        [
+          "New flooring across the upper-floor open area (kitchen, dining, lounge, hall), about 70 m² / 750 sq ft; remove existing carpet/flooring, level where walls came out (owner DIY).",
+          "Drywall patching where walls and fixtures were removed; tape, mud, prime (owner DIY).",
+          "Paint the upper floor; caulk trim and counters (owner DIY)."
+        ]
+      ],
+      [
+        "Permits and engineering",
+        [
+          "Building permit (structural, stair, window/door openings) with engineer letters for beams and headers.",
+          "Electrical permit (homeowner permit possible in BC for the owner-done part; inspection required).",
+          "Gas permit by a licensed gas fitter for capping/adding gas appliances."
+        ]
+      ]
+    ],
+    "confirm": [
+      "Which walls are bearing: confirm joist direction and loads in the attic and from below before any wall comes out.",
+      "Ducts, returns, plumbing or wiring inside walls that are being removed.",
+      "Header size and any point loads for the wider patio opening.",
+      "That losing the kitchen window is acceptable (range sits where it is now), or shift the range and keep the window.",
+      "Beam sizes, post locations and footings under the posts.",
+      "That the 10 ft header fits under the floor framing above.",
+      "Fire-separation requirements for the new garage door (rating, closer, gasketing) with the inspector.",
+      "Side clearance from the dining-room fireplace to the new oven tower (about 20 cm) and to the drinks bar.",
+      "Fridge and wall-oven manuals: required gap or insulating panel between them.",
+      "If the fireplace option is chosen: firebox clearance to the end of the kitchen counter (about 20 cm) and vent termination clearance from the kitchen window."
     ]
   }
 ];

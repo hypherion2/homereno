@@ -908,5 +908,98 @@ const COSTS = {
    }
   ],
   "notes": "The kitchen and the two beam openings at the stairwell drive most of the cost. The main uncertainty is whether those stairwell walls really are bearing and what the engineer specifies for beams and posts."
+ },
+ "v24": {
+  "key": "v23",
+  "low": 129000.0,
+  "high": 264000.0,
+  "items": [
+   {
+    "item": "Full kitchen remodel (cabinets, quartz, backsplash, sink, lighting) with 2.8 m island and floor electrical",
+    "low": 43000,
+    "high": 81000,
+    "cat": "kitchen"
+   },
+   {
+    "item": "Appliance package (range, hood, fridge, dishwasher)",
+    "low": 8000,
+    "high": 18000,
+    "cat": "pro"
+   },
+   {
+    "item": "Two full-height pantry units plus bar with beverage fridge",
+    "low": 5500,
+    "high": 11000,
+    "cat": "kitchen"
+   },
+   {
+    "item": "Remove fireplace and chase, take out partitions, extend kitchen-lounge wall, new 107 cm half wall with oak cap",
+    "low": 6500,
+    "high": 17000,
+    "cat": "walls"
+   },
+   {
+    "item": "Replace two likely-bearing stairwell walls (1.6 m and 1.2 m) with beams, posts, engineer, permit and glass railings with black top rail",
+    "low": 17500,
+    "high": 43000,
+    "cat": "pro"
+   },
+   {
+    "item": "10 ft patio slider replacing existing door, incl. longer header",
+    "low": 6000,
+    "high": 12000,
+    "cat": "pro"
+   },
+   {
+    "item": "1.2 m fire-rated self-closing double doors from garage to under-stair storage, plus storage fit-out",
+    "low": 4000,
+    "high": 9000,
+    "cat": "pro"
+   },
+   {
+    "item": "Flooring, paint, pot lights and window bench in the open area",
+    "low": 14000,
+    "high": 24500,
+    "cat": "finish"
+   },
+   {
+    "item": "Oven tower: 30 in wall oven, built-in microwave, tall cabinet (cooktop replaces the range)",
+    "low": 4000,
+    "high": 7000,
+    "cat": "kitchen"
+   },
+   {
+    "item": "Drinks bar: oak base, wine/beverage fridge, quartz top, glass-front upper, LED",
+    "low": 3000,
+    "high": 5500,
+    "cat": "kitchen"
+   },
+   {
+    "item": "Wall-oven circuit, bar receptacle and LED, island trivet inset",
+    "low": 800,
+    "high": 1600,
+    "cat": "elec"
+   },
+   {
+    "item": "Contingency (15%)",
+    "low": 16800.0,
+    "high": 34400.0,
+    "cat": "cont"
+   }
+  ],
+  "optional": [
+   {
+    "item": "75 in TV and mount, large sofa with chaise, four bar stools",
+    "low": 6000,
+    "high": 14000
+   },
+   {
+    "item": "Fireplace option in the kitchen-lounge separator (unit, chase, gas, venting, surround)",
+    "low": 7000,
+    "high": 13000,
+    "cat": "pro"
+   }
+  ],
+  "notes": "The kitchen and the two beam openings at the stairwell drive most of the cost. The main uncertainty is whether those stairwell walls really are bearing and what the engineer specifies for beams and posts."
  }
 };
