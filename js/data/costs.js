@@ -1001,5 +1001,85 @@ const COSTS = {
    }
   ],
   "notes": "The kitchen and the two beam openings at the stairwell drive most of the cost. The main uncertainty is whether those stairwell walls really are bearing and what the engineer specifies for beams and posts."
+ },
+ "v25": {
+  "low": 98000.0,
+  "high": 186000.0,
+  "items": [
+   {
+    "item": "Kitchen: cabinets, quartz, island, oven/microwave tower, tall cabinet, backsplash, sink",
+    "low": 38000,
+    "high": 72000,
+    "cat": "kitchen"
+   },
+   {
+    "item": "Appliances: induction cooktop, wall oven, built-in microwave, counter-depth fridge, dishwasher, island hood",
+    "low": 11000,
+    "high": 22000,
+    "cat": "pro"
+   },
+   {
+    "item": "Drinks bar: base, wine/beverage fridge, quartz, glass upper",
+    "low": 3000,
+    "high": 5500,
+    "cat": "kitchen"
+   },
+   {
+    "item": "Remove the corner fireplace and chase, slim direct-vent fireplace in the wall (unit, gas extension, vent offset, surround)",
+    "low": 9000,
+    "high": 17000,
+    "cat": "pro"
+   },
+   {
+    "item": "Walk-in pantry: framing, pocket door, shelving",
+    "low": 3500,
+    "high": 7000,
+    "cat": "walls"
+   },
+   {
+    "item": "Island hood ducting through the attic, make-up air if needed",
+    "low": 2500,
+    "high": 5000,
+    "cat": "pro"
+   },
+   {
+    "item": "Fill in the kitchen window",
+    "low": 1500,
+    "high": 3000,
+    "cat": "pro"
+   },
+   {
+    "item": "Electrical: cooktop and oven circuits, island power through the floor, lighting",
+    "low": 5000,
+    "high": 9000,
+    "cat": "elec"
+   },
+   {
+    "item": "Flooring, paint, drywall patching, caulking",
+    "low": 9000,
+    "high": 16000,
+    "cat": "finish"
+   },
+   {
+    "item": "Teen room: electrical drop and sound insulation",
+    "low": 600,
+    "high": 1400,
+    "cat": "finish"
+   },
+   {
+    "item": "Permits and engineering",
+    "low": 2000,
+    "high": 4000,
+    "cat": "pro"
+   },
+   {
+    "item": "Contingency (15%)",
+    "low": 12800.0,
+    "high": 24300.0,
+    "cat": "cont"
+   }
+  ],
+  "optional": [],
+  "notes": "Keeps the original walls and stair, so no beams or stair work."
  }
 };

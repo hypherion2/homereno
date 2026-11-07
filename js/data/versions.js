@@ -887,7 +887,7 @@ const VERS = [
     "title": "Oven tower, drinks bar, fireplace option",
     "sub": "Concept 19 + wall oven, bar, teen room",
     "chip": "20 · Oven tower + bar",
-    "kind": "Concept 20 · Latest",
+    "kind": "Concept 20",
     "headline": "Concept 19 with a wall-oven and microwave tower beside the fridge, a drinks bar in the dining corner, an optional fireplace in the kitchen-lounge separator, and a furnished teen bedroom.",
     "desc": "Everything from concept 19, plus: a full-height oven tower (30 in wall oven with a built-in microwave above) beside the fridge; the induction cooktop stays under the hood with three pot drawers where the range oven was, and a built-in stainless trivet in the island end nearest the oven. A drinks bar sits in the dining corner between the patio door and the dining-room fireplace: oak base with a glass-door wine/beverage fridge, quartz top, lit glass-front upper for stemware and a bottle shelf. The small bar behind the island stools becomes snack drawers. Kitchen-lounge wall options: half wall with quartz ledge, no wall, or a single-sided linear gas fireplace in a 2 m chase at the outside-wall end (vents through the east wall) with the rest left open. SE bedroom set up for a teenager: queen storage bed with its headboard on the bathroom wall so both drawer sides open, 115 cm desk on the side wall with the window to the right, low dresser under the small window. Cooktop option: on the wall under a chimney hood (window removed), or on the island with a ceiling-hung hood, with the wall oven tower moved to the old range spot facing it.",
     "tags": [
@@ -1019,6 +1019,112 @@ const VERS = [
       "Side clearance from the dining-room fireplace to the new oven tower (about 20 cm) and to the drinks bar.",
       "Fridge and wall-oven manuals: required gap or insulating panel between them.",
       "If the fireplace option is chosen: firebox clearance to the end of the kitchen counter (about 20 cm) and vent termination clearance from the kitchen window."
+    ]
+  },
+  {
+    "key": "v25",
+    "title": "Original walls, walk-in pantry",
+    "sub": "Slim fireplace, pantry behind it",
+    "chip": "21 · Original + pantry",
+    "kind": "Concept 21 · Latest",
+    "headline": "The original floor plan kept, with a slim gas fireplace set into the kitchen-lounge wall, a walk-in pantry behind it on the kitchen side, and the concept 20 kitchen.",
+    "desc": "Original walls, stair and kitchen-lounge doorway are kept. The corner fireplace chase that stuck about 85 cm into the lounge is removed and replaced by a slim direct-vent gas fireplace (about 38 cm deep) set into the kitchen-lounge wall, flush with the lounge, so the lounge gains that floor. On the kitchen side of the same wall, where the fridge stood, is a walk-in pantry (about 1.2 x 1.2 m inside, shelving on two walls, pocket door) whose back wall encloses the fireplace. The fridge (counter-depth, French doors) moves onto the kitchen side of the kitchen-lounge wall, right beside the pantry. Cooktop in the island at the dining end under a ceiling-hung hood, with the oven/microwave tower directly opposite on the wall run (tall cabinet on one side, coffee station counter on the other). The island and dining table each move toward the other (about 85 cm between them). Three stools at the south end of the island; drinks bar in the dining corner. The kitchen window on the wall run is removed.",
+    "tags": [
+      "Original walls",
+      "Slim fireplace",
+      "Walk-in pantry",
+      "Island cooktop",
+      "Teen room"
+    ],
+    "btn": "View the kitchen",
+    "proposed": true,
+    "blinds": true,
+    "scope": [
+      [
+        "Demolition",
+        [
+          "Remove the existing kitchen cabinets, counters and appliances.",
+          "Remove the corner gas fireplace and its angled chase in the lounge (about 3 m of chase walls); gas fitter shuts off and caps the line; patch floor and ceiling.",
+          "Open the kitchen-lounge wall for the new fireplace and chase (bearing check first)."
+        ]
+      ],
+      [
+        "Structural and framing",
+        [
+          "Fill in the 105 cm kitchen window on the east wall (framing, sheathing, house wrap, insulation, siding to match, drywall inside).",
+          "Walk-in pantry about 1.2 x 1.2 m inside on the kitchen side of the kitchen-lounge wall: two new walls, 66 cm pocket door from the walkway behind the stools.",
+          "Fireplace chase framed into the kitchen-lounge wall, backing into the pantry (clearances per the unit chosen; no shelving on that wall)."
+        ]
+      ],
+      [
+        "Kitchen",
+        [
+          "Wall run on the east wall (north to south): 84 cm tall cabinet, oven tower (30 in wall oven with built-in microwave above, drawer below), coffee station with drawers and uppers, prep drawers, dishwasher, sink in the original spot, drawers to the corner. Warm-white uppers.",
+          "Island 280 x 100 cm with a 76 cm induction cooktop at the dining end, pot drawers, pull-out trash, three stools at the south end, built-in stainless trivet.",
+          "Counter-depth French-door fridge on the kitchen side of the kitchen-lounge wall, beside the pantry, with a cabinet above.",
+          "Drinks bar in the dining corner: oak base with a glass-door wine/beverage fridge, quartz top, LED-lit glass-front upper.",
+          "Quartz counters and backsplash."
+        ]
+      ],
+      [
+        "Plumbing",
+        [
+          "Sink stays on the existing drain and supply; new faucet; dishwasher hookup.",
+          "Fridge water line if it has an ice maker."
+        ]
+      ],
+      [
+        "Gas and fireplace",
+        [
+          "Slim direct-vent gas fireplace (about 38 cm deep) set into the kitchen-lounge wall, flush with the lounge, with surround and flush hearth.",
+          "Extend the existing gas line about 1 m to the new unit; new vent pipe to the unit's listing, offset about 1.2 m in the attic to the existing roof penetration (or a new one)."
+        ]
+      ],
+      [
+        "Electrical and lighting",
+        [
+          "40 A 240 V circuit for the island cooktop (fed through the floor), separate 240 V circuit for the wall oven, dedicated circuits for the microwave, dishwasher, fridge, wine fridge and hood.",
+          "Island receptacles; pantry light; pot lights across the kitchen, pendants over the island seating, linear pendant over the dining table, under-cabinet LED.",
+          "SE bedroom: desk-height receptacle with USB-C and a network drop; switched receptacle for the headboard LED."
+        ]
+      ],
+      [
+        "Ventilation",
+        [
+          "Ceiling-hung island hood over the cooktop, ducted through the attic to the roof or a side wall; make-up air if the hood size requires it."
+        ]
+      ],
+      [
+        "Millwork",
+        [
+          "Walk-in pantry shelving on two walls.",
+          "SE bedroom: queen storage bed with headboard on the bathroom wall, 115 x 60 cm desk on the side wall, low dresser under the small window."
+        ]
+      ],
+      [
+        "Flooring and finishes",
+        [
+          "New flooring in the kitchen, dining, lounge and the old chase footprint (about 60 m²) (owner DIY).",
+          "Drywall patching where the chase, window and cabinets came out; tape, mud, prime (owner DIY).",
+          "Paint kitchen, dining, lounge and pantry; caulk trim and counters (owner DIY).",
+          "Sound insulation in the SE bedroom walls shared with the lounge and main bath (owner DIY)."
+        ]
+      ],
+      [
+        "Permits and engineering",
+        [
+          "Building permit (window infill, wall opening for the fireplace).",
+          "Gas permit by a licensed gas fitter.",
+          "Electrical permit (homeowner permit possible for the owner-done part; inspection required)."
+        ]
+      ]
+    ],
+    "confirm": [
+      "Whether the kitchen-lounge wall is bearing where the fireplace and pantry wall tie in.",
+      "Existing fireplace vent type (B-vent cannot be reused for a direct-vent unit) and that the new unit allows the attic offset.",
+      "Clearances from the fireplace chase to the pantry and fridge.",
+      "About 85 cm between the dining table end and the island is the minimum; confirm with the real table.",
+      "Island hood duct route in the attic and make-up air requirement."
     ]
   }
 ];
