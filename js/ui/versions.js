@@ -104,6 +104,9 @@ function setVersion(i, keep) {
         verSlug(v) +
         '.sh3d" title="Sweet Home 3D file (5.3 or later). Walls, rooms, doors, windows and existing furniture use the original models; proposed items are coloured blocks." style="background:transparent;color:inherit;border:1px solid currentColor;opacity:.8;text-decoration:none;display:inline-block;text-align:center;box-sizing:border-box">Download .sh3d</a>'
       : "") +
+    ' <a class="btn" href="sheets/#' +
+    verSlug(v) +
+    '" target="_blank" rel="noopener" title="Still images of every design (floor plan + kitchen-to-living view) with descriptions and costs; easy to share with other AI tools" style="background:transparent;color:inherit;border:1px solid currentColor;opacity:.8;text-decoration:none;display:inline-block;text-align:center;box-sizing:border-box">Image sheets</a>' +
     galleryHtml(v) +
     scopeHtml(v);
   costWire(v.key);
