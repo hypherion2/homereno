@@ -1026,7 +1026,7 @@ const VERS = [
     "title": "Original walls, walk-in pantry",
     "sub": "Slim fireplace, pantry behind it",
     "chip": "21 · Original + pantry",
-    "kind": "Concept 21 · Latest",
+    "kind": "Concept 21",
     "headline": "The original floor plan kept, with a slim gas fireplace set into the kitchen-lounge wall, a walk-in pantry behind it on the kitchen side, and the concept 20 kitchen.",
     "desc": "Original walls and stair are kept; the kitchen-lounge doorway loses its door and header and is widened to a full-height opening about 1.8 m wide, from the fridge to the corner cabinets. The corner fireplace chase that stuck about 85 cm into the lounge is removed and replaced by a slim direct-vent gas fireplace (about 38 cm deep) set into the kitchen-lounge wall, flush with the lounge, so the lounge gains that floor. On the kitchen side of the same wall, where the fridge stood, is a walk-in pantry (about 1.2 x 1.7 m inside, its north wall in line with the hallway, shelving on two long walls, pocket door on its north side opening to the hallway) whose back wall encloses the fireplace. The fridge (counter-depth, French doors) moves onto the kitchen side of the kitchen-lounge wall, right beside the pantry. Cooktop in the island at the dining end under a ceiling-hung hood, with the oven/microwave tower directly opposite on the wall run (tall cabinet on one side, coffee station counter on the other). The island and dining table each move toward the other (about 85 cm between them). Two stools at the south end of the island (keeps a clear path between the island and the pantry door); drinks bar in the dining corner. The kitchen window on the wall run is removed.",
     "tags": [
@@ -1128,6 +1128,104 @@ const VERS = [
       "About 85 cm between the dining table end and the island is the minimum; confirm with the real table.",
       "Island hood duct route in the attic and make-up air requirement.",
       "Finished end panel on the fridge side facing the opening."
+    ]
+  },
+  {
+    "key": "v26",
+    "title": "Open plan, pantry wall, oven tower",
+    "sub": "Concept 15 with 20 and 21 ideas",
+    "chip": "22 · Open + pantry wall",
+    "kind": "Concept 22 · Latest",
+    "headline": "Concept 15 refined: the open kitchen and two living-room seating areas kept, with a full-height pantry wall, an oven tower beside the fridge and an integrated drinks bar.",
+    "desc": "Same plan as concept 15: the kitchen-lounge wall is opened up except a short chase with a slim gas fireplace facing the lounge, the stair stays as built (the top-winder idea is left as an option), and the lounge has two seating areas (sofa facing the TV nook, two fireside chairs facing the fireplace). Changes: the short dry-pantry run on the stair-side wall becomes a full-height pantry wall (three pull-out units, 60 + 60 + 50 cm wide, 36 cm deep, floor to ceiling), which keeps about 1.5 m between it and the island edge. On the kitchen wall run the full-height pantry is replaced by an oven tower (30 in wall oven with a built-in microwave above): from the dining end you see the fridge with its cabinet above, then the oven tower, both full height, then the counter run with the coffee station beside the oven (landing space for hot dishes) and an induction cooktop over pot drawers under the hood. The beverage-fridge corner by the patio slider becomes a proper drinks bar in the same footprint: white-oak base matching the island, glass-door wine/beverage fridge, quartz top, LED-lit glass-front upper and a bottle shelf. The dining table moves 15 cm south so you can stand at the bar and pass the patio slider.",
+    "tags": [
+      "Concept 15 layout",
+      "Pantry wall",
+      "Oven tower",
+      "Drinks bar",
+      "Two seating areas"
+    ],
+    "btn": "View the kitchen zones",
+    "proposed": true,
+    "blinds": true,
+    "scope": [
+      [
+        "Demolition",
+        [
+          "Remove the existing kitchen cabinets, counters and appliances.",
+          "Remove the corner gas fireplace and its angled chase; gas fitter shuts off and caps the line.",
+          "Remove the kitchen-lounge wall and doorway (about 3 m) and the short angled wall at the top of the stair; patch floor and ceiling."
+        ]
+      ],
+      [
+        "Structural and framing",
+        [
+          "Confirm whether the kitchen-lounge wall is bearing before removal; if it is, a flush beam with posts to bearing (engineer to size) is needed (see optional costs).",
+          "New short chase (about 1.9 m long, 50 cm deep) on the old wall line for the slim fireplace.",
+          "Fill in the kitchen window on the east wall; widen the dining patio opening to the slider (new header).",
+          "Stair guard where the angled wall came out."
+        ]
+      ],
+      [
+        "Kitchen",
+        [
+          "Wall run on the east wall (north to south): counter-depth fridge with cabinet above, oven tower 76 cm (30 in wall oven, built-in microwave above, drawer below), coffee station (landing beside the oven) with uppers, 76 cm induction cooktop over three pot drawers under the chimney hood, prep drawers, dishwasher, sink in the original spot, drawers to the corner.",
+          "Pantry wall on the stair-side wall: three full-height pull-out pantry units (60, 60 and 50 cm wide, 36 cm deep), floor to ceiling, with a pot light in front.",
+          "Island 284 x 100 cm (white oak), four stools, prep sink, pull-out trash; about 115 cm work aisle to the wall run, about 150 cm from the island edge to the pantry wall.",
+          "Drinks bar in the dining corner between the dining wall and the patio slider (94 cm): white-oak base with a glass-door wine/beverage fridge, quartz top, LED-lit glass-front upper, bottle shelf.",
+          "Quartz counters and backsplash; greige lowers, warm-white uppers and tall units, black hardware."
+        ]
+      ],
+      [
+        "Plumbing",
+        [
+          "Sink stays on the existing drain and supply; island prep sink (new drain and vent through the floor); dishwasher; fridge water line."
+        ]
+      ],
+      [
+        "Gas and fireplace",
+        [
+          "Slim direct-vent gas fireplace (about 38 cm deep) in the new chase facing the lounge, stone or porcelain surround, flush hearth; extend the existing gas line and vent."
+        ]
+      ],
+      [
+        "Electrical and lighting",
+        [
+          "40 A 240 V circuit for the cooktop, separate 240 V circuit for the wall oven, dedicated circuits for the microwave, dishwasher, fridge, beverage fridge and hood; island receptacles through the floor.",
+          "Pot lights, island pendants, linear pendant over the dining table, under-cabinet LED, bar LED, stair step lights.",
+          "Teen room: desk-height receptacle with USB-C and a network drop; switched receptacle for the headboard LED."
+        ]
+      ],
+      [
+        "Millwork",
+        [
+          "Oak media wall around the TV in the nook.",
+          "Teen room: queen storage bed, 115 cm desk, low dresser."
+        ]
+      ],
+      [
+        "Flooring and finishes",
+        [
+          "Engineered oak through the kitchen, dining and lounge (owner DIY).",
+          "Drywall patching, prime and paint (warm off-white) (owner DIY)."
+        ]
+      ],
+      [
+        "Permits and engineering",
+        [
+          "Building permit (wall removal, window infill, patio opening).",
+          "Gas permit by a licensed gas fitter.",
+          "Electrical permit.",
+          "Engineer to confirm the kitchen-lounge wall and the patio header."
+        ]
+      ]
+    ],
+    "confirm": [
+      "Whether the kitchen-lounge wall is bearing (the cost assumes it is not; a beam adds the optional line).",
+      "Pull-out pantry hardware for 36 cm deep units (full-extension, heavy-duty).",
+      "Wall oven and microwave cut-out sizes fit a 76 cm tower.",
+      "Bar clearance to the patio slider trim (about 9 cm).",
+      "Dining table end to island and chairs to the bar with the real table."
     ]
   }
 ];

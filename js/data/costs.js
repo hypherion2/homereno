@@ -1087,5 +1087,103 @@ const COSTS = {
   ],
   "optional": [],
   "notes": "Keeps the original walls and stair, so no beams or stair work."
+ },
+ "v26": {
+  "low": 136000.0,
+  "high": 261000.0,
+  "items": [
+   {
+    "item": "Kitchen: cabinets, quartz, white-oak island with prep sink, oven tower cabinet, pantry wall (3 full-height pull-outs), backsplash",
+    "low": 48000,
+    "high": 82000,
+    "cat": "kitchen"
+   },
+   {
+    "item": "Appliances: induction cooktop, 30 in wall oven, built-in microwave, counter-depth fridge, dishwasher, chimney hood",
+    "low": 11000,
+    "high": 22000,
+    "cat": "pro"
+   },
+   {
+    "item": "Drinks bar: white-oak base, wine/beverage fridge, quartz, lit glass-front upper, bottle shelf",
+    "low": 3000,
+    "high": 5500,
+    "cat": "kitchen"
+   },
+   {
+    "item": "Remove the kitchen-lounge wall, old corner fireplace/chase and angled stair wall; build the short fireplace chase",
+    "low": 9000,
+    "high": 22000,
+    "cat": "walls"
+   },
+   {
+    "item": "Slim direct-vent gas fireplace in the new chase (unit, gas extension, vent, stone surround)",
+    "low": 10000,
+    "high": 19000,
+    "cat": "pro"
+   },
+   {
+    "item": "Island prep sink plumbing and floor electrical",
+    "low": 5000,
+    "high": 10000,
+    "cat": "pro"
+   },
+   {
+    "item": "Oak media wall around the TV in the nook",
+    "low": 4000,
+    "high": 10000,
+    "cat": "pro"
+   },
+   {
+    "item": "Stair: new guard, step lights, under-stair closet fit-out",
+    "low": 4000,
+    "high": 11500,
+    "cat": "pro"
+   },
+   {
+    "item": "Fill in the kitchen window; patio slider header",
+    "low": 3000,
+    "high": 7000,
+    "cat": "pro"
+   },
+   {
+    "item": "Electrical: cooktop, oven, bar and pantry-light circuits",
+    "low": 1500,
+    "high": 3000,
+    "cat": "elec"
+   },
+   {
+    "item": "Engineered oak flooring, paint, pot lights and linear dining pendant",
+    "low": 17000,
+    "high": 29500,
+    "cat": "finish"
+   },
+   {
+    "item": "Teen room: electrical drop and sound insulation",
+    "low": 600,
+    "high": 1400,
+    "cat": "finish"
+   },
+   {
+    "item": "Permits and engineering",
+    "low": 2000,
+    "high": 4000,
+    "cat": "pro"
+   },
+   {
+    "item": "Contingency (15%)",
+    "low": 17700.0,
+    "high": 34000.0,
+    "cat": "cont"
+   }
+  ],
+  "optional": [
+   {
+    "item": "Flush beam and posts if the kitchen-lounge wall proves bearing (engineer, install, patch)",
+    "low": 12000,
+    "high": 25000
+   }
+  ],
+  "notes": "Same structural scope as concept 15: the kitchen-lounge wall comes out, assumed non-bearing. Concept 21 keeps every wall and avoids that risk."
  }
 };
