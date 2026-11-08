@@ -12,6 +12,7 @@ const ED = {
 const edClone = (o) => JSON.parse(JSON.stringify(o));
 const EDT = 14;
 const HIGHLIGHT = 0x2fbf71;
+const ED_LOOSE = new Set(["rug", "pot", "sofa", "arm", "chair", "stool", "ptable", "table", "plant", "bed"]);
 const ED_SKIP = new Set(["pot", "pendant", "pendantbar", "led", "art", "globe"]); // not pickable from above
 
 // ---------- plan geometry (x east, y south, cm)
@@ -66,7 +67,7 @@ function edKids(sel) {
   const it = edGetItem(sel), A = it.w * it.d, out = [];
   const P = edRect(it.x, it.y, it.w, Math.max(it.d, 2), it.a), P6 = edRect(it.x, it.y, it.w, Math.max(it.d, 2) + 12, it.a);
   ED.W.lay.forEach((o, i) => {
-    if (i == sel.i || o[0] != ED.W.lay[sel.i][0] || o[1] == "rug" || o[1] == "pot") return;
+    if (i == sel.i || o[0] != ED.W.lay[sel.i][0] || ED_LOOSE.has(o[1])) return; // separate furniture never rides along
     const a = o[4] * o[5];
     if (a > A) return;
     if (edPip(o[2], o[3], P) || (a < 400 && edPip(o[2], o[3], P6))) out.push(i);
@@ -174,6 +175,7 @@ function edClearHi() {
   ED.hi = [];
   ED.fx.forEach((o) => o.parent && o.parent.remove(o));
   ED.fx = [];
+  ED.rotAt = null;
 }
 function edHighlight() {
   edClearHi();
@@ -189,6 +191,7 @@ function edHighlight() {
       }),
     ),
   );
+  if (ED.sel && ED.sel.t == "item" && ED.mode == "plan") edRotHandle();
   const b = ED.sel && ED.sel.t == "wall" && ED.W.boxes[ED.sel.i];
   if (b && ED.mode == "plan") {
     const w = edWall(b), r = Math.max(9, edPxCm() * 10);
@@ -199,6 +202,30 @@ function edHighlight() {
     });
   }
 }
+// rotate handle: a green knob in front of the selected item, joined to its centre; drag it round
+function edRotPos(it, a) {
+  const r = Math.max(it.w, it.d) / 2 + edPxCm() * 34;
+  return [it.x - Math.sin(a) * r, it.y + Math.cos(a) * r];
+}
+function edRotHandle(a) {
+  ED.fx.filter((o) => o.userData.rot).forEach((o) => o.parent && o.parent.remove(o));
+  ED.fx = ED.fx.filter((o) => !o.userData.rot);
+  const it = edGetItem(ED.sel.it), ang = a == null ? it.a : a, q = edRotPos(it, ang), y = edElev() + 255, k = Math.max(7, edPxCm() * 9);
+  const knob = new THREE.Mesh(new THREE.TorusGeometry(k, k * 0.32, 8, 28), new THREE.MeshBasicMaterial({ color: HIGHLIGHT }));
+  knob.rotation.x = Math.PI / 2; knob.position.set(q[0], y, q[1]);
+  const dot = new THREE.Mesh(new THREE.CircleGeometry(k * 0.45, 16), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+  dot.rotation.x = -Math.PI / 2; dot.position.set(q[0], y + 0.5, q[1]);
+  const L = Math.hypot(q[0] - it.x, q[1] - it.y), bar = new THREE.Mesh(new THREE.BoxGeometry(Math.max(1.5, edPxCm() * 1.6), 1, L), new THREE.MeshBasicMaterial({ color: HIGHLIGHT, transparent: true, opacity: 0.7 }));
+  bar.position.set((q[0] + it.x) / 2, y - 1, (q[1] + it.y) / 2); bar.rotation.y = -ang;
+  [knob, dot, bar].forEach((m) => { m.userData.rot = 1; S.root.add(m); ED.fx.push(m); });
+  ED.rotAt = [q[0], y, q[1]];
+}
+const edSnapAng = (a, free) => {
+  const d = (a * 180) / Math.PI;
+  if (free) return Math.round(d) * Math.PI / 180;
+  const n = Math.round(d / 90) * 90;
+  return ((Math.abs(d - n) < 4 ? n : Math.round(d / 5) * 5) * Math.PI) / 180; // 5° steps, sticky at right angles
+};
 function edPreview(A, B, t, color) {
   ED.fx.filter((o) => o.userData.pv).forEach((o) => o.parent && o.parent.remove(o));
   ED.fx = ED.fx.filter((o) => !o.userData.pv);
@@ -381,7 +408,15 @@ function edDown(e) {
   else if (ED.tool == "cut") grab = { mode: "cut", P0: p, P1: p };
   else {
     const s = ED.sel;
-    if (s && s.t == "wall" && ED.W.boxes[s.i]) {
+    if (s && s.t == "item" && ED.rotAt) {
+      const sp = edScr(...ED.rotAt);
+      if (Math.hypot(sp[0] - e.clientX, sp[1] - e.clientY) < 28) {
+        const it = edGetItem(s.it); edPush();
+        grab = { mode: "rot", c: [it.x, it.y], a0: it.a, p0: Math.atan2(p[1] - it.y, p[0] - it.x), da: 0, moved: false,
+          kids: edKids(s.it).map((i) => [i, ED.W.lay[i][2], ED.W.lay[i][3], ED.W.lay[i][8] || 0]) };
+      }
+    }
+    if (!grab && s && s.t == "wall" && ED.W.boxes[s.i]) {
       // green end markers sit on top of the wall: compare on screen
       const b = ED.W.boxes[s.i], w = edWall(b), top = edElev() + b[2] + b[3];
       for (const [k, q] of [["A", w.A], ["B", w.B]]) {
@@ -438,6 +473,20 @@ function edMove(e) {
       o.position.x = o.userData.ex0 + dx; o.position.z = o.userData.ez0 + dy;
     }));
     d.moved = true;
+  } else if (d.mode == "rot") {
+    let da = Math.atan2(p[1] - d.c[1], p[0] - d.c[0]) - d.p0;
+    da = edSnapAng(d.a0 + da, e.shiftKey || e.altKey) - d.a0;
+    if (Math.abs(da - d.da) < 1e-6) return;
+    const c = Math.cos(da), sn = Math.sin(da);
+    edSelTags().forEach((tag) => edObjs(tag).forEach((o) => {
+      if (o.userData.rx0 == null) { o.userData.rx0 = o.position.x; o.userData.rz0 = o.position.z; o.userData.ry0 = o.rotation.y; }
+      const dx = o.userData.rx0 - d.c[0], dz = o.userData.rz0 - d.c[1];
+      o.position.x = d.c[0] + dx * c - dz * sn; o.position.z = d.c[1] + dx * sn + dz * c; o.rotation.y = o.userData.ry0 - da;
+    }));
+    d.da = da; d.moved = true;
+    edRotHandle(d.a0 + da);
+    const deg = Math.round(((((d.a0 + da) * 180) / Math.PI) % 360 + 360) % 360);
+    edMsg(deg + "°", 1);
   } else if (d.mode == "wallmove") {
     const dx = Math.round((p[0] - d.p0[0]) / 2) * 2, dy = Math.round((p[1] - d.p0[1]) / 2) * 2;
     ED.W.boxes[ED.sel.i][1] = d.q0.map((v, i) => Math.round((v + (i % 2 ? dy : dx)) * 10) / 10);
@@ -464,6 +513,13 @@ function edUp(e) {
   ED.drag = null;
   if (d.mode == "tap") { edZoomTo(d.at[0], d.at[1]); return; } // picked something new: zoom in a little
   if ((d.mode == "move" || d.mode == "wallmove") && !d.moved) { ED.undo.pop(); return; }
+  if (d.mode == "rot") {
+    if (!d.moved || Math.abs(d.da) < 1e-6) { ED.undo.pop(); edHighlight(); return; }
+    const c = Math.cos(d.da), sn = Math.sin(d.da), r1 = (v) => Math.round(v * 10) / 10, rA = (v) => Math.round(((v % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI) * 1e4) / 1e4;
+    d.kids.forEach(([i, x, y, a]) => { const o = ED.W.lay[i], dx = x - d.c[0], dy = y - d.c[1]; o[2] = r1(d.c[0] + dx * c - dy * sn); o[3] = r1(d.c[1] + dx * sn + dy * c); o[8] = rA(a + d.da); });
+    edSetItem(ED.sel.it, { a: rA(d.a0 + d.da) });
+    edRebuild(); edProps(); return;
+  }
   if (d.mode == "end") { if (d.A) ED.W.boxes[ED.sel.i][1] = edQuad(d.A, d.B, d.w.t); else ED.undo.pop(); }
   if (d.mode == "draw") {
     if (Math.hypot(d.P1[0] - d.P0[0], d.P1[1] - d.P0[1]) >= 10) {
@@ -514,7 +570,7 @@ function edProps() {
     el.innerHTML = "<b>" + String(it.n || "Item").replace(/</g, "&lt;").slice(0, 40) + " · " + Math.round(it.w) + " × " + Math.round(it.d) + " cm</b>" + (nk ? '<span class="edhint">(+' + nk + " parts)</span>" : "") +
       '<label>W <input id="edpW" type="number" value="' + Math.round(it.w) + '"></label><label>D <input id="edpD" type="number" value="' + Math.round(it.d) + '"></label>' +
       '<label>Angle <input id="edpA" type="number" value="' + Math.round(((it.a * 180) / Math.PI) % 360) + '">°</label>' +
-      '<button id="edpr1">⟲ 15°</button><button id="edpr2">⟳ 15°</button><button id="edpr3">⟳ 90°</button>' + back +
+      '<span class="edhint">Drag the green ring to rotate</span><button id="edpr1">⟲ 15°</button><button id="edpr2">⟳ 15°</button><button id="edpr3">⟳ 90°</button>' + back +
       '<button id="edpdup">Duplicate</button><button id="edpdel" class="danger">Delete</button><button id="edpdone">Done</button>';
     const upd = () => {
       edPush();
@@ -543,7 +599,7 @@ function edProps() {
 function edHint() {
   if (ED.mode == "3d") return "Looking at your draft in 3D. Switch back to Plan to keep editing, or Save.";
   return {
-    select: "Tap furniture or a wall to select it (it turns green and shows its size). Once selected, drag it to move it. + Add puts new cabinets, appliances, furniture, doors and windows in. Drag empty floor to pan; pinch or scroll to zoom.",
+    select: "Tap furniture or a wall to select it (it turns green and shows its size). Once selected, drag it to move it, or drag the green ring to rotate it. + Add puts new cabinets, appliances, furniture, doors and windows in. Drag empty floor to pan; pinch or scroll to zoom.",
     wall: "Drag to draw a new wall. It snaps to wall ends and to 15° angles.",
     cut: "Drag along a wall to cut an opening in it.",
   }[ED.tool];

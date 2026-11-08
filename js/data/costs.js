@@ -1089,8 +1089,8 @@ const COSTS = {
   "notes": "Keeps the original walls and stair, so no beams or stair work."
  },
  "v26": {
-  "low": 131000.0,
-  "high": 251000.0,
+  "low": 136000.0,
+  "high": 260000.0,
   "items": [
    {
     "item": "Kitchen: cabinets, quartz, white-oak island, oven tower cabinet, pantry wall (3 full-height pull-outs, integrated pulls), backsplash",
@@ -1141,9 +1141,15 @@ const COSTS = {
     "cat": "pro"
    },
    {
-    "item": "Fill in the kitchen window; patio slider header",
-    "low": 3000,
-    "high": 7000,
+    "item": "Fill in the kitchen window",
+    "low": 1500,
+    "high": 3000,
+    "cat": "pro"
+   },
+   {
+    "item": "10 ft patio slider replacing the existing door, incl. longer header",
+    "low": 6000,
+    "high": 12000,
     "cat": "pro"
    },
    {
@@ -1172,8 +1178,8 @@ const COSTS = {
    },
    {
     "item": "Contingency (15%)",
-    "low": 17000.0,
-    "high": 32700.0,
+    "low": 17700.0,
+    "high": 33900.0,
     "cat": "cont"
    }
   ],

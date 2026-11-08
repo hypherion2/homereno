@@ -1137,7 +1137,7 @@ const VERS = [
     "chip": "22 · Open + pantry wall",
     "kind": "Concept 22 · Latest",
     "headline": "Concept 15 refined: the open kitchen and two living-room seating areas kept, with a seamless full-height pantry wall, an oven tower beside the fridge, a built-in drinks bar and a simpler fireplace.",
-    "desc": "Same plan as concept 15: the kitchen-lounge wall is opened up except a short chase with a slim gas fireplace facing the lounge, the stair stays as built (the top-winder idea is left as an option), and the lounge keeps two seating areas: the sofa facing the TV nook, and two fireside chairs facing each other at the fireplace. Kitchen: warm off-white cabinetry throughout with white-oak accents (island and bar). On the wall run, from the dining end: fridge with a cabinet above, a full-height oven tower (30 in wall oven, built-in microwave above), the coffee counter beside it as landing space, an induction cooktop over pot drawers under the hood, prep drawers, dishwasher and sink. The short dry-pantry run becomes a seamless full-height pantry wall: three pull-out units (60 + 60 + 50 cm, 36 cm deep) with integrated finger pulls and no visible hardware, lit by two pot lights. The island is 2.6 m with four stools at 57 cm spacing, all clear of the pantry wall; 116 cm work aisle, about 1.5 m between the island and the pantry wall. Fireplace: no separate stone panel; the chase is plain plaster with the fireplace set flush, a slim dark hearth and one piece of art, and a single oak shelf on its kitchen face. Drinks bar: a built-in niche between the dining wall and the patio slider, framed in off-white to the ceiling, with a white-oak base and back panel, glass-door wine/beverage fridge, quartz top, bottle shelf and an LED-lit glass cabinet to the ceiling. The dining table moves 15 cm south so you can stand at the bar and pass the patio slider.",
+    "desc": "Same plan as concept 15: the kitchen-lounge wall is opened up except a short chase with a slim gas fireplace facing the lounge, the stair stays as built (the top-winder idea is left as an option), and the lounge keeps two seating areas: the sofa facing the TV nook, and two fireside chairs facing each other at the fireplace. Kitchen: warm off-white cabinetry throughout with white-oak accents (island and bar). On the wall run, from the dining end: fridge with a cabinet above, a full-height oven tower (30 in wall oven, built-in microwave above), the coffee counter beside it as landing space, an induction cooktop over pot drawers under the hood, prep drawers, dishwasher and sink. The short dry-pantry run becomes a seamless full-height pantry wall: three pull-out units (60 + 60 + 50 cm, 36 cm deep) with integrated finger pulls and no visible hardware, lit by two pot lights. The island is 2.6 m with four stools at 57 cm spacing, all clear of the pantry wall; 116 cm work aisle, about 1.5 m between the island and the pantry wall. Fireplace: no separate stone panel; the chase is plain plaster with the fireplace set flush, a slim dark hearth and one piece of art, and a single oak shelf on its kitchen face. Drinks bar: built in on the east wall between the patio-door corner and the dining-room fireplace (as in concept 20), framed in off-white to the ceiling, with a white-oak base and back panel, glass-door wine/beverage fridge, quartz top, bottle shelf and an LED-lit glass cabinet to the ceiling. The patio door is widened to a 10 ft slider as in concept 20; the dining table moves 15 cm south for room to pass it.",
     "tags": [
       "Concept 15 layout",
       "Pantry wall",
@@ -1162,7 +1162,7 @@ const VERS = [
         [
           "Confirm whether the kitchen-lounge wall is bearing before removal; if it is, a flush beam with posts to bearing (engineer to size) is needed (see optional costs).",
           "New short chase (about 1.9 m long, 50 cm deep) on the old wall line for the slim fireplace.",
-          "Fill in the kitchen window on the east wall; widen the dining patio opening to the slider (new header).",
+          "Fill in the kitchen window on the east wall; widen the dining patio opening to a 10 ft (305 cm) slider with a longer header (engineer to size).",
           "Stair guard where the angled wall came out."
         ]
       ],
@@ -1172,7 +1172,7 @@ const VERS = [
           "Wall run on the east wall (north to south): counter-depth fridge with cabinet above, oven tower 76 cm (30 in wall oven, built-in microwave above, drawer below), coffee station (landing beside the oven) with uppers, 76 cm induction cooktop over three pot drawers under the chimney hood, prep drawers, dishwasher, sink in the original spot, drawers to the corner.",
           "Pantry wall on the stair-side wall: three full-height pull-out pantry units (60, 60 and 50 cm wide, 36 cm deep), floor to ceiling, integrated finger pulls, two pot lights in front.",
           "Island 260 x 100 cm (white oak), four stools at 57 cm spacing, pull-out trash, receptacles; 116 cm work aisle to the wall run, about 150 cm from the island edge to the pantry wall.",
-          "Drinks bar built into the dining corner between the dining wall and the patio slider (about 1 m): off-white frame and side panel to the ceiling, white-oak base and back panel, glass-door wine/beverage fridge, quartz top, bottle shelf, LED-lit glass cabinet to the ceiling.",
+          "Drinks bar built in on the east wall between the patio-door corner and the dining-room fireplace (about 1 m): off-white frame and side panel to the ceiling, white-oak base and back panel, glass-door wine/beverage fridge, quartz top, bottle shelf, LED-lit glass cabinet to the ceiling.",
           "Quartz counters and backsplash; warm off-white cabinetry throughout with white-oak accents (island, bar), black hardware on the wall run."
         ]
       ],
@@ -1224,7 +1224,7 @@ const VERS = [
       "Whether the kitchen-lounge wall is bearing (the cost assumes it is not; a beam adds the optional line).",
       "Pull-out pantry hardware for 36 cm deep units (full-extension, heavy-duty).",
       "Wall oven and microwave cut-out sizes fit a 76 cm tower.",
-      "Bar clearance to the patio slider trim (about 9 cm).",
+      "Bar clearance to the dining-room fireplace (about 20 cm) and fireplace clearances to combustible cabinetry.",
       "Dining table end to island and chairs to the bar with the real table."
     ]
   }
