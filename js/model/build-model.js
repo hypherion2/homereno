@@ -115,7 +115,7 @@ function buildModel(D) {
     x1 = -1e9,
     z0 = 1e9,
     z1 = -1e9;
-  D.boxes.forEach((b) => {
+  D.boxes.forEach((b, bi) => {
     if (b[5] != null && D.divider == "slats") {
       // sloped stair divider shown as an open screen of oak battens (gaps under 10 cm)
       oakScreen(b, WG[b[0]]);
@@ -131,6 +131,7 @@ function buildModel(D) {
       new THREE.Mesh(prism(b[1], b[2], b[3], b[5]), new THREE.MeshLambertMaterial({ color: (!dk && D.wallColor) || WALL, side: 2 })),
     );
     m.userData.c = b[4];
+    m.userData.ed = ["B", bi]; // edit mode: which wall box this mesh came from
     S.walls.push(m);
     WG[b[0]].add(m);
     for (let i = 0; i < 4; i++) {
@@ -276,7 +277,7 @@ function buildModel(D) {
         LB[r[0]].add(lab((rn ? rn + " · " : "") + sqft(r[2]), r[3], el[r[0]] + 20, r[4], 34));
       }
   });
-  D.furn.forEach((f) => {
+  D.furn.forEach((f, fi) => {
     const [L, x, y, w, d, a, e, h, t, n, s] = f;
     let o;
     if (t == 3) {
@@ -425,6 +426,7 @@ function buildModel(D) {
         LB[L].add(lab(sl ? "Sliding doors" : n, x, el[L] + e + h + 20, y, 30));
     }
     o.rotation.y = -a;
+    o.userData.ed = ["F", fi];
   });
   if (D.winder) {
     // stair-top winders: wedge treads fanning around the inner corner of the turn
@@ -446,7 +448,7 @@ function buildModel(D) {
       }
     }
   }
-  (D.lay || []).forEach((o) => {
+  (D.lay || []).forEach((o, li) => {
     const [L, k, x, y, w, d, h, e, a, c, lb] = o;
     if (!LGp[L]) {
       LGp[L] = new THREE.Group();
@@ -455,6 +457,7 @@ function buildModel(D) {
     const g = new THREE.Group();
     g.position.set(x, el[L] + e, y);
     g.rotation.y = -a;
+    g.userData.ed = ["L", li];
     build(k, w, d, h, c, g);
     {
       const rl = cabRole(lb);
