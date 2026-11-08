@@ -113,7 +113,7 @@ function edPick(e) {
     if (t[0] == "L") {
       const it = ED.W.lay[t[1]];
       if (!it || ED_SKIP.has(it[1]) || it[7] >= 165) continue; // hanging hoods and lights: look through them
-      if (it[1] == "rug") { rug = rug || t; continue; }
+      if (it[1] == "rug") continue; // rugs are not picked, so dragging over them pans the view
     }
     if (t[0] == "F" && ED.W.furn[t[1]] && ED.W.furn[t[1]][8] == 3) continue; // stairs are not editable
     return t;
@@ -126,7 +126,7 @@ function edHitItem(x, y) {
   if (dw.length) return dw[0];
   its.sort((a, b) => b.w * b.d - a.w * a.d);
   const nonRug = its.filter((it) => it.kind != "rug");
-  return nonRug[0] || its[its.length - 1] || null;
+  return nonRug[0] || null;
 }
 function edHitWall(x, y, tol) {
   let best = null, bd = 1e9;
@@ -724,6 +724,12 @@ function edDeleteSaved(rid) {
   c.addEventListener("pointermove", edMove, true);
   c.addEventListener("pointerup", edUp, true);
   c.addEventListener("pointercancel", edUp, true);
+  // OrbitControls (three r128) drives touch through touch events, not pointer events: while something
+  // is grabbed, swallow those too so the view does not pan under your finger
+  const edTouch = (e) => {
+    if (ED.on && ED.drag) { e.stopImmediatePropagation(); if (e.cancelable) e.preventDefault(); }
+  };
+  ["touchstart", "touchmove", "touchend", "touchcancel"].forEach((t) => c.addEventListener(t, edTouch, { capture: true, passive: false }));
   document.querySelectorAll("#edmode button").forEach((b) => (b.onclick = () => edMode(b.dataset.m)));
   document.querySelectorAll("#edtools button").forEach((b) => (b.onclick = () => { if (ED.mode != "plan") edMode("plan"); ED.tool = b.dataset.t; ED.sel = null; edHighlight(); edTools(); edProps(); }));
   document.querySelectorAll("#edlv button").forEach((b) => (b.onclick = () => edLevel(b.dataset.l)));
