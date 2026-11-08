@@ -487,6 +487,7 @@ function exitWalk() {
   $("whint").style.display = "none";
 }
 function walkVersion(d) {
+  if (typeof ED != "undefined" && ED.on) return; // no design switching while editing
   let n = S.ver;
   do n = (n + d + VERS.length) % VERS.length;
   while (VERS[n].archived && n != S.ver);

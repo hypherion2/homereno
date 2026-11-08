@@ -1,16 +1,20 @@
-// Edit mode, on the real 3D model: the view switches to the top-down plan and you pick things
-// in it. The picked piece turns green; drag to move it, rotate/resize/delete from the bottom bar.
-// Walls can be moved, extended (drag a green end marker), cut (drag along a wall) or drawn.
-// Saved edits become "My edit" versions kept in this browser (localStorage) and can be exported.
+// Edit mode, on the real 3D model. Edit switches to the top-down plan; tap a piece or a wall to
+// select it (it turns green and the view zooms in a little), drag to move it, use the bottom bar
+// to rotate, resize, duplicate, delete or put it back. Walls: drag to move, drag a green end
+// marker to extend/shorten, "+ Wall" to draw, "Cut wall" to open a stretch. While editing you can
+// switch to 3D or Walk to look at the draft without saving. Saved edits become "My edit" versions
+// kept in this browser (localStorage) and can be exported.
 const ED = {
-  on: false, W: null, base: null, editKey: null, lv: null, tool: "select", sel: null, drag: null,
+  on: false, W: null, orig: null, key: null, base: null, editKey: null, lv: null, lvName: "upper",
+  mode: "plan", tool: "select", sel: null, selUndo: 0, drag: null,
   undo: [], redo: [], ls: "remodel-edits", fx: [], hi: [], ct0: null,
 };
 const edClone = (o) => JSON.parse(JSON.stringify(o));
 const EDT = 14;
 const HIGHLIGHT = 0x2fbf71;
+const ED_SKIP = new Set(["pot", "pendant", "pendantbar", "led", "art", "globe"]); // not pickable from above
 
-// ---------- geometry helpers (plan coordinates: x east, y south, cm)
+// ---------- plan geometry (x east, y south, cm)
 function edWall(b) {
   const q = b[1], P = [0, 1, 2, 3].map((i) => [q[2 * i], q[2 * i + 1]]);
   const d01 = Math.hypot(P[1][0] - P[0][0], P[1][1] - P[0][1]), d12 = Math.hypot(P[2][0] - P[1][0], P[2][1] - P[1][1]);
@@ -41,7 +45,7 @@ function edSegDist(x, y, A, B) {
 const edLvOk = (L) => L == ED.lv || (ED.lvOther && L == ED.lvOther);
 function edItems() {
   const W = ED.W, out = [];
-  W.lay.forEach((o, i) => { if (edLvOk(o[0]) && o[1] != "pot") out.push({ k: "L", i, x: o[2], y: o[3], w: o[4], d: o[5], a: o[8] || 0, kind: o[1] }); });
+  W.lay.forEach((o, i) => { if (edLvOk(o[0]) && !ED_SKIP.has(o[1])) out.push({ k: "L", i, x: o[2], y: o[3], w: o[4], d: o[5], a: o[8] || 0, kind: o[1] }); });
   W.furn.forEach((f, i) => { if (edLvOk(f[0]) && f[8] != 3) out.push({ k: "F", i, x: f[1], y: f[2], w: f[3], d: Math.max(f[4], 4), a: f[5] || 0, kind: f[8] == 1 ? "window" : f[8] == 2 ? "door" : "furn" }); });
   return out;
 }
@@ -56,8 +60,8 @@ function edSetItem(it, p) {
 }
 // smaller layout pieces whose centre sits inside the picked piece move/rotate/delete with it
 function edKids(sel) {
-  if (sel.k != "L") return [];
-  const it = edGetItem(sel), P = edRect(it.x, it.y, it.w, Math.max(it.d, 6), it.a), A = it.w * it.d, out = [];
+  if (sel.k != "L" || !ED.W.lay[sel.i]) return [];
+  const it = edGetItem(sel), P = edRect(it.x, it.y, it.w + 12, Math.max(it.d, 6) + 12, it.a), A = it.w * it.d, out = [];
   ED.W.lay.forEach((o, i) => {
     if (i == sel.i || o[0] != ED.W.lay[sel.i][0] || o[1] == "rug" || o[1] == "pot") return;
     if (o[4] * o[5] < A && edPip(o[2], o[3], P)) out.push(i);
@@ -65,7 +69,57 @@ function edKids(sel) {
   return out;
 }
 
-// ---------- hit testing on the plan
+// ---------- picking: first what the camera actually sees, then a floor-plan fallback
+const edRay = new THREE.Raycaster();
+function edElev() {
+  const l = ED.W.levels.find((l) => l[0] == ED.lv);
+  return l ? l[2] : 0;
+}
+function edNdc(e) {
+  const r = rn.domElement.getBoundingClientRect();
+  return new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+}
+function edPlanPt(e) {
+  edRay.setFromCamera(edNdc(e), cam);
+  const p = new THREE.Vector3();
+  if (!edRay.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), -edElev()), p)) return null;
+  return [p.x, p.z];
+}
+function edScr(x, h, y) {
+  const v = new THREE.Vector3(x, h, y).project(cam), r = rn.domElement.getBoundingClientRect();
+  return [r.left + ((v.x + 1) / 2) * r.width, r.top + ((1 - v.y) / 2) * r.height];
+}
+function edPxCm() {
+  const r = rn.domElement.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  const a = edPlanPt({ clientX: cx, clientY: cy }), b = edPlanPt({ clientX: cx + 50, clientY: cy });
+  return a && b ? Math.hypot(b[0] - a[0], b[1] - a[1]) / 50 : 1;
+}
+const edVis = (o) => { for (; o; o = o.parent) if (!o.visible) return false; return true; };
+function edTagLevel(t) {
+  const a = t[0] == "L" ? ED.W.lay[t[1]] : t[0] == "F" ? ED.W.furn[t[1]] : ED.W.boxes[t[1]];
+  return a && a[0];
+}
+function edPick(e) {
+  edRay.setFromCamera(edNdc(e), cam);
+  const hits = edRay.intersectObjects(S.root.children, true);
+  let rug = null;
+  for (const h of hits) {
+    if (!edVis(h.object)) continue;
+    let o = h.object;
+    while (o && !(o.userData && o.userData.ed)) o = o.parent;
+    if (!o) continue;
+    const t = o.userData.ed;
+    if (!edLvOk(edTagLevel(t))) continue;
+    if (t[0] == "L") {
+      const it = ED.W.lay[t[1]];
+      if (!it || ED_SKIP.has(it[1]) || it[7] >= 165) continue; // hanging hoods and lights: look through them
+      if (it[1] == "rug") { rug = rug || t; continue; }
+    }
+    if (t[0] == "F" && ED.W.furn[t[1]] && ED.W.furn[t[1]][8] == 3) continue; // stairs are not editable
+    return t;
+  }
+  return rug;
+}
 function edHitItem(x, y) {
   const its = edItems().filter((it) => edPip(x, y, edRect(it.x, it.y, it.w, Math.max(it.d, 12), it.a)));
   const dw = its.filter((it) => it.kind == "door" || it.kind == "window");
@@ -77,7 +131,7 @@ function edHitItem(x, y) {
 function edHitWall(x, y, tol) {
   let best = null, bd = 1e9;
   ED.W.boxes.forEach((b, i) => {
-    if (b[0] != ED.lv) return;
+    if (!edLvOk(b[0])) return;
     const w = edWall(b), d = edSegDist(x, y, w.A, w.B) - w.t / 2;
     if (d < tol && d < bd) { bd = d; best = i; }
   });
@@ -98,26 +152,7 @@ function edSnapPt(p, from, tol) {
   return p.map((v) => Math.round(v / 5) * 5);
 }
 
-// ---------- 3D link: plan point under the pointer, objects for a selection, highlight
-const edRay = new THREE.Raycaster();
-function edElev() {
-  const l = ED.W.levels.find((l) => l[0] == ED.lv);
-  return l ? l[2] : 0;
-}
-function edPlanPt(e) {
-  const r = rn.domElement.getBoundingClientRect();
-  const v = new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
-  edRay.setFromCamera(v, cam);
-  const pl = new THREE.Plane(new THREE.Vector3(0, 1, 0), -edElev()), p = new THREE.Vector3();
-  if (!edRay.ray.intersectPlane(pl, p)) return null;
-  return [p.x, p.z];
-}
-function edPxCm() {
-  // centimetres per screen pixel at the floor, for pick tolerances
-  const r = rn.domElement.getBoundingClientRect();
-  const a = edPlanPt({ clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 }), b = edPlanPt({ clientX: r.left + r.width / 2 + 50, clientY: r.top + r.height / 2 });
-  return a && b ? Math.hypot(b[0] - a[0], b[1] - a[1]) / 50 : 1;
-}
+// ---------- 3D highlight and helpers
 function edObjs(tag) {
   const out = [];
   S.root.traverse((o) => { const t = o.userData && o.userData.ed; if (t && t[0] == tag[0] && t[1] == tag[1]) out.push(o); });
@@ -132,7 +167,7 @@ function edSelTags() {
 function edClearHi() {
   ED.hi.forEach(([m, mat]) => (m.material = mat));
   ED.hi = [];
-  ED.fx.forEach((o) => { o.parent && o.parent.remove(o); });
+  ED.fx.forEach((o) => o.parent && o.parent.remove(o));
   ED.fx = [];
 }
 function edHighlight() {
@@ -149,9 +184,9 @@ function edHighlight() {
       }),
     ),
   );
-  // wall end markers
-  if (ED.sel && ED.sel.t == "wall" && ED.W.boxes[ED.sel.i]) {
-    const b = ED.W.boxes[ED.sel.i], w = edWall(b), r = Math.max(9, edPxCm() * 9);
+  const b = ED.sel && ED.sel.t == "wall" && ED.W.boxes[ED.sel.i];
+  if (b && ED.mode == "plan") {
+    const w = edWall(b), r = Math.max(9, edPxCm() * 10);
     [w.A, w.B].forEach((p) => {
       const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, 4, 24), new THREE.MeshBasicMaterial({ color: HIGHLIGHT }));
       m.position.set(p[0], edElev() + b[2] + b[3] + 4, p[1]);
@@ -160,7 +195,6 @@ function edHighlight() {
   }
 }
 function edPreview(A, B, t, color) {
-  // temporary bar showing a wall being drawn or a cut being made
   ED.fx.filter((o) => o.userData.pv).forEach((o) => o.parent && o.parent.remove(o));
   ED.fx = ED.fx.filter((o) => !o.userData.pv);
   const L = Math.hypot(B[0] - A[0], B[1] - A[1]);
@@ -178,55 +212,107 @@ function edRebuild() {
   applyAll();
   edHighlight();
 }
+function edZoomTo(x, y) {
+  // fly in a little toward the selection when zoomed out, or re-centre if it is near the screen edge
+  const e = edElev(), h = cam.position.y - e, r = rn.domElement.getBoundingClientRect(), sp = edScr(x, e, y);
+  const edge = sp[0] < r.left + r.width * 0.2 || sp[0] > r.right - r.width * 0.2 || sp[1] < r.top + r.height * 0.25 || sp[1] > r.bottom - r.height * 0.25;
+  const z = r.height > r.width ? 1700 : 950; // portrait phones need to stay higher to show the same width
+  if (h >= z + 50) fly([x, e + z, y + 1], [x, e, y]);
+  else if (edge) fly([x, cam.position.y, y + 1], [x, e, y]);
+}
+function edSelect(sel) {
+  ED.sel = sel;
+  ED.selUndo = ED.undo.length; // "Put back" returns to this state
+  edHighlight(); edProps();
+}
 
-// ---------- open / close
+// ---------- open / close / modes
 function edOpen() {
   if (S.walk) exitWalk();
   const v = VERS[S.ver];
+  ED.key = v.key;
   ED.base = v.edit ? v.base : v.key;
   ED.editKey = v.edit ? v.key : null;
+  ED.orig = DATA[v.key];
   const W = edClone(DATA[v.key]);
   delete W.variants; delete W._base;
   ED.W = W;
+  DATA[v.key] = W; // the draft stands in for this design while editing (3D and Walk show it too)
   const L1 = W.levels.find((l) => l[1] == "Level 1"), L0 = W.levels.find((l) => l[2] == 0), LD = W.levels.find((l) => l[1] == "Landing");
   ED.L1 = L1 && L1[0]; ED.L0 = L0 && L0[0]; ED.LD = LD && LD[0];
-  ED.undo = []; ED.redo = []; ED.sel = null; ED.tool = "select"; ED.on = true;
+  ED.undo = []; ED.redo = []; ED.sel = null; ED.selUndo = 0; ED.tool = "select"; ED.on = true;
+  ED.ct0 = { rot: ct.enableRotate, left: ct.mouseButtons.LEFT, one: ct.touches.ONE };
   document.body.classList.add("editing");
   $("edov").style.display = "block";
   $("edname").value = v.edit ? v.title : (v.title + " (my edit)").slice(0, 60);
-  ED.ct0 = { rot: ct.enableRotate, left: ct.mouseButtons.LEFT, one: ct.touches.ONE };
-  ct.enableRotate = false;
-  ct.mouseButtons.LEFT = THREE.MOUSE.PAN;
-  ct.touches.ONE = THREE.TOUCH.PAN;
-  edLevel(S.level == "ground" ? "ground" : "upper");
   buildModel(W);
-  applyAll();
+  ED.lvName = S.level == "ground" ? "ground" : "upper";
+  edMode("plan");
   edTools(); edProps();
 }
-function edClose() {
+function edEnd() {
   edClearHi();
+  if (S.walk) exitWalk();
   ED.on = false;
+  if (ED.key && ED.orig) DATA[ED.key] = ED.orig;
   document.body.classList.remove("editing");
   $("edov").style.display = "none";
   if (ED.ct0) { ct.enableRotate = ED.ct0.rot; ct.mouseButtons.LEFT = ED.ct0.left; ct.touches.ONE = ED.ct0.one; }
-  setVersion(S.ver, true);
 }
-function edLevel(l) {
+function edClose() {
+  if (ED.undo.length && !confirm("Discard your changes?")) return;
+  edEnd();
+  setVersion(S.ver, true);
+  goView("3d");
+}
+function edMode(m) {
+  if (m == "walk") {
+    if (!S.walk) { ED.mode = "walk"; edClearHi(); enterWalk("living"); }
+    edModeBtns();
+    return;
+  }
+  if (S.walk) exitWalk();
+  ED.mode = m;
+  if (m == "plan") {
+    ct.enableRotate = false; ct.mouseButtons.LEFT = THREE.MOUSE.PAN; ct.touches.ONE = THREE.TOUCH.PAN;
+    edLevel(ED.lvName, true);
+  } else {
+    ct.enableRotate = ED.ct0.rot; ct.mouseButtons.LEFT = ED.ct0.left; ct.touches.ONE = ED.ct0.one;
+    goView("3d");
+    edHighlight();
+  }
+  edModeBtns(); edTools(); edProps();
+}
+function edModeBtns() {
+  document.querySelectorAll("#edmode button").forEach((b) => b.classList.toggle("on", b.dataset.m == ED.mode));
+  document.body.classList.toggle("ed3d", ED.mode != "plan");
+}
+function edLevel(l, keepSel) {
+  ED.lvName = l;
   ED.lv = l == "ground" ? ED.L0 : ED.L1;
   ED.lvOther = l == "ground" ? ED.LD : null;
   document.querySelectorAll("#edlv button").forEach((b) => b.classList.toggle("on", b.dataset.l == l));
-  ED.sel = null;
+  if (!keepSel) ED.sel = null;
   setLevel(l);
-  goView("plan");
+  if (ED.mode == "plan") goView("plan");
   edHighlight(); edProps();
 }
 
 // ---------- edits
 const edSnap = () => JSON.stringify({ boxes: ED.W.boxes, lay: ED.W.lay, furn: ED.W.furn, rooms: ED.W.rooms });
-function edPush() { ED.undo.push(edSnap()); if (ED.undo.length > 80) ED.undo.shift(); ED.redo = []; }
-function edRestore(s) { Object.assign(ED.W, JSON.parse(s)); ED.sel = null; edRebuild(); edProps(); }
-function edUndo() { if (!ED.undo.length) return; ED.redo.push(edSnap()); edRestore(ED.undo.pop()); }
+function edPush() { ED.undo.push(edSnap()); if (ED.undo.length > 80) { ED.undo.shift(); ED.selUndo = Math.max(0, ED.selUndo - 1); } ED.redo = []; }
+function edRestore(s, keepSel) { Object.assign(ED.W, JSON.parse(s)); if (!keepSel) ED.sel = null; edRebuild(); edProps(); }
+function edUndo() { if (!ED.undo.length) return; ED.redo.push(edSnap()); edRestore(ED.undo.pop()); ED.selUndo = Math.min(ED.selUndo, ED.undo.length); }
 function edRedo() { if (!ED.redo.length) return; ED.undo.push(edSnap()); edRestore(ED.redo.pop()); }
+function edPutBack() {
+  // undo everything done to the current selection since it was picked
+  if (!ED.sel || ED.undo.length <= ED.selUndo) return;
+  const s = ED.undo[ED.selUndo];
+  ED.undo.length = ED.selUndo;
+  ED.redo = [];
+  edRestore(s, true);
+  edMsg("Put back where it was");
+}
 function edFloorPatch(A, B, t) {
   const q = edQuad(A, B, t + 6), P = [0, 1, 2, 3].map((k) => [q[2 * k], q[2 * k + 1]]);
   ED.W.rooms.push([ED.lv, P, 0, (A[0] + B[0]) / 2, (A[1] + B[1]) / 2, "", []]);
@@ -253,7 +339,7 @@ function edRotate(da) {
     o[2] = Math.round((it.x + dx * c - dy * sn) * 10) / 10; o[3] = Math.round((it.y + dx * sn + dy * c) * 10) / 10;
     o[8] = Math.round((((o[8] || 0) + da) % (2 * Math.PI)) * 1e4) / 1e4;
   });
-  let a = (((it.a + da) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+  const a = (((it.a + da) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
   edSetItem(s.it, { a: Math.round(a * 1e4) / 1e4 });
   edRebuild(); edProps();
 }
@@ -279,9 +365,9 @@ function edCut(P0, P1) {
   return hit;
 }
 
-// ---------- pointer handling on the 3D canvas (capture phase, so the camera does not pan while editing)
+// ---------- pointer handling on the 3D canvas (capture phase: a grab stops the camera from panning)
 function edDown(e) {
-  if (!ED.on || e.button > 0) return;
+  if (!ED.on || ED.mode != "plan" || S.walk || e.button > 0) return;
   const p = edPlanPt(e);
   if (!p) return;
   const tol = edPxCm() * 10;
@@ -290,48 +376,63 @@ function edDown(e) {
   else if (ED.tool == "cut") grab = { mode: "cut", P0: p, P1: p };
   else {
     const s = ED.sel;
-    if (s && s.t == "wall") {
-      const w = edWall(ED.W.boxes[s.i]);
-      for (const [k, q] of [["A", w.A], ["B", w.B]])
-        if (Math.hypot(q[0] - p[0], q[1] - p[1]) < Math.max(tol * 1.6, 16)) { edPush(); grab = { mode: "end", end: k, w }; break; }
+    if (s && s.t == "wall" && ED.W.boxes[s.i]) {
+      // green end markers sit on top of the wall: compare on screen
+      const b = ED.W.boxes[s.i], w = edWall(b), top = edElev() + b[2] + b[3];
+      for (const [k, q] of [["A", w.A], ["B", w.B]]) {
+        const sp = edScr(q[0], top, q[1]);
+        if (Math.hypot(sp[0] - e.clientX, sp[1] - e.clientY) < 26) { edPush(); grab = { mode: "end", end: k, w }; break; }
+      }
     }
     if (!grab) {
-      const it = edHitItem(p[0], p[1]), wi = it ? null : edHitWall(p[0], p[1], tol);
+      const t = edPick(e);
+      let it = null, wi = null;
+      if (t && t[0] == "B") wi = t[1];
+      else if (t) it = { k: t[0], i: t[1] };
+      else { it = edHitItem(p[0], p[1]); if (!it) wi = edHitWall(p[0], p[1], tol); }
+      const same = (a, b) => a && b && a.t == b.t && (a.t == "wall" ? a.i == b.i : a.it.k == b.it.k && a.it.i == b.it.i);
       if (it) {
-        ED.sel = { t: "item", it };
+        const ns = { t: "item", it }, fresh = !same(ns, ED.sel), g = edGetItem(it);
+        if (fresh) {
+          // first tap only selects (no accidental moves); drag it once it is selected
+          edSelect(ns);
+          grab = { mode: "tap", at: [g.x, g.y] };
+        }
+      }
+      if (it && !grab) {
         const g = edGetItem(it); edPush();
         const kids = edKids(it).map((i) => [i, ED.W.lay[i][2] - g.x, ED.W.lay[i][3] - g.y]);
         grab = { mode: "move", ox: p[0] - g.x, oy: p[1] - g.y, x0: g.x, y0: g.y, kids, moved: false };
-        edHighlight(); edProps();
-      } else if (wi != null) {
-        ED.sel = { t: "wall", i: wi }; edPush();
-        grab = { mode: "wallmove", p0: p, q0: ED.W.boxes[wi][1].slice(), moved: false };
-        edHighlight(); edProps();
-      } else if (ED.sel) { ED.sel = null; edHighlight(); edProps(); }
+      } else if (!it && wi != null) {
+        const ns = { t: "wall", i: wi }, w = edWall(ED.W.boxes[wi]), at = [(w.A[0] + w.B[0]) / 2, (w.A[1] + w.B[1]) / 2];
+        if (!same(ns, ED.sel)) { edSelect(ns); grab = { mode: "tap", at }; }
+        else { edPush(); grab = { mode: "wallmove", p0: p, q0: ED.W.boxes[wi][1].slice(), moved: false }; }
+      } else if (!it && ED.sel) { ED.sel = null; edHighlight(); edProps(); }
     }
   }
-  if (!grab) return; // empty floor: let the camera pan
+  if (!grab) return; // empty floor: the camera pans
   e.stopImmediatePropagation(); e.preventDefault();
-  rn.domElement.setPointerCapture(e.pointerId);
-  grab.id = e.pointerId;
+  try { rn.domElement.setPointerCapture(e.pointerId); } catch (er) {}
+  grab.id = e.pointerId; grab.sx = e.clientX; grab.sy = e.clientY;
   ED.drag = grab;
 }
 function edMove(e) {
   const d = ED.drag;
   if (!d || e.pointerId != d.id) return;
   e.stopImmediatePropagation();
+  if (d.mode == "tap") return;
+  if (!d.moved && Math.hypot(e.clientX - d.sx, e.clientY - d.sy) < 6 && (d.mode == "move" || d.mode == "wallmove")) return; // ignore finger jitter on a tap
   const p = edPlanPt(e);
   if (!p) return;
   if (d.mode == "move") {
     const nx = Math.round(p[0] - d.ox), ny = Math.round(p[1] - d.oy), dx = nx - d.x0, dy = ny - d.y0;
     edSetItem(ED.sel.it, { x: nx, y: ny });
     d.kids.forEach(([i, kx, ky]) => { ED.W.lay[i][2] = nx + kx; ED.W.lay[i][3] = ny + ky; });
-    // move the 3D objects directly while dragging; rebuild once on release
     edSelTags().forEach((tag) => edObjs(tag).forEach((o) => {
       if (o.userData.ex0 == null) { o.userData.ex0 = o.position.x; o.userData.ez0 = o.position.z; }
       o.position.x = o.userData.ex0 + dx; o.position.z = o.userData.ez0 + dy;
     }));
-    d.moved = true; edMsg(nx + ", " + ny, 1);
+    d.moved = true;
   } else if (d.mode == "wallmove") {
     const dx = Math.round((p[0] - d.p0[0]) / 2) * 2, dy = Math.round((p[1] - d.p0[1]) / 2) * 2;
     ED.W.boxes[ED.sel.i][1] = d.q0.map((v, i) => Math.round((v + (i % 2 ? dy : dx)) * 10) / 10);
@@ -356,14 +457,14 @@ function edUp(e) {
   if (!d || e.pointerId != d.id) return;
   e.stopImmediatePropagation();
   ED.drag = null;
+  if (d.mode == "tap") { edZoomTo(d.at[0], d.at[1]); return; } // picked something new: zoom in a little
   if ((d.mode == "move" || d.mode == "wallmove") && !d.moved) { ED.undo.pop(); return; }
-  if (d.mode == "end" && d.A) ED.W.boxes[ED.sel.i][1] = edQuad(d.A, d.B, d.w.t);
-  if (d.mode == "end" && !d.A) ED.undo.pop();
+  if (d.mode == "end") { if (d.A) ED.W.boxes[ED.sel.i][1] = edQuad(d.A, d.B, d.w.t); else ED.undo.pop(); }
   if (d.mode == "draw") {
     if (Math.hypot(d.P1[0] - d.P0[0], d.P1[1] - d.P0[1]) >= 10) {
       edPush();
       ED.W.boxes.push([ED.lv, edQuad(d.P0, d.P1, +$("edthk").value || EDT), 0, +$("edhgt").value || 243.8, 1]);
-      ED.sel = { t: "wall", i: ED.W.boxes.length - 1 };
+      ED.sel = { t: "wall", i: ED.W.boxes.length - 1 }; ED.selUndo = ED.undo.length;
     }
   } else if (d.mode == "cut") {
     edPush();
@@ -377,15 +478,19 @@ function edMsg(t, quick) {
   clearTimeout(edMsg.t); edMsg.t = setTimeout(() => (el.style.opacity = 0), quick ? 900 : 2600);
 }
 
-// ---------- bottom bar: properties of the selected piece
+// ---------- bottom bar
 function edProps() {
   const el = $("edprops"), s = ED.sel;
-  if (!s) { el.innerHTML = '<span class="edhint">' + edHint() + "</span>"; return; }
+  if (!s || (s.t == "wall" && !ED.W.boxes[s.i]) || (s.t == "item" && !(s.it.k == "L" ? ED.W.lay : ED.W.furn)[s.it.i])) {
+    el.innerHTML = '<span class="edhint">' + edHint() + "</span>";
+    return;
+  }
+  const back = ED.undo.length > ED.selUndo ? '<button id="edpback">↺ Put back</button>' : "";
   if (s.t == "wall") {
-    const b = ED.W.boxes[s.i]; if (!b) { el.innerHTML = ""; return; }
-    const w = edWall(b);
-    el.innerHTML = '<b>Wall</b><label>Length <input id="edpL" type="number" value="' + Math.round(w.L) + '"></label><label>Thick <input id="edpT" type="number" value="' + Math.round(w.t) + '"></label>' +
-      '<label>Height <input id="edpH" type="number" value="' + Math.round(b[3]) + '"></label><button id="edpdel" class="danger">Delete</button><span class="edhint">Drag to move it; drag a green end to extend or shorten it.</span>';
+    const b = ED.W.boxes[s.i], w = edWall(b);
+    el.innerHTML = '<b>Wall · ' + Math.round(w.L) + " × " + Math.round(w.t) + " cm, " + Math.round(b[3]) + ' cm high</b><label>Length <input id="edpL" type="number" value="' + Math.round(w.L) + '"></label><label>Thick <input id="edpT" type="number" value="' + Math.round(w.t) + '"></label>' +
+      '<label>Height <input id="edpH" type="number" value="' + Math.round(b[3]) + '"></label>' + back + '<button id="edpdel" class="danger">Delete</button><button id="edpdone">Done</button>' +
+      '<span class="edhint">Drag to move it; drag a green end to extend or shorten it.</span>';
     const upd = () => {
       edPush();
       const L = Math.max(5, +$("edpL").value || w.L), t = Math.max(2, +$("edpT").value || w.t), ux = (w.B[0] - w.A[0]) / w.L, uy = (w.B[1] - w.A[1]) / w.L;
@@ -401,10 +506,11 @@ function edProps() {
       it.n = lb ? lb.split(/[:(]/)[0].trim() : ED.W.lay[s.it.i][1];
     }
     const nk = s.it.k == "L" ? edKids(s.it).length : 0;
-    el.innerHTML = "<b>" + String(it.n || "Item").replace(/</g, "&lt;").slice(0, 40) + "</b>" + (nk ? '<span class="edhint">(+' + nk + " parts)</span>" : "") +
+    el.innerHTML = "<b>" + String(it.n || "Item").replace(/</g, "&lt;").slice(0, 40) + " · " + Math.round(it.w) + " × " + Math.round(it.d) + " cm</b>" + (nk ? '<span class="edhint">(+' + nk + " parts)</span>" : "") +
       '<label>W <input id="edpW" type="number" value="' + Math.round(it.w) + '"></label><label>D <input id="edpD" type="number" value="' + Math.round(it.d) + '"></label>' +
       '<label>Angle <input id="edpA" type="number" value="' + Math.round(((it.a * 180) / Math.PI) % 360) + '">°</label>' +
-      '<button id="edpr1">⟲ 15°</button><button id="edpr2">⟳ 15°</button><button id="edpr3">⟳ 90°</button><button id="edpdup">Duplicate</button><button id="edpdel" class="danger">Delete</button>';
+      '<button id="edpr1">⟲ 15°</button><button id="edpr2">⟳ 15°</button><button id="edpr3">⟳ 90°</button>' + back +
+      '<button id="edpdup">Duplicate</button><button id="edpdel" class="danger">Delete</button><button id="edpdone">Done</button>';
     const upd = () => {
       edPush();
       edSetItem(s.it, { w: Math.max(1, +$("edpW").value || it.w), d: Math.max(1, +$("edpD").value || it.d), a: (((+$("edpA").value || 0) % 360) * Math.PI) / 180 });
@@ -416,29 +522,131 @@ function edProps() {
     $("edpr3").onclick = () => edRotate(Math.PI / 2);
     $("edpdup").onclick = () => {
       edPush();
-      const arr = s.it.k == "L" ? ED.W.lay : ED.W.furn, base = arr[s.it.i], kids = edKids(s.it).map((i) => edClone(ED.W.lay[i]));
-      const c = edClone(base), off = 40;
+      const arr = s.it.k == "L" ? ED.W.lay : ED.W.furn, kids = edKids(s.it).map((i) => edClone(ED.W.lay[i])), c = edClone(arr[s.it.i]), off = 40;
       if (s.it.k == "L") { c[2] += off; c[3] += off; kids.forEach((k) => { k[2] += off; k[3] += off; }); } else { c[1] += off; c[2] += off; }
       arr.push(c);
       const ni = arr.length - 1;
       if (s.it.k == "L") kids.forEach((k) => ED.W.lay.push(k));
-      ED.sel = { t: "item", it: { k: s.it.k, i: ni } };
+      ED.sel = { t: "item", it: { k: s.it.k, i: ni } }; ED.selUndo = ED.undo.length - 1;
       edRebuild(); edProps();
     };
   }
+  if ($("edpback")) $("edpback").onclick = edPutBack;
   $("edpdel").onclick = edDelete;
+  $("edpdone").onclick = () => { ED.sel = null; edHighlight(); edProps(); };
 }
 function edHint() {
+  if (ED.mode == "3d") return "Looking at your draft in 3D. Switch back to Plan to keep editing, or Save.";
   return {
-    select: "Tap a piece of furniture or a wall to select it (it turns green), then drag to move it. Drag empty floor to pan; pinch or scroll to zoom.",
+    select: "Tap furniture or a wall to select it (it turns green and shows its size). Once selected, drag it to move it. + Add puts new cabinets, appliances, furniture, doors and windows in. Drag empty floor to pan; pinch or scroll to zoom.",
     wall: "Drag to draw a new wall. It snaps to wall ends and to 15° angles.",
     cut: "Drag along a wall to cut an opening in it.",
   }[ED.tool];
 }
 function edTools() {
   document.querySelectorAll("#edtools button").forEach((b) => b.classList.toggle("on", b.dataset.t == ED.tool));
-  $("edwallopts").style.display = ED.tool == "wall" ? "" : "none";
-  rn.domElement.style.cursor = ED.on && ED.tool != "select" ? "crosshair" : "";
+  $("edwallopts").style.display = ED.tool == "wall" && ED.mode == "plan" ? "" : "none";
+  rn.domElement.style.cursor = ED.on && ED.mode == "plan" && ED.tool != "select" ? "crosshair" : "";
+}
+
+
+// ---------- library of things you can add (each entry: parts [kind, dx, dy, w, d, h, elev, colour, label])
+const ED_CAB = 2040100, ED_TOP = 16250869, ED_UP = 15986404, ED_OAK = 0xc8a87a, ED_SS = 0xc9ccce, ED_DK = 0x1d1f21;
+const ED_LIB = [
+  ["Kitchen", [
+    ["Base cabinet 60", [["box", 0, 0, 60, 63, 3, 86, ED_TOP, ""], ["box", 0, -1.5, 60, 60, 86, 0, ED_CAB, "Base cabinet (drawers)"]]],
+    ["Base cabinet 90", [["box", 0, 0, 90, 63, 3, 86, ED_TOP, ""], ["box", 0, -1.5, 90, 60, 86, 0, ED_CAB, "Base cabinet"]]],
+    ["Sink cabinet", [["box", 0, 0, 90, 63, 3, 86, ED_TOP, ""], ["box", 0, -1.5, 90, 60, 86, 0, ED_CAB, "Sink base"], ["box", 0, 3, 78, 45, 1, 89, 0x8a9096, "Sink"]]],
+    ["Dishwasher", [["box", 0, 0, 60, 63, 3, 86, ED_TOP, ""], ["box", 0, -1.5, 60, 60, 84, 0, ED_SS, "Dishwasher"]]],
+    ["Upper cabinet 80", [["box", 0, 0, 80, 35, 102.8, 140, ED_UP, "Upper cabinet"]]],
+    ["Tall cabinet", [["box", 0, 0, 76, 60, 242.8, 0, ED_UP, "Tall cabinet"]]],
+    ["Fridge", [["box", 0, 0, 84, 66, 185, 0, ED_SS, "Fridge"], ["box", 0, 0, 84, 66, 57.8, 185, ED_UP, "Cabinet above fridge"]]],
+    ["Oven + microwave tower", [["box", 0, 0, 76, 60, 242.8, 0, 0xeae6dc, "Oven tower"], ["box", 0, -29.5, 66, 1.5, 58, 82, ED_DK, "Wall oven"], ["box", 0, -29.5, 62, 1.5, 42, 148, ED_DK, "Built-in microwave"]]],
+    ["Cooktop", [["box", 0, 0, 76, 52, 1, 90, 0x111111, "Induction cooktop"]]],
+    ["Range hood", [["hood", 0, 0, 90, 48, 28, 150, 12173252, "Range hood"]]],
+    ["Island 280", [["island", 0, 0, 280, 100, 90, 0, ED_CAB, "Island"]]],
+    ["Island hood", [["box", 0, 0, 90, 60, 10, 168, 0xb9bec2, "Island hood"], ["box", 0, 0, 32, 26, 65, 178, 0xb9bec2, "Island hood flue"]]],
+    ["Bar stool", [["stool", 0, 0, 40, 40, 65, 0, 0, "Bar stool"]]],
+    ["Pendant light", [["pendant", 0, 0, 30, 30, 24, 165, 1842204, ""]]],
+    ["Pantry shelving", [["box", 0, 0, 120, 30, 210, 0, ED_OAK, "Pantry shelving"]]],
+  ]],
+  ["Living", [
+    ["Sofa", [["sofa", 0, 0, 210, 90, 80, 0, 0xe4dccd, "Sofa"]]],
+    ["Sofa with chaise", [["lsofa", 0, 0, 240, 100, 82, 0, 14998733, "Sofa with chaise"]]],
+    ["Armchair", [["arm", 0, 0, 80, 80, 80, 0, 0xd8cfc0, "Armchair"]]],
+    ["Coffee table", [["round", 0, 0, 90, 90, 40, 0, 12094298, "Coffee table"]]],
+    ["Side table", [["round", 0, 0, 45, 45, 50, 0, 12094298, "Side table"]]],
+    ["TV 75 in", [["tv", 0, 0, 165, 8, 93, 60, 1118481, "TV"]]],
+    ["TV console", [["console", 0, 0, 180, 40, 45, 0, 7031343, "TV console"]]],
+    ["Gas fireplace", [["box", 0, 0, 150, 5, 110, 0, 0x4b4b4d, "Fireplace surround"], ["box", 0, 3.3, 112, 2, 46, 32, 0x141414, "Gas fireplace"], ["led", 0, 4, 96, 1, 6, 36, 0, ""], ["box", 0, 10.5, 150, 20, 2, 0, 0x3a3a3c, "Hearth"]]],
+    ["Rug", [["rug", 0, 0, 240, 170, 1, 0.5, 14077890, ""]]],
+    ["Plant", [["plant", 0, 0, 44, 44, 140, 0, 6261338, ""]]],
+    ["Bench", [["bench", 0, 0, 120, 45, 45, 0, 12094298, "Bench"]]],
+  ]],
+  ["Dining", [
+    ["Dining table", [["table", 0, 0, 200, 95, 75, 0, 3355443, "Dining table"]]],
+    ["Pedestal table", [["ptable", 0, 0, 220, 100, 75, 0, 1842204, "Dining table"]]],
+    ["Dining chair", [["chair", 0, 0, 45, 45, 88, 0, 0xe8e4dc, "Chair"]]],
+    ["Drinks bar", [["box", 0, 0, 104, 48, 3, 86, ED_TOP, ""], ["box", 0, -1.5, 100, 45, 86, 0, ED_OAK, "Drinks bar (wine fridge)"], ["box", 0, 8, 100, 30, 75, 140, 0xd9dfe2, "Glass-front upper"]]],
+  ]],
+  ["Bedroom", [
+    ["Queen bed", [["box", 0, 0, 152, 203, 55, 0, ED_OAK, "Queen bed"], ["box", 0, -100, 160, 6, 110, 0, 0x3b3f45, "Headboard"]]],
+    ["King bed", [["box", 0, 0, 193, 203, 55, 0, ED_OAK, "King bed"], ["box", 0, -100, 200, 6, 110, 0, 0x3b3f45, "Headboard"]]],
+    ["Nightstand", [["box", 0, 0, 45, 40, 55, 0, ED_OAK, "Nightstand"]]],
+    ["Dresser", [["box", 0, 0, 120, 50, 80, 0, ED_OAK, "Dresser"]]],
+    ["Desk", [["box", 0, 0, 140, 65, 3, 73, ED_OAK, "Desk"]]],
+    ["Desk chair", [["chair", 0, 0, 58, 58, 120, 0, 0x2c2f34, "Desk chair"]]],
+    ["Bookcase", [["box", 0, 0, 80, 35, 180, 0, 0xf2f1ee, "Bookcase"]]],
+  ]],
+  ["Doors and windows", [
+    ["Door 80", "door"], ["Pocket door 76", "pocket"], ["Window 120", "window"],
+  ]],
+];
+function edAdd(name, parts) {
+  const r = rn.domElement.getBoundingClientRect(), c = edPlanPt({ clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 }) || [600, 600];
+  // start at the middle of the view, but step aside if something is already there
+  const busy = (px, py) => edItems().some((it) => edPip(px, py, edRect(it.x, it.y, it.w + 60, it.d + 60, it.a)));
+  let x = Math.round(c[0]), y = Math.round(c[1]);
+  for (let r = 60, k = 0; busy(x, y) && r < 600; k++) {
+    const a = k * 0.9;
+    x = Math.round(c[0] + Math.cos(a) * r); y = Math.round(c[1] + Math.sin(a) * r);
+    if (k % 7 == 6) r += 60;
+  }
+  edPush();
+  if (typeof parts == "string") {
+    // doors and windows go on the furniture list; cut the wall first, then drag the door into the gap
+    const f = parts == "window" ? [ED.lv, x, y, 120, 4, 0, 92.7, 111.8, 1, "Window"] : [ED.lv, x, y, parts == "pocket" ? 76 : 80, 4, 0, 0, 208.3, 2, parts == "pocket" ? "Pocket door" : "Door"];
+    ED.W.furn.push(f);
+    ED.sel = { t: "item", it: { k: "F", i: ED.W.furn.length - 1 } };
+    edMsg(parts == "window" ? "Window added: drag it onto a wall" : "Door added: cut an opening in the wall, then drag the door into it");
+  } else {
+    // biggest part first so it becomes the piece the others move with
+    const ps = parts.slice().sort((a, b) => b[3] * b[4] - a[3] * a[4]);
+    let first = -1;
+    ps.forEach((p) => {
+      ED.W.lay.push([ED.lv, p[0], x + p[1], y + p[2], p[3], p[4], p[5], p[6], 0, p[7], p[8]]);
+      if (first < 0) first = ED.W.lay.length - 1;
+    });
+    ED.sel = { t: "item", it: { k: "L", i: first } };
+    edMsg(name + " added in the middle of the view: drag it into place");
+  }
+  ED.selUndo = ED.undo.length;
+  edLib(false);
+  if (ED.mode != "plan") edMode("plan");
+  edRebuild(); edProps();
+  edZoomTo(x, y);
+}
+function edLib(show) {
+  const el = $("edlib");
+  if (show === undefined) show = el.style.display == "none";
+  if (show && !el.dataset.built) {
+    el.dataset.built = 1;
+    el.innerHTML = '<div class="edlh"><b>Add to this floor</b><button id="edlx">✕</button></div>' +
+      ED_LIB.map(([g, items], gi) => '<div class="edlg">' + g + '</div><div class="edlr">' + items.map((it, ii) => '<button data-g="' + gi + '" data-i="' + ii + '">' + it[0] + "</button>").join("") + "</div>").join("");
+    el.querySelectorAll("button[data-g]").forEach((b) => (b.onclick = () => { const it = ED_LIB[+b.dataset.g][1][+b.dataset.i]; edAdd(it[0], it[1]); }));
+    $("edlx").onclick = () => edLib(false);
+  }
+  el.style.display = show ? "block" : "none";
 }
 
 // ---------- saving
@@ -467,18 +675,16 @@ function edSave() {
   let a = [];
   try { a = JSON.parse(localStorage.getItem(ED.ls) || "[]"); } catch (e) {}
   const id = ED.editKey ? ED.editKey.slice(2) : Date.now().toString(36);
-  const rec = { id, title, base: ED.base, D: ED.W, t: Date.now() };
+  const D = ED.W;
+  const rec = { id, title, base: ED.base, D, t: Date.now() };
   a = a.filter((r) => r.id != id); a.push(rec);
   try { localStorage.setItem(ED.ls, JSON.stringify(a)); }
   catch (e) { edMsg("Could not save in this browser (storage full?). Use Export instead."); return; }
+  edEnd();
   const key = edRegister(rec);
   renderVList();
-  edClearHi();
-  ED.on = false;
-  document.body.classList.remove("editing");
-  $("edov").style.display = "none";
-  if (ED.ct0) { ct.enableRotate = ED.ct0.rot; ct.mouseButtons.LEFT = ED.ct0.left; ct.touches.ONE = ED.ct0.one; }
   setVersion(VERS.findIndex((v) => v.key == key));
+  goView("3d");
 }
 function edExport() {
   const title = ($("edname").value || "My edit").trim();
@@ -505,24 +711,26 @@ function edDeleteSaved(rid) {
   ov.id = "edov";
   ov.innerHTML =
     '<div id="edbar"><b class="edt">✎ Edit</b>' +
-    '<div class="seg" id="edtools"><button data-t="select">Select / move</button><button data-t="wall">+ Wall</button><button data-t="cut">✂ Cut wall</button></div>' +
+    '<div class="seg" id="edmode"><button data-m="plan">Plan</button><button data-m="3d">3D</button><button data-m="walk">Walk</button></div>' +
+    '<div class="seg" id="edtools"><button data-t="select">Select</button><button data-t="wall">+ Wall</button><button data-t="cut">✂ Cut</button></div><button id="edaddb" class="pri2">+ Add</button>' +
     '<span id="edwallopts" style="display:none"><label>Thick <input id="edthk" type="number" value="14"></label><label>Height <input id="edhgt" type="number" value="243.8"></label></span>' +
     '<div class="seg" id="edlv"><button data-l="ground">Ground</button><button data-l="upper">Upper</button></div>' +
     '<button id="edun" title="Undo (Ctrl+Z)">↶</button><button id="edre" title="Redo">↷</button>' +
     '<span class="sp"></span><input id="edname" placeholder="Name your edit"><button id="edexp">Export</button><button id="edcancel">Cancel</button><button id="edsave" class="pri">Save</button></div>' +
-    '<div id="edmsg"></div><div id="edprops"></div>';
+    '<div id="edmsg"></div><div id="edlib" style="display:none"></div><div id="edprops"></div>';
   document.body.appendChild(ov);
   const c = rn.domElement;
   c.addEventListener("pointerdown", edDown, true);
   c.addEventListener("pointermove", edMove, true);
   c.addEventListener("pointerup", edUp, true);
   c.addEventListener("pointercancel", edUp, true);
-  document.querySelectorAll("#edtools button").forEach((b) => (b.onclick = () => { ED.tool = b.dataset.t; ED.sel = null; edHighlight(); edTools(); edProps(); }));
+  document.querySelectorAll("#edmode button").forEach((b) => (b.onclick = () => edMode(b.dataset.m)));
+  document.querySelectorAll("#edtools button").forEach((b) => (b.onclick = () => { if (ED.mode != "plan") edMode("plan"); ED.tool = b.dataset.t; ED.sel = null; edHighlight(); edTools(); edProps(); }));
   document.querySelectorAll("#edlv button").forEach((b) => (b.onclick = () => edLevel(b.dataset.l)));
-  $("edun").onclick = edUndo; $("edre").onclick = edRedo;
+  $("edun").onclick = edUndo; $("edre").onclick = edRedo; $("edaddb").onclick = () => edLib();
   $("edsave").onclick = edSave; $("edcancel").onclick = edClose; $("edexp").onclick = edExport;
   addEventListener("keydown", (e) => {
-    if (!ED.on || /INPUT/.test((document.activeElement || {}).tagName)) return;
+    if (!ED.on || S.walk || /INPUT/.test((document.activeElement || {}).tagName)) return;
     if (e.key == "Delete" || e.key == "Backspace") { edDelete(); e.preventDefault(); }
     else if (e.key == "r" || e.key == "R") edRotate(e.shiftKey ? -Math.PI / 2 : Math.PI / 2);
     else if ((e.ctrlKey || e.metaKey) && e.key == "z") { e.shiftKey ? edRedo() : edUndo(); e.preventDefault(); }
@@ -531,6 +739,13 @@ function edDeleteSaved(rid) {
     else return;
     e.stopPropagation();
   }, true);
+  // leaving walk mode while editing returns to the edit plan
+  const ex0 = exitWalk;
+  exitWalk = function () {
+    const r = ex0.apply(this, arguments);
+    if (ED.on && ED.mode == "walk") { ED.mode = "plan"; ct.enableRotate = false; ct.mouseButtons.LEFT = THREE.MOUSE.PAN; ct.touches.ONE = THREE.TOUCH.PAN; edLevel(ED.lvName, true); edModeBtns(); edProps(); }
+    return r;
+  };
   const b = document.createElement("button");
   b.id = "editb"; b.textContent = "✎ Edit"; b.title = "Edit this design: move furniture, add, cut or extend walls";
   b.onclick = edOpen;
