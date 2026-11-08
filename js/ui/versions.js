@@ -37,7 +37,7 @@ function applyAll() {
 function renderVStrip() {
   const el = $("vstrip");
   if (!el) return;
-  const num = (v, i) => (i ? (/^(\d+)/.exec(v.chip) || [0, String(i)])[1].padStart(2, "0") : "AS-IS");
+  const num = (v, i) => (v.edit ? "✎" : i ? (/^(\d+)/.exec(v.chip) || [0, String(i)])[1].padStart(2, "0") : "AS-IS");
   const shown = VERS.map((v, i) => i).filter((i) => !VERS[i].archived || i == S.ver);
   const cur = VERS[S.ver];
   el.innerHTML =

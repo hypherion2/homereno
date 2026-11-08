@@ -5,6 +5,7 @@ try {
   start = Math.min(VERS.length - 1, Math.max(0, parseInt(localStorage.getItem("remodel-ver") || "0") || 0));
 } catch (e) {}
 start = VERS.length - 1;
+while (start > 0 && VERS[start].custom) start--; // open on the latest concept, not a saved edit
 {
   const hv = verFromHash();
   if (hv >= 0) start = hv;

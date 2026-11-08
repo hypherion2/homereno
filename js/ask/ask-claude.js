@@ -260,7 +260,7 @@ function renderVList() {
       '<span class="n' +
       (i ? "" : " as") +
       '">' +
-      (i ? (/^(\d+)/.exec(v.chip) || [0, String(i)])[1].padStart(2, "0") : "AS-IS") +
+      (v.edit ? "✎" : i ? (/^(\d+)/.exec(v.chip) || [0, String(i)])[1].padStart(2, "0") : "AS-IS") +
       "</span><span><b>" +
       v.title.replace(/</g, "&lt;") +
       "</b><i>" +
@@ -326,6 +326,10 @@ async function saveRec(rec) {
   }
 }
 async function delCustom(rid) {
+  {
+    const vv = VERS.find((v) => v.rid == rid);
+    if (vv && vv.edit && typeof edDeleteSaved == "function") return edDeleteSaved(rid);
+  }
   const i = VERS.findIndex((v) => v.rid == rid);
   if (i < 0) return;
   if (CUST.db) {
