@@ -1089,13 +1089,13 @@ const COSTS = {
   "notes": "Keeps the original walls and stair, so no beams or stair work."
  },
  "v26": {
-  "low": 136000.0,
-  "high": 261000.0,
+  "low": 131000.0,
+  "high": 251000.0,
   "items": [
    {
-    "item": "Kitchen: cabinets, quartz, white-oak island with prep sink, oven tower cabinet, pantry wall (3 full-height pull-outs), backsplash",
-    "low": 48000,
-    "high": 82000,
+    "item": "Kitchen: cabinets, quartz, white-oak island, oven tower cabinet, pantry wall (3 full-height pull-outs, integrated pulls), backsplash",
+    "low": 47000,
+    "high": 80000,
     "cat": "kitchen"
    },
    {
@@ -1105,9 +1105,9 @@ const COSTS = {
     "cat": "pro"
    },
    {
-    "item": "Drinks bar: white-oak base, wine/beverage fridge, quartz, lit glass-front upper, bottle shelf",
-    "low": 3000,
-    "high": 5500,
+    "item": "Drinks bar built-in: off-white frame to the ceiling, white-oak base and back panel, wine/beverage fridge, quartz, lit glass cabinet",
+    "low": 4000,
+    "high": 7500,
     "cat": "kitchen"
    },
    {
@@ -1117,16 +1117,16 @@ const COSTS = {
     "cat": "walls"
    },
    {
-    "item": "Slim direct-vent gas fireplace in the new chase (unit, gas extension, vent, stone surround)",
-    "low": 10000,
-    "high": 19000,
+    "item": "Slim direct-vent gas fireplace in the new chase (unit, gas extension, vent, plaster finish, hearth)",
+    "low": 9000,
+    "high": 17000,
     "cat": "pro"
    },
    {
-    "item": "Island prep sink plumbing and floor electrical",
-    "low": 5000,
-    "high": 10000,
-    "cat": "pro"
+    "item": "Island floor electrical",
+    "low": 1500,
+    "high": 3000,
+    "cat": "elec"
    },
    {
     "item": "Oak media wall around the TV in the nook",
@@ -1172,8 +1172,8 @@ const COSTS = {
    },
    {
     "item": "Contingency (15%)",
-    "low": 17700.0,
-    "high": 34000.0,
+    "low": 17000.0,
+    "high": 32700.0,
     "cat": "cont"
    }
   ],
