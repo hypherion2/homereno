@@ -60,11 +60,16 @@ function edSetItem(it, p) {
 }
 // smaller layout pieces whose centre sits inside the picked piece move/rotate/delete with it
 function edKids(sel) {
+  // parts that sit on or in the picked piece: centre inside its outline (thin fronts and handles may
+  // stick out a few cm at the front or back). Neighbours beside it (fillers, end panels, the next cabinet) stay put.
   if (sel.k != "L" || !ED.W.lay[sel.i]) return [];
-  const it = edGetItem(sel), P = edRect(it.x, it.y, it.w + 12, Math.max(it.d, 6) + 12, it.a), A = it.w * it.d, out = [];
+  const it = edGetItem(sel), A = it.w * it.d, out = [];
+  const P = edRect(it.x, it.y, it.w, Math.max(it.d, 2), it.a), P6 = edRect(it.x, it.y, it.w, Math.max(it.d, 2) + 12, it.a);
   ED.W.lay.forEach((o, i) => {
     if (i == sel.i || o[0] != ED.W.lay[sel.i][0] || o[1] == "rug" || o[1] == "pot") return;
-    if (o[4] * o[5] < A && edPip(o[2], o[3], P)) out.push(i);
+    const a = o[4] * o[5];
+    if (a > A) return;
+    if (edPip(o[2], o[3], P) || (a < 400 && edPip(o[2], o[3], P6))) out.push(i);
   });
   return out;
 }
@@ -578,7 +583,7 @@ const ED_LIB = [
     ["Side table", [["round", 0, 0, 45, 45, 50, 0, 12094298, "Side table"]]],
     ["TV 75 in", [["tv", 0, 0, 165, 8, 93, 60, 1118481, "TV"]]],
     ["TV console", [["console", 0, 0, 180, 40, 45, 0, 7031343, "TV console"]]],
-    ["Gas fireplace", [["box", 0, 0, 150, 5, 110, 0, 0x4b4b4d, "Fireplace surround"], ["box", 0, 3.3, 112, 2, 46, 32, 0x141414, "Gas fireplace"], ["led", 0, 4, 96, 1, 6, 36, 0, ""], ["box", 0, 10.5, 150, 20, 2, 0, 0x3a3a3c, "Hearth"]]],
+    ["Gas fireplace", [["box", 0, 0, 150, 5, 110, 0, 0x4b4b4d, "Fireplace surround"], ["box", 0, 3.3, 112, 2, 46, 32, 0x141414, "Gas fireplace"], ["led", 0, 4, 96, 1, 6, 36, 0, ""], ["box", 0, 9.5, 150, 20, 2, 0, 0x3a3a3c, "Hearth"]]],
     ["Rug", [["rug", 0, 0, 240, 170, 1, 0.5, 14077890, ""]]],
     ["Plant", [["plant", 0, 0, 44, 44, 140, 0, 6261338, ""]]],
     ["Bench", [["bench", 0, 0, 120, 45, 45, 0, 12094298, "Bench"]]],
