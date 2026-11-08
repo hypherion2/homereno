@@ -70,7 +70,7 @@ document.querySelectorAll("#mtools button").forEach(
   (b) =>
     (b.onclick = () => {
       if (b.dataset.mt != "help") closeSheet();
-      $({ full: "fullb", shot: "shot", help: "help" }[b.dataset.mt]).click();
+      $({ full: "fullb", shot: "shot", help: "help", edit: "editb" }[b.dataset.mt]).click();
     }),
 );
 $("sheetx").onclick = closeSheet;

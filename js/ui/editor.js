@@ -553,7 +553,7 @@ function edDeleteSaved(rid) {
   b.onclick = edOpen;
   $("walkb").after(b);
   const mb = document.createElement("button");
-  mb.textContent = "✎ Edit design"; mb.onclick = () => { try { closeSheet(); } catch (e) {} edOpen(); };
+  mb.textContent = "✎ Edit design"; mb.dataset.mt = "edit"; // mobile.js wires #mtools buttons by data-mt
   $("mtools").prepend(mb);
   edLoadSaved();
 }
