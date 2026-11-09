@@ -191,7 +191,7 @@ function edHighlight() {
       }),
     ),
   );
-  if (ED.sel && ED.sel.t == "item" && ED.mode == "plan") edRotHandle();
+  if (ED.sel && ED.mode == "plan") edRotHandle();
   const b = ED.sel && ED.sel.t == "wall" && ED.W.boxes[ED.sel.i];
   if (b && ED.mode == "plan") {
     const w = edWall(b), r = Math.max(9, edPxCm() * 10);
@@ -203,20 +203,29 @@ function edHighlight() {
   }
 }
 // rotate handle: a green knob in front of the selected item, joined to its centre; drag it round
-function edRotPos(it, a) {
-  const r = Math.max(it.w, it.d) / 2 + edPxCm() * 34;
-  return [it.x - Math.sin(a) * r, it.y + Math.cos(a) * r];
+// rotate handle: a green ring beside the selection, joined to its centre; drag it round.
+// Items: in front of the item. Walls: beside the wall's midpoint, rotating about that midpoint.
+function edRotInfo() {
+  const s = ED.sel;
+  if (s.t == "wall") {
+    const w = edWall(ED.W.boxes[s.i]);
+    return { x: (w.A[0] + w.B[0]) / 2, y: (w.A[1] + w.B[1]) / 2, a: Math.atan2(w.B[1] - w.A[1], w.B[0] - w.A[0]), r: w.t / 2 + edPxCm() * 34 };
+  }
+  const it = edGetItem(s.it);
+  return { x: it.x, y: it.y, a: it.a, r: Math.max(it.w, it.d) / 2 + edPxCm() * 34 };
 }
+const edRotPos = (f, a) => [f.x - Math.sin(a) * f.r, f.y + Math.cos(a) * f.r];
 function edRotHandle(a) {
   ED.fx.filter((o) => o.userData.rot).forEach((o) => o.parent && o.parent.remove(o));
   ED.fx = ED.fx.filter((o) => !o.userData.rot);
-  const it = edGetItem(ED.sel.it), ang = a == null ? it.a : a, q = edRotPos(it, ang), y = edElev() + 255, k = Math.max(7, edPxCm() * 9);
+  if (ED.sel.t == "wall" ? !ED.W.boxes[ED.sel.i] : !(ED.sel.it.k == "L" ? ED.W.lay : ED.W.furn)[ED.sel.it.i]) return;
+  const f = edRotInfo(), ang = a == null ? f.a : a, q = edRotPos(f, ang), y = edElev() + 255, k = Math.max(7, edPxCm() * 9);
   const knob = new THREE.Mesh(new THREE.TorusGeometry(k, k * 0.32, 8, 28), new THREE.MeshBasicMaterial({ color: HIGHLIGHT }));
   knob.rotation.x = Math.PI / 2; knob.position.set(q[0], y, q[1]);
   const dot = new THREE.Mesh(new THREE.CircleGeometry(k * 0.45, 16), new THREE.MeshBasicMaterial({ color: 0xffffff }));
   dot.rotation.x = -Math.PI / 2; dot.position.set(q[0], y + 0.5, q[1]);
-  const L = Math.hypot(q[0] - it.x, q[1] - it.y), bar = new THREE.Mesh(new THREE.BoxGeometry(Math.max(1.5, edPxCm() * 1.6), 1, L), new THREE.MeshBasicMaterial({ color: HIGHLIGHT, transparent: true, opacity: 0.7 }));
-  bar.position.set((q[0] + it.x) / 2, y - 1, (q[1] + it.y) / 2); bar.rotation.y = -ang;
+  const L = Math.hypot(q[0] - f.x, q[1] - f.y), bar = new THREE.Mesh(new THREE.BoxGeometry(Math.max(1.5, edPxCm() * 1.6), 1, L), new THREE.MeshBasicMaterial({ color: HIGHLIGHT, transparent: true, opacity: 0.7 }));
+  bar.position.set((q[0] + f.x) / 2, y - 1, (q[1] + f.y) / 2); bar.rotation.y = -ang;
   [knob, dot, bar].forEach((m) => { m.userData.rot = 1; S.root.add(m); ED.fx.push(m); });
   ED.rotAt = [q[0], y, q[1]];
 }
@@ -362,6 +371,14 @@ function edDelete() {
   } else ED.W.furn.splice(s.it.i, 1);
   ED.sel = null; edRebuild(); edProps();
 }
+function edRotWall(da) {
+  const s = ED.sel; if (!s || s.t != "wall" || !ED.W.boxes[s.i]) return;
+  edPush();
+  const w = edWall(ED.W.boxes[s.i]), cx = (w.A[0] + w.B[0]) / 2, cy = (w.A[1] + w.B[1]) / 2, c = Math.cos(da), sn = Math.sin(da), r1 = (v) => Math.round(v * 10) / 10;
+  const q = ED.W.boxes[s.i][1];
+  ED.W.boxes[s.i][1] = q.map((v, k) => (k % 2 ? r1(cy + (q[k - 1] - cx) * sn + (v - cy) * c) : r1(cx + (v - cx) * c - (q[k + 1] - cy) * sn)));
+  edRebuild(); edProps();
+}
 function edRotate(da) {
   const s = ED.sel; if (!s || s.t != "item") return;
   edPush();
@@ -408,12 +425,12 @@ function edDown(e) {
   else if (ED.tool == "cut") grab = { mode: "cut", P0: p, P1: p };
   else {
     const s = ED.sel;
-    if (s && s.t == "item" && ED.rotAt) {
+    if (s && ED.rotAt) {
       const sp = edScr(...ED.rotAt);
       if (Math.hypot(sp[0] - e.clientX, sp[1] - e.clientY) < 28) {
-        const it = edGetItem(s.it); edPush();
-        grab = { mode: "rot", c: [it.x, it.y], a0: it.a, p0: Math.atan2(p[1] - it.y, p[0] - it.x), da: 0, moved: false,
-          kids: edKids(s.it).map((i) => [i, ED.W.lay[i][2], ED.W.lay[i][3], ED.W.lay[i][8] || 0]) };
+        const f = edRotInfo(); edPush();
+        grab = { mode: "rot", c: [f.x, f.y], a0: f.a, p0: Math.atan2(p[1] - f.y, p[0] - f.x), da: 0, moved: false,
+          kids: s.t == "item" ? edKids(s.it).map((i) => [i, ED.W.lay[i][2], ED.W.lay[i][3], ED.W.lay[i][8] || 0]) : [], q0: s.t == "wall" ? ED.W.boxes[s.i][1].slice() : null };
       }
     }
     if (!grab && s && s.t == "wall" && ED.W.boxes[s.i]) {
@@ -483,6 +500,7 @@ function edMove(e) {
       const dx = o.userData.rx0 - d.c[0], dz = o.userData.rz0 - d.c[1];
       o.position.x = d.c[0] + dx * c - dz * sn; o.position.z = d.c[1] + dx * sn + dz * c; o.rotation.y = o.userData.ry0 - da;
     }));
+    if (!d.moved) { ED.fx.filter((o) => !o.userData.rot).forEach((o) => o.parent && o.parent.remove(o)); ED.fx = ED.fx.filter((o) => o.userData.rot); } // hide wall-end markers while turning
     d.da = da; d.moved = true;
     edRotHandle(d.a0 + da);
     const deg = Math.round(((((d.a0 + da) * 180) / Math.PI) % 360 + 360) % 360);
@@ -517,7 +535,8 @@ function edUp(e) {
     if (!d.moved || Math.abs(d.da) < 1e-6) { ED.undo.pop(); edHighlight(); return; }
     const c = Math.cos(d.da), sn = Math.sin(d.da), r1 = (v) => Math.round(v * 10) / 10, rA = (v) => Math.round(((v % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI) * 1e4) / 1e4;
     d.kids.forEach(([i, x, y, a]) => { const o = ED.W.lay[i], dx = x - d.c[0], dy = y - d.c[1]; o[2] = r1(d.c[0] + dx * c - dy * sn); o[3] = r1(d.c[1] + dx * sn + dy * c); o[8] = rA(a + d.da); });
-    edSetItem(ED.sel.it, { a: rA(d.a0 + d.da) });
+    if (ED.sel.t == "wall") ED.W.boxes[ED.sel.i][1] = d.q0.map((v, k, q) => (k % 2 ? r1(d.c[1] + (q[k - 1] - d.c[0]) * sn + (v - d.c[1]) * c) : r1(d.c[0] + (v - d.c[0]) * c - (q[k + 1] - d.c[1]) * sn)));
+    else edSetItem(ED.sel.it, { a: rA(d.a0 + d.da) });
     edRebuild(); edProps(); return;
   }
   if (d.mode == "end") { if (d.A) ED.W.boxes[ED.sel.i][1] = edQuad(d.A, d.B, d.w.t); else ED.undo.pop(); }
@@ -550,8 +569,12 @@ function edProps() {
   if (s.t == "wall") {
     const b = ED.W.boxes[s.i], w = edWall(b);
     el.innerHTML = '<b>Wall · ' + Math.round(w.L) + " × " + Math.round(w.t) + " cm, " + Math.round(b[3]) + ' cm high</b><label>Length <input id="edpL" type="number" value="' + Math.round(w.L) + '"></label><label>Thick <input id="edpT" type="number" value="' + Math.round(w.t) + '"></label>' +
-      '<label>Height <input id="edpH" type="number" value="' + Math.round(b[3]) + '"></label>' + back + '<button id="edpdel" class="danger">Delete</button><button id="edpdone">Done</button>' +
-      '<span class="edhint">Drag to move it; drag a green end to extend or shorten it.</span>';
+      '<label>Height <input id="edpH" type="number" value="' + Math.round(b[3]) + '"></label>' +
+      '<button id="edpr1">⟲ 15°</button><button id="edpr2">⟳ 15°</button><button id="edpr3">⟳ 90°</button>' + back + '<button id="edpdel" class="danger">Delete</button><button id="edpdone">Done</button>' +
+      '<span class="edhint">Drag to move it; drag a green end to extend or shorten it; drag the green ring to rotate it.</span>';
+    $("edpr1").onclick = () => edRotWall(-Math.PI / 12);
+    $("edpr2").onclick = () => edRotWall(Math.PI / 12);
+    $("edpr3").onclick = () => edRotWall(Math.PI / 2);
     const upd = () => {
       edPush();
       const L = Math.max(5, +$("edpL").value || w.L), t = Math.max(2, +$("edpT").value || w.t), ux = (w.B[0] - w.A[0]) / w.L, uy = (w.B[1] - w.A[1]) / w.L;
