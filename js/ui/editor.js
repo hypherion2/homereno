@@ -232,9 +232,47 @@ function edRotHandle(a) {
 const edSnapAng = (a, free) => {
   const d = (a * 180) / Math.PI;
   if (free) return Math.round(d) * Math.PI / 180;
-  const n = Math.round(d / 90) * 90;
-  return ((Math.abs(d - n) < 4 ? n : Math.round(d / 5) * 5) * Math.PI) / 180; // 5° steps, sticky at right angles
+  const n = Math.round(d / 45) * 45;
+  return ((Math.abs(d - n) < 4 ? n : Math.round(d / 5) * 5) * Math.PI) / 180; // 5° steps, sticky at 45° and right angles
 };
+// after a wall is moved or turned: if one of its ends is within 75 cm of another wall's end, slide it (same angle)
+// onto that end; any free end is stretched or trimmed along the wall to meet the wall it points at (within 75 cm)
+function edJoinEnds(i, tol = 75) {
+  const b = ED.W.boxes[i]; if (!b) return 0;
+  const w = edWall(b), ux = (w.B[0] - w.A[0]) / w.L, uy = (w.B[1] - w.A[1]) / w.L, others = [];
+  ED.W.boxes.forEach((o, j) => { if (j != i && o[0] == b[0] && o[3] >= 150) others.push(edWall(o)); });
+  let A = w.A.slice(), B = w.B.slice(), n = 0, fixed = null;
+  // 1. an end of another wall close by: slide the whole wall (same angle and length) so that end sits on it
+  let near = null, nd = tol, nk = null;
+  [["A", A], ["B", B]].forEach(([k, E]) => others.forEach((v) => [v.A, v.B].forEach((q) => {
+    const dd = Math.hypot(q[0] - E[0], q[1] - E[1]); if (dd < nd) { nd = dd; near = q; nk = k; }
+  })));
+  if (near && nd > 0.5) {
+    const E = nk == "A" ? A : B, tx = near[0] - E[0], ty = near[1] - E[1];
+    A = [A[0] + tx, A[1] + ty]; B = [B[0] + tx, B[1] + ty]; n++;
+  }
+  if (near) fixed = nk;
+  // 2. stretch or trim the free end(s) along the wall to meet the wall they point at
+  [["A", -1], ["B", 1]].forEach(([k, sg]) => {
+    if (k == fixed) return;
+    const E = k == "A" ? A : B, dx = ux * sg, dy = uy * sg;
+    let best = null;
+    others.forEach((v) => {
+      const ex = v.B[0] - v.A[0], ey = v.B[1] - v.A[1], cr = dx * ey - dy * ex;
+      if (Math.abs(cr) < 0.2 * v.L) return; // (nearly) parallel
+      const s1 = ((v.A[0] - E[0]) * ey - (v.A[1] - E[1]) * ex) / cr, r = ((v.A[0] - E[0]) * dy - (v.A[1] - E[1]) * dx) / cr, pad = v.t / v.L;
+      if (r < -pad || r > 1 + pad || s1 < -40 || s1 > 75 || s1 < -w.L * 0.5) return;
+      if (best == null || Math.abs(s1) < Math.abs(best)) best = s1;
+    });
+    if (best != null && Math.abs(best) > 0.5) {
+      const P = [E[0] + dx * best, E[1] + dy * best];
+      if (k == "A") A = P; else B = P;
+      n++;
+    }
+  });
+  if (n) b[1] = edQuad(A, B, w.t);
+  return n;
+}
 function edPreview(A, B, t, color) {
   ED.fx.filter((o) => o.userData.pv).forEach((o) => o.parent && o.parent.remove(o));
   ED.fx = ED.fx.filter((o) => !o.userData.pv);
@@ -377,6 +415,7 @@ function edRotWall(da) {
   const w = edWall(ED.W.boxes[s.i]), cx = (w.A[0] + w.B[0]) / 2, cy = (w.A[1] + w.B[1]) / 2, c = Math.cos(da), sn = Math.sin(da), r1 = (v) => Math.round(v * 10) / 10;
   const q = ED.W.boxes[s.i][1];
   ED.W.boxes[s.i][1] = q.map((v, k) => (k % 2 ? r1(cy + (q[k - 1] - cx) * sn + (v - cy) * c) : r1(cx + (v - cx) * c - (q[k + 1] - cy) * sn)));
+  if (edJoinEnds(s.i)) edMsg("Joined to the wall next to it");
   edRebuild(); edProps();
 }
 function edRotate(da) {
@@ -531,12 +570,14 @@ function edUp(e) {
   ED.drag = null;
   if (d.mode == "tap") { edZoomTo(d.at[0], d.at[1]); return; } // picked something new: zoom in a little
   if ((d.mode == "move" || d.mode == "wallmove") && !d.moved) { ED.undo.pop(); return; }
+  if (d.mode == "wallmove" && edJoinEnds(ED.sel.i, 25)) edMsg("Joined to the wall next to it");
   if (d.mode == "rot") {
     if (!d.moved || Math.abs(d.da) < 1e-6) { ED.undo.pop(); edHighlight(); return; }
     const c = Math.cos(d.da), sn = Math.sin(d.da), r1 = (v) => Math.round(v * 10) / 10, rA = (v) => Math.round(((v % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI) * 1e4) / 1e4;
     d.kids.forEach(([i, x, y, a]) => { const o = ED.W.lay[i], dx = x - d.c[0], dy = y - d.c[1]; o[2] = r1(d.c[0] + dx * c - dy * sn); o[3] = r1(d.c[1] + dx * sn + dy * c); o[8] = rA(a + d.da); });
     if (ED.sel.t == "wall") ED.W.boxes[ED.sel.i][1] = d.q0.map((v, k, q) => (k % 2 ? r1(d.c[1] + (q[k - 1] - d.c[0]) * sn + (v - d.c[1]) * c) : r1(d.c[0] + (v - d.c[0]) * c - (q[k + 1] - d.c[1]) * sn)));
     else edSetItem(ED.sel.it, { a: rA(d.a0 + d.da) });
+    if (ED.sel.t == "wall" && edJoinEnds(ED.sel.i)) edMsg("Joined to the wall next to it");
     edRebuild(); edProps(); return;
   }
   if (d.mode == "end") { if (d.A) ED.W.boxes[ED.sel.i][1] = edQuad(d.A, d.B, d.w.t); else ED.undo.pop(); }
