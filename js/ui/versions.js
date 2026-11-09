@@ -107,9 +107,11 @@ function setVersion(i, keep) {
     ' <a class="btn" href="sheets/#' +
     verSlug(v) +
     '" target="_blank" rel="noopener" title="Still images of every design (floor plan + kitchen-to-living view) with descriptions and costs; easy to share with other AI tools" style="background:transparent;color:inherit;border:1px solid currentColor;opacity:.8;text-decoration:none;display:inline-block;text-align:center;box-sizing:border-box">Image sheets</a>' +
+    ' <button class="btn" id="dwb" title="Architectural drawings of this design: floor plan with dimensions and elevations (print or save as PDF)" style="background:transparent;color:inherit;border:1px solid currentColor;opacity:.8">Drawings</button>' +
     galleryHtml(v) +
     scopeHtml(v);
   costWire(v.key);
+  $("dwb").onclick = () => drawingsOpen(DATA[v.key], v);
   galleryWire(v);
   $("zoomc").onclick = () => fly(...focusCam());
   $("copyl").onclick = () => {

@@ -841,7 +841,7 @@ function edDeleteSaved(rid) {
     '<span id="edwallopts" style="display:none"><label>Thick <input id="edthk" type="number" value="14"></label><label>Height <input id="edhgt" type="number" value="243.8"></label></span>' +
     '<div class="seg" id="edlv"><button data-l="ground">Ground</button><button data-l="upper">Upper</button></div>' +
     '<button id="edun" title="Undo (Ctrl+Z)">↶</button><button id="edre" title="Redo">↷</button>' +
-    '<span class="sp"></span><input id="edname" placeholder="Name your edit"><button id="edexp">Export</button><button id="edcancel">Cancel</button><button id="edsave" class="pri">Save</button></div>' +
+    '<span class="sp"></span><input id="edname" placeholder="Name your edit"><button id="eddw">Drawings</button><button id="edexp">Export</button><button id="edcancel">Cancel</button><button id="edsave" class="pri">Save</button></div>' +
     '<div id="edmsg"></div><div id="edlib" style="display:none"></div><div id="edprops"></div>';
   document.body.appendChild(ov);
   const c = rn.domElement;
@@ -859,7 +859,7 @@ function edDeleteSaved(rid) {
   document.querySelectorAll("#edtools button").forEach((b) => (b.onclick = () => { if (ED.mode != "plan") edMode("plan"); ED.tool = b.dataset.t; ED.sel = null; edHighlight(); edTools(); edProps(); }));
   document.querySelectorAll("#edlv button").forEach((b) => (b.onclick = () => edLevel(b.dataset.l)));
   $("edun").onclick = edUndo; $("edre").onclick = edRedo; $("edaddb").onclick = () => edLib();
-  $("edsave").onclick = edSave; $("edcancel").onclick = edClose; $("edexp").onclick = edExport;
+  $("edsave").onclick = edSave; $("edcancel").onclick = edClose; $("edexp").onclick = edExport; $("eddw").onclick = () => drawingsOpen(ED.W, { chip: ($("edname").value || "My edit").trim(), title: "Edited from " + ((VERS.find((v) => v.key == ED.base) || {}).chip || "a design"), proposed: true });
   addEventListener("keydown", (e) => {
     if (!ED.on || S.walk || /INPUT/.test((document.activeElement || {}).tagName)) return;
     if (e.key == "Delete" || e.key == "Backspace") { edDelete(); e.preventDefault(); }
