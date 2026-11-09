@@ -89,6 +89,13 @@ def publish(out, exclude=()):
         shutil.copytree(os.path.join(ROOT, 'tools'), os.path.join(out, 'tools'), ignore=shutil.ignore_patterns('__pycache__'))
     html = open(os.path.join(ROOT, 'index.html'), encoding='utf8').read()
     for k in exclude: html = html.replace('<script src="js/data/concepts/%s.js"></script>\n' % k, '')
+    # cache-busting: phones keep old scripts for a while, so tag each local script/style with a hash of its content
+    import re, hashlib
+    def bust(m):
+        f = os.path.join(out, m.group(2))
+        if not os.path.exists(f): return m.group(0)
+        return m.group(1) + m.group(2) + '?v=' + hashlib.sha1(open(f, 'rb').read()).hexdigest()[:8] + m.group(3)
+    html = re.sub(r'((?:src|href)=")((?:js|css)/[^"?]+\.(?:js|css))(")', bust, html)
     open(os.path.join(out, 'index.html'), 'w', encoding='utf8').write(html)
     if exclude:
         V = [v for v in load_versions() if v['key'] not in exclude]; save_versions(V, out)
