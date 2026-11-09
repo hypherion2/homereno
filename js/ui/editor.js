@@ -126,6 +126,21 @@ function edPick(e) {
   }
   return rug;
 }
+// Everything under a tap, for picking small pieces: the piece the ray hits first, then every piece whose
+// footprint (grown by a finger's width) contains the tap, smallest first. Tapping the same spot again on the
+// current selection steps to the next one, so a handle-sized piece under a bigger one is reachable.
+const ED_COARSE = matchMedia("(pointer: coarse)").matches;
+function edCands(e, p, touch) {
+  const out = [], key = (it) => it.k + it.i, seen = new Set();
+  const t = edPick(e);
+  if (t && t[0] != "B") { out.push({ k: t[0], i: t[1] }); seen.add(t[0] + t[1]); }
+  const pad = edPxCm() * (touch ? 16 : 6);
+  edItems().filter((it) => it.kind != "rug" && !(it.k == "L" && (ED.W.lay[it.i][7] || 0) >= 165))
+    .filter((it) => edPip(p[0], p[1], edRect(it.x, it.y, it.w + pad * 2, Math.max(it.d, 4) + pad * 2, it.a)))
+    .sort((a, b) => a.w * a.d - b.w * b.d)
+    .forEach((it) => { if (!seen.has(key(it))) { seen.add(key(it)); out.push({ k: it.k, i: it.i }); } });
+  return out;
+}
 function edHitItem(x, y) {
   const its = edItems().filter((it) => edPip(x, y, edRect(it.x, it.y, it.w, Math.max(it.d, 12), it.a)));
   const dw = its.filter((it) => it.kind == "door" || it.kind == "window");
@@ -194,7 +209,7 @@ function edHighlight() {
   if (ED.sel && ED.mode == "plan") edRotHandle();
   const b = ED.sel && ED.sel.t == "wall" && ED.W.boxes[ED.sel.i];
   if (b && ED.mode == "plan") {
-    const w = edWall(b), r = Math.max(9, edPxCm() * 10);
+    const w = edWall(b), r = Math.max(9, edPxCm() * (ED_COARSE ? 14 : 10));
     [w.A, w.B].forEach((p) => {
       const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, 4, 24), new THREE.MeshBasicMaterial({ color: HIGHLIGHT }));
       m.position.set(p[0], edElev() + b[2] + b[3] + 4, p[1]);
@@ -219,7 +234,7 @@ function edRotHandle(a) {
   ED.fx.filter((o) => o.userData.rot).forEach((o) => o.parent && o.parent.remove(o));
   ED.fx = ED.fx.filter((o) => !o.userData.rot);
   if (ED.sel.t == "wall" ? !ED.W.boxes[ED.sel.i] : !(ED.sel.it.k == "L" ? ED.W.lay : ED.W.furn)[ED.sel.it.i]) return;
-  const f = edRotInfo(), ang = a == null ? f.a : a, q = edRotPos(f, ang), y = edElev() + 255, k = Math.max(7, edPxCm() * 9);
+  const f = edRotInfo(), ang = a == null ? f.a : a, q = edRotPos(f, ang), y = edElev() + 255, k = Math.max(7, edPxCm() * (ED_COARSE ? 13 : 9));
   const knob = new THREE.Mesh(new THREE.TorusGeometry(k, k * 0.32, 8, 28), new THREE.MeshBasicMaterial({ color: HIGHLIGHT }));
   knob.rotation.x = Math.PI / 2; knob.position.set(q[0], y, q[1]);
   const dot = new THREE.Mesh(new THREE.CircleGeometry(k * 0.45, 16), new THREE.MeshBasicMaterial({ color: 0xffffff }));
@@ -291,11 +306,11 @@ function edRebuild() {
   applyAll();
   edHighlight();
 }
-function edZoomTo(x, y) {
+function edZoomTo(x, y, small) {
   // fly in a little toward the selection when zoomed out, or re-centre if it is near the screen edge
   const e = edElev(), h = cam.position.y - e, r = rn.domElement.getBoundingClientRect(), sp = edScr(x, e, y);
   const edge = sp[0] < r.left + r.width * 0.2 || sp[0] > r.right - r.width * 0.2 || sp[1] < r.top + r.height * 0.25 || sp[1] > r.bottom - r.height * 0.25;
-  const z = r.height > r.width ? 1700 : 950; // portrait phones need to stay higher to show the same width
+  const z = (r.height > r.width ? 1700 : 950) * (small ? 0.6 : 1); // portrait phones stay higher to show the same width; small pieces get closer
   if (h >= z + 50) fly([x, e + z, y + 1], [x, e, y]);
   else if (edge) fly([x, cam.position.y, y + 1], [x, e, y]);
 }
@@ -455,9 +470,10 @@ function edCut(P0, P1) {
 
 // ---------- pointer handling on the 3D canvas (capture phase: a grab stops the camera from panning)
 function edDown(e) {
-  if (!ED.on || ED.mode != "plan" || S.walk || e.button > 0) return;
+  if (!ED.on || ED.mode != "plan" || S.walk || e.button > 0 || e.isPrimary === false) return;
   const p = edPlanPt(e);
   if (!p) return;
+  const touch = e.pointerType == "touch" || e.pointerType == "pen", HR = touch ? 40 : 28;
   const tol = edPxCm() * 10;
   let grab = null;
   if (ED.tool == "wall") { const q = edSnapPt(p, null, tol * 1.4); grab = { mode: "draw", P0: q, P1: q }; }
@@ -466,7 +482,7 @@ function edDown(e) {
     const s = ED.sel;
     if (s && ED.rotAt) {
       const sp = edScr(...ED.rotAt);
-      if (Math.hypot(sp[0] - e.clientX, sp[1] - e.clientY) < 28) {
+      if (Math.hypot(sp[0] - e.clientX, sp[1] - e.clientY) < HR) {
         const f = edRotInfo(); edPush();
         grab = { mode: "rot", c: [f.x, f.y], a0: f.a, p0: Math.atan2(p[1] - f.y, p[0] - f.x), da: 0, moved: false,
           kids: s.t == "item" ? edKids(s.it).map((i) => [i, ED.W.lay[i][2], ED.W.lay[i][3], ED.W.lay[i][8] || 0]) : [], q0: s.t == "wall" ? ED.W.boxes[s.i][1].slice() : null };
@@ -477,32 +493,46 @@ function edDown(e) {
       const b = ED.W.boxes[s.i], w = edWall(b), top = edElev() + b[2] + b[3];
       for (const [k, q] of [["A", w.A], ["B", w.B]]) {
         const sp = edScr(q[0], top, q[1]);
-        if (Math.hypot(sp[0] - e.clientX, sp[1] - e.clientY) < 26) { edPush(); grab = { mode: "end", end: k, w }; break; }
+        if (Math.hypot(sp[0] - e.clientX, sp[1] - e.clientY) < HR - 2) { edPush(); grab = { mode: "end", end: k, w }; break; }
       }
     }
     if (!grab) {
-      const t = edPick(e);
+      const t = edPick(e), cands = edCands(e, p, touch);
       let it = null, wi = null;
-      if (t && t[0] == "B") wi = t[1];
-      else if (t) it = { k: t[0], i: t[1] };
-      else { it = edHitItem(p[0], p[1]); if (!it) wi = edHitWall(p[0], p[1], tol); }
+      if (t && t[0] == "B" && !(touch && cands.length)) wi = t[1]; // on touch, a small piece within a finger's width beats the wall behind it
+      if (wi == null) {
+        it = cands[0] || null;
+        // keep the current selection when it is under the finger, so dragging it does not grab something else
+        if (ED.sel && ED.sel.t == "item" && cands.some((c) => c.k == ED.sel.it.k && c.i == ED.sel.it.i)) it = ED.sel.it;
+        if (!it) wi = touch && ED.sel ? null : edHitWall(p[0], p[1], touch ? tol * 2.2 : tol); // with a selection, near-misses move it instead
+      }
       const same = (a, b) => a && b && a.t == b.t && (a.t == "wall" ? a.i == b.i : a.it.k == b.it.k && a.it.i == b.it.i);
       if (it) {
         const ns = { t: "item", it }, fresh = !same(ns, ED.sel), g = edGetItem(it);
         if (fresh) {
           // first tap only selects (no accidental moves); drag it once it is selected
+          const prev = ED.sel;
           edSelect(ns);
-          grab = { mode: "tap", at: [g.x, g.y] };
+          grab = { mode: "tap", at: [g.x, g.y], small: Math.max(g.w, g.d) < 70, prev };
+          if (cands.length > 1) edMsg("Tap again to pick what is underneath (" + cands.length + " pieces here)", 1);
         }
       }
       if (it && !grab) {
         const g = edGetItem(it); edPush();
         const kids = edKids(it).map((i) => [i, ED.W.lay[i][2] - g.x, ED.W.lay[i][3] - g.y]);
-        grab = { mode: "move", ox: p[0] - g.x, oy: p[1] - g.y, x0: g.x, y0: g.y, kids, moved: false };
+        grab = { mode: "move", ox: p[0] - g.x, oy: p[1] - g.y, x0: g.x, y0: g.y, kids, moved: false, cands };
       } else if (!it && wi != null) {
         const ns = { t: "wall", i: wi }, w = edWall(ED.W.boxes[wi]), at = [(w.A[0] + w.B[0]) / 2, (w.A[1] + w.B[1]) / 2];
-        if (!same(ns, ED.sel)) { edSelect(ns); grab = { mode: "tap", at }; }
+        if (!same(ns, ED.sel)) { const prev = ED.sel; edSelect(ns); grab = { mode: "tap", at, prev }; }
         else { edPush(); grab = { mode: "wallmove", p0: p, q0: ED.W.boxes[wi][1].slice(), moved: false }; }
+      } else if (!it && ED.sel && touch) {
+        // touch: with something selected, a one-finger drag anywhere moves it (two fingers pan and zoom);
+        // a tap on empty floor deselects
+        if (ED.sel.t == "item") {
+          const g = edGetItem(ED.sel.it); edPush();
+          const kids = ED.sel.it.k == "L" ? edKids(ED.sel.it).map((i) => [i, ED.W.lay[i][2] - g.x, ED.W.lay[i][3] - g.y]) : [];
+          grab = { mode: "move", ox: p[0] - g.x, oy: p[1] - g.y, x0: g.x, y0: g.y, kids, moved: false, remote: true };
+        } else if (ED.W.boxes[ED.sel.i]) { edPush(); grab = { mode: "wallmove", p0: p, q0: ED.W.boxes[ED.sel.i][1].slice(), moved: false, remote: true }; }
       } else if (!it && ED.sel) { ED.sel = null; edHighlight(); edProps(); }
     }
   }
@@ -568,8 +598,17 @@ function edUp(e) {
   if (!d || e.pointerId != d.id) return;
   e.stopImmediatePropagation();
   ED.drag = null;
-  if (d.mode == "tap") { edZoomTo(d.at[0], d.at[1]); return; } // picked something new: zoom in a little
-  if ((d.mode == "move" || d.mode == "wallmove") && !d.moved) { ED.undo.pop(); return; }
+  if (d.mode == "tap") { edZoomTo(d.at[0], d.at[1], d.small); return; } // picked something new: zoom in a little
+  if ((d.mode == "move" || d.mode == "wallmove") && !d.moved) {
+    ED.undo.pop();
+    if (d.remote) { ED.sel = null; edHighlight(); edProps(); return; }
+    if (d.cands && d.cands.length > 1 && ED.sel && ED.sel.t == "item") {
+      const k = d.cands.findIndex((c) => c.k == ED.sel.it.k && c.i == ED.sel.it.i), nx = d.cands[(k + 1) % d.cands.length];
+      edSelect({ t: "item", it: nx });
+      edMsg("Picked the next piece here (" + (k + 2 > d.cands.length ? 1 : k + 2) + " of " + d.cands.length + ")", 1);
+    }
+    return;
+  }
   if (d.mode == "wallmove" && edJoinEnds(ED.sel.i, 25)) edMsg("Joined to the wall next to it");
   if (d.mode == "rot") {
     if (!d.moved || Math.abs(d.da) < 1e-6) { ED.undo.pop(); edHighlight(); return; }
@@ -663,7 +702,7 @@ function edProps() {
 function edHint() {
   if (ED.mode == "3d") return "Looking at your draft in 3D. Switch back to Plan to keep editing, or Save.";
   return {
-    select: "Tap furniture or a wall to select it (it turns green and shows its size). Once selected, drag it to move it, or drag the green ring to rotate it. + Add puts new cabinets, appliances, furniture, doors and windows in. Drag empty floor to pan; pinch or scroll to zoom.",
+    select: "Tap furniture or a wall to select it (it turns green and shows its size). Once selected, drag it to move it, or drag the green ring to rotate it. + Add puts new cabinets, appliances, furniture, doors and windows in. " + (ED_COARSE ? "Once something is selected, drag anywhere with one finger to move it; tap again on the same spot to pick a smaller piece underneath; use two fingers to pan and zoom; tap empty floor to deselect." : "Drag empty floor to pan; scroll to zoom."),
     wall: "Drag to draw a new wall. It snaps to wall ends and to 15° angles.",
     cut: "Drag along a wall to cut an opening in it.",
   }[ED.tool];
@@ -852,6 +891,13 @@ function edDeleteSaved(rid) {
   // OrbitControls (three r128) drives touch through touch events, not pointer events: while something
   // is grabbed, swallow those too so the view does not pan under your finger
   const edTouch = (e) => {
+    if (ED.on && ED.drag && e.type == "touchstart" && e.touches.length >= 2) {
+      const d = ED.drag; ED.drag = null;
+      if (d.mode == "move" || d.mode == "wallmove" || d.mode == "rot" || d.mode == "end") { if (d.moved || d.mode == "end" || d.mode == "rot") edRestore(ED.undo.pop(), true); else ED.undo.pop(); }
+      if (d.mode == "tap") { ED.sel = d.prev || null; edHighlight(); edProps(); } // the first finger of a pinch does not change the selection
+      try { c.releasePointerCapture(d.id); } catch (er) {}
+      return; // let the view pan / zoom
+    }
     if (ED.on && ED.drag) { e.stopImmediatePropagation(); if (e.cancelable) e.preventDefault(); }
   };
   ["touchstart", "touchmove", "touchend", "touchcancel"].forEach((t) => c.addEventListener(t, edTouch, { capture: true, passive: false }));

@@ -4,9 +4,11 @@ const $ = (id) => document.getElementById(id),
 const sc = new THREE.Scene();
 sc.background = new THREE.Color(dk ? 0x1d2622 : 0xdde7dc);
 const cam = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 10, 90000);
-const rn = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+const rn = new THREE.WebGLRenderer({ antialias: true });
 rn.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
 rn.shadowMap.enabled = true;
+rn.shadowMap.autoUpdate = false; // shadows are re-drawn only when the scene changes (see start.js)
+rn.shadowMap.needsUpdate = true;
 $("stage").appendChild(rn.domElement);
 const HL = new THREE.HemisphereLight(0xffffff, 0x7f8f86, 0.75);
 sc.add(HL);

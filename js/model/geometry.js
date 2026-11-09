@@ -1,26 +1,27 @@
 // Small geometry helpers: text labels, wall prisms, boxes (B) and cylinders (Cy).
+// Text label sprite. The canvas texture is drawn the first time the label is actually rendered
+// (labels are hidden most of the time, and the model is rebuilt on every design switch or edit).
+const LAB_M = document.createElement("canvas").getContext("2d");
+LAB_M.font = "600 26px sans-serif";
 function lab(t, x, y, z, k) {
-  const c = document.createElement("canvas"),
-    g0 = c.getContext("2d");
-  g0.font = "600 26px sans-serif";
-  const tw = Math.ceil(g0.measureText ? g0.measureText(t).width : t.length * 14) + 20;
-  c.width = tw;
-  c.height = 38;
-  const g = c.getContext("2d");
-  g.font = "600 26px sans-serif";
-  g.textAlign = "center";
-  g.fillStyle = "rgba(255,255,255,.78)";
-  g.fillRect(0, 2, tw, 34);
-  g.fillStyle = "#1e2b25";
-  g.fillText(t, tw / 2, 28);
-  const s = new THREE.Sprite(
-    new THREE.SpriteMaterial({
-      map: new THREE.CanvasTexture(c),
-      depthTest: false,
-      transparent: true,
-      opacity: 0.9,
-    }),
-  );
+  const tw = Math.ceil(LAB_M.measureText ? LAB_M.measureText(t).width : t.length * 14) + 20;
+  const mat = new THREE.SpriteMaterial({ depthTest: false, transparent: true, opacity: 0.9 });
+  const s = new THREE.Sprite(mat);
+  s.onBeforeRender = () => {
+    if (mat.map) return;
+    const c = document.createElement("canvas");
+    c.width = tw;
+    c.height = 38;
+    const g = c.getContext("2d");
+    g.font = "600 26px sans-serif";
+    g.textAlign = "center";
+    g.fillStyle = "rgba(255,255,255,.78)";
+    g.fillRect(0, 2, tw, 34);
+    g.fillStyle = "#1e2b25";
+    g.fillText(t, tw / 2, 28);
+    mat.map = new THREE.CanvasTexture(c);
+    mat.needsUpdate = true;
+  };
   s.scale.set(tw * 0.0115 * k, 38 * 0.0115 * k, 1);
   s.position.set(x, y, z);
   s.renderOrder = 9;
