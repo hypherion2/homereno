@@ -64,5 +64,6 @@ let lastT = performance.now();
   if (moving || nowT < RQ.until || nowT - RQ.last > 1000) {
     rn.render(sc, cam);
     RQ.last = nowT;
+    if (RU.list.length || RU.cur || RU.pending) ruSync(); // keep measurements on their points as the view moves
   }
 })();

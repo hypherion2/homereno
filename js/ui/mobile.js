@@ -32,6 +32,7 @@ function syncTabs() {
   $("tabwalk").textContent = W.on ? "Exit walk" : "Walk";
   document.querySelectorAll("#tabbar button").forEach((b) => {
     const t = b.dataset.tab;
+    if (t == "ruler") return b.classList.toggle("on", typeof RU != "undefined" && RU.on);
     const on =
       t == "designs" || t == "options"
         ? open == t
@@ -45,7 +46,7 @@ function syncTabs() {
     .forEach((b) => b.classList.toggle("on", b.dataset.l == S.level));
 }
 
-document.querySelectorAll("#tabbar button").forEach(
+document.querySelectorAll("#tabbar button:not([data-tab=ruler])").forEach(
   (b) =>
     (b.onclick = () => {
       const t = b.dataset.tab;
