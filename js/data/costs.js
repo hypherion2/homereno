@@ -1093,7 +1093,7 @@ const COSTS = {
   "high": 260000.0,
   "items": [
    {
-    "item": "Kitchen: cabinets, quartz, white-oak island, oven tower cabinet, pantry wall (3 full-height pull-outs, integrated pulls), backsplash",
+    "item": "Kitchen: cabinets, quartz, white-oak island, oven tower cabinet, pantry walls (full-height pull-outs), backsplash",
     "low": 47000,
     "high": 80000,
     "cat": "kitchen"
