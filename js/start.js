@@ -53,7 +53,9 @@ let lastT = performance.now();
   if (S.walk) {
     walkStep(dt);
     $("needle").style.transform = "rotate(" + (W.yaw - (window.NOFF || 0)) + "rad)";
-    moving = true;
+    // walking counts as moving only while the eye actually moves, so standing still gets the high-quality frame
+    const sig = [...cam.position.toArray(), ...cam.quaternion.toArray(), cam.fov].map((v) => v.toFixed(3)).join();
+    if (sig != RQ.sig) { moving = true; RQ.sig = sig; }
   } else {
     if (anim) moving = true;
     stepAnim();
@@ -61,8 +63,16 @@ let lastT = performance.now();
     $("needle").style.transform = "rotate(" + (ct.getAzimuthalAngle() - (window.NOFF || 0)) + "rad)";
   }
   if (typeof ED != "undefined" && ED.drag) { moving = true; if (nowT - RQ.shadowAt > 120) { rn.shadowMap.needsUpdate = true; RQ.shadowAt = nowT; } }
-  if (moving || nowT < RQ.until || nowT - RQ.last > 1000) {
-    rn.render(sc, cam);
+  const active = moving || nowT < RQ.until;
+  // moving: fast frames; once still for a moment: one high-quality frame (ambient occlusion in realistic mode);
+  // idle: a slow heartbeat redraw in case something changed without telling us
+  let draw = 0;
+  if (active) { draw = 1; RQ.act = nowT; RQ.hq = false; }
+  else if (!RQ.hq && nowT - (RQ.act || 0) > 250) draw = 2;
+  else if (nowT - RQ.last > (RQ.hq ? 8000 : 1000)) draw = RQ.hq ? 2 : 1;
+  if (draw) {
+    renderFrame(draw == 2);
+    if (draw == 2) RQ.hq = true;
     RQ.last = nowT;
     if (RU.list.length || RU.cur || RU.pending) ruSync(); // keep measurements on their points as the view moves
   }

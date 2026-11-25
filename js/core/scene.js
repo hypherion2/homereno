@@ -5,14 +5,18 @@ const sc = new THREE.Scene();
 sc.background = new THREE.Color(dk ? 0x1d2622 : 0xdde7dc);
 const cam = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 10, 90000);
 const rn = new THREE.WebGLRenderer({ antialias: true });
+// colours stay as written: no sRGB output conversion (see boot.js)
+rn.outputColorSpace = THREE.LinearSRGBColorSpace;
+// three.js (r155+) light units: multiply by π to match the older renderer this scene was tuned on
+const LU = Math.PI;
 rn.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
 rn.shadowMap.enabled = true;
 rn.shadowMap.autoUpdate = false; // shadows are re-drawn only when the scene changes (see start.js)
 rn.shadowMap.needsUpdate = true;
 $("stage").appendChild(rn.domElement);
-const HL = new THREE.HemisphereLight(0xffffff, 0x7f8f86, 0.75);
+const HL = new THREE.HemisphereLight(0xffffff, 0x7f8f86, 0.75 * LU);
 sc.add(HL);
-const dl = new THREE.DirectionalLight(0xffffff, 0.65);
+const dl = new THREE.DirectionalLight(0xffffff, 0.65 * LU);
 dl.castShadow = true;
 dl.shadow.mapSize.set(2048, 2048);
 {

@@ -60,7 +60,7 @@ function applySun() {
     dl.target.position.copy(S.c);
     const up = p.alt > 0.02,
       k = Math.max(0, Math.sin(p.alt));
-    dl.intensity = up ? base * (0.3 + 0.7 * Math.min(1, k * 1.6)) : 0.06;
+    dl.intensity = (up ? base * (0.3 + 0.7 * Math.min(1, k * 1.6)) : 0.06) * LU;
     dl.color.setRGB(
       1,
       up ? 0.78 + 0.22 * Math.min(1, k * 2) : 0.7,
@@ -97,7 +97,7 @@ function applySun() {
   } else {
     dl.position.set(S.c.x + 1300, 2600, S.c.z - 500);
     dl.target.position.copy(S.c);
-    dl.intensity = base;
+    dl.intensity = base * LU;
     dl.color.setHex(RL && RL.on ? 0xfff0dc : 0xffffff);
     if (S.sunRoof) S.sunRoof.visible = false;
   }

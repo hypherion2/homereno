@@ -57,7 +57,7 @@ def load_all(root=ROOT, exclude=()):
     return V, {v['key']: load_concept(v['key'], root) for v in V}
 
 def _scripts(html):
-    return re.findall(r'<script src="(js/[^"]+)"></script>', html)
+    return re.findall(r'<script type="app" src="(js/[^"]+)"></script>', html)
 
 def bundle(out, exclude=()):
     html = open(os.path.join(ROOT, 'index.html'), encoding='utf8').read()
@@ -73,8 +73,8 @@ def bundle(out, exclude=()):
             V = [v for v in json.loads(_between(code, 'const VERS = ', ';\nconst DATA')) if v['key'] not in exclude]
             code = code[:code.index('const VERS = ')] + 'const VERS = ' + json.dumps(V, indent=2, ensure_ascii=False) + ';\nconst DATA = {};\n'
         parts.append('// ===== ' + s + '\n' + code)
-    first = html.index('<script src="js/'); last = html.rindex('</script>') + len('</script>')
-    html = html[:first] + '<script>\n' + '\n'.join(parts) + '\n</script>' + html[last:]
+    first = html.index('<script type="app" src="js/'); last = html.rindex('</script>') + len('</script>')
+    html = html[:first] + '<script type="app">\n' + '\n'.join(parts) + '\n</script>' + html[last:]
     open(out, 'w', encoding='utf8').write(html)
 
 def publish(out, exclude=()):

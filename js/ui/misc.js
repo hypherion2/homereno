@@ -30,7 +30,7 @@ function showModal(html) {
   modal.classList.add("on");
 }
 $("shot").onclick = () => {
-  rn.render(sc, cam);
+  renderFrame(true);
   const u = rn.domElement.toDataURL("image/png");
   showModal(
     '<h4>Screenshot</h4><img src="' +

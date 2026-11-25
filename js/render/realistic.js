@@ -469,7 +469,7 @@ function realRefresh() {
   });
   if (RL.glassM) RL.glassM.needsUpdate = false;
   const lit = S.walk;
-  HL.intensity = lit ? 0.4 : 0.5;
+  HL.intensity = (lit ? 0.52 : 0.65) * LU; // with environmentIntensity below: matched to the older renderer
   RL.fill.visible = lit;
   RL.fill.position.set(W.x, W.feet + 150, W.z);
   W.ceil.forEach((m) => {
@@ -492,7 +492,7 @@ function setReal(on) {
       sc.environment = null;
       rn.toneMapping = THREE.NoToneMapping;
       gr.material = RL.gm0 || gr.material;
-      dl.intensity = 0.65;
+      dl.intensity = 0.65 * LU;
       sc.fog = null;
     } catch (_) {}
   }
@@ -511,7 +511,7 @@ function setReal0(on) {
       envMapIntensity: 1.3,
       side: 2,
     });
-    RL.fill = new THREE.PointLight(0xffe9cf, 0.7, 900, 1.6);
+    RL.fill = new THREE.PointLight(0xffe9cf, 0.3 * LU, 900, 0) // matched to the older renderer's falloff;
     RL.fill.visible = false;
     sc.add(RL.fill);
     RL.gm = new THREE.MeshStandardMaterial({ map: RL.tx.grass.map, roughness: 1, color: 0xffffff });
@@ -521,11 +521,12 @@ function setReal0(on) {
   if (on) {
     sc.background = RL.tx.sky;
     sc.environment = RL.env;
+    sc.environmentIntensity = 0.45; // matched to the older renderer's image-based lighting
     rn.toneMapping = THREE.ACESFilmicToneMapping;
     rn.toneMappingExposure = 1.05;
-    rn.shadowMap.type = THREE.PCFSoftShadowMap;
+    rn.shadowMap.type = THREE.PCFShadowMap;
     gr.material = RL.gm;
-    dl.intensity = 1.15;
+    dl.intensity = 1.15 * LU;
     dl.color.setHex(0xfff0dc);
     dl.shadow.bias = -0.0004;
     dl.shadow.radius = 3;
@@ -536,7 +537,8 @@ function setReal0(on) {
     sc.environment = null;
     rn.toneMapping = THREE.NoToneMapping;
     gr.material = RL.gm0;
-    dl.intensity = 0.65;
+    dl.intensity = 0.65 * LU;
+    HL.intensity = 0.75 * LU; // back to the plain-mode sky light
     dl.color.setHex(0xffffff);
     sc.fog = null;
     if (RL.fill) RL.fill.visible = false;

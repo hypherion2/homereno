@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title>1615 MCH · Remodel studio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <link rel="stylesheet" href="css/studio.css?v=ebe19fde" />
+    <link rel="stylesheet" href="css/studio.css?v=c74cd759" />
   </head>
   <body>
     <div id="stage"></div>
@@ -226,47 +226,84 @@
     <div id="cross"></div>
     <div id="toast"></div>
     <div id="modal"><div class="box" id="mbox"></div></div>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="js/data/versions.js?v=6b842518"></script>
-    <script src="js/data/costs.js?v=cad79737"></script>
-    <script src="js/data/concepts/orig.js?v=a9fb318a"></script>
-    <script src="js/data/concepts/v2.js?v=822a75af"></script>
-    <script src="js/data/concepts/v7.js?v=f5bbccfd"></script>
-    <script src="js/data/concepts/v9.js?v=328e7733"></script>
-    <script src="js/data/concepts/v10.js?v=013725fb"></script>
-    <script src="js/data/concepts/v11.js?v=5f0afb3e"></script>
-    <script src="js/data/concepts/v12.js?v=5a491e59"></script>
-    <script src="js/data/concepts/v15.js?v=a0a1e2cb"></script>
-    <script src="js/data/concepts/v16.js?v=e5a32be6"></script>
-    <script src="js/data/concepts/v17.js?v=5535ddfc"></script>
-    <script src="js/data/concepts/v18.js?v=73547d4e"></script>
-    <script src="js/data/concepts/v21.js?v=0340f973"></script>
-    <script src="js/data/concepts/v22.js?v=9d80eea7"></script>
-    <script src="js/data/concepts/v23.js?v=700601ac"></script>
-    <script src="js/data/concepts/v24.js?v=2784fae4"></script>
-    <script src="js/data/concepts/v25.js?v=e27782e1"></script>
-    <script src="js/data/concepts/v26.js?v=892fbd76"></script>
-    <script src="js/data/shell.js?v=3ddc08fb"></script>
-    <script src="js/core/scene.js?v=a3ca2179"></script>
-    <script src="js/model/geometry.js?v=58035a67"></script>
-    <script src="js/model/wall-art.js?v=f3414ad0"></script>
-    <script src="js/model/furniture.js?v=4ccfafc5"></script>
-    <script src="js/model/build-model.js?v=281d4d5f"></script>
-    <script src="js/ui/versions.js?v=82eb5af6"></script>
-    <script src="js/view/camera.js?v=5f61131e"></script>
-    <script src="js/ui/saved-views.js?v=8696686b"></script>
-    <script src="js/ui/misc.js?v=98a06052"></script>
-    <script src="js/walk/walk.js?v=7fa7109e"></script>
-    <script src="js/ask/ask-claude.js?v=0732ee89"></script>
-    <script src="js/render/realistic.js?v=278486c2"></script>
-    <script src="js/ui/variants.js?v=7d70a769"></script>
-    <script src="js/ui/cabinets.js?v=0f7f99b5"></script>
-    <script src="js/render/sun.js?v=219d211c"></script>
-    <script src="js/ui/editor.js?v=bf5d7a66"></script>
-    <script src="js/ui/drawings.js?v=73d2e37e"></script>
-    <script src="js/ui/ruler.js?v=76bfe190"></script>
-    <script src="js/ui/mobile.js?v=47c7ead8"></script>
-    <script src="js/start.js?v=56a07396"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.min.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/",
+          "three/examples/jsm/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/",
+          "postprocessing": "https://cdn.jsdelivr.net/npm/postprocessing@6.39.6/build/index.js",
+          "n8ao": "https://cdn.jsdelivr.net/npm/n8ao@2.0.1/dist/N8AO.js"
+        }
+      }
+    </script>
+    <script type="module">
+    // Loads three.js (as an ES module) and then the studio's scripts, in order, as ordinary scripts.
+    // The studio code uses a global THREE, so the module is copied onto window first.
+    import * as T from "three";
+    
+    const THREE = (window.THREE = Object.assign({}, T));
+    // keep colours exactly as written (hex values are used as-is, no sRGB conversion), like the original renderer
+    THREE.ColorManagement.enabled = false;
+    
+    // run every <script type="app"> in document order: by src (separate files) or inline (single-file build)
+    const list = [...document.querySelectorAll('script[type="app"]')];
+    (function next(i) {
+      if (i >= list.length) return;
+      const s = document.createElement("script"), src = list[i].getAttribute("src");
+      if (src) {
+        s.src = src;
+        s.onload = s.onerror = () => next(i + 1);
+        document.head.appendChild(s);
+      } else {
+        s.textContent = list[i].textContent;
+        document.head.appendChild(s);
+        next(i + 1);
+      }
+    })(0);
+    </script>
+    <script type="app" src="js/vendor/OrbitControls.js?v=fd4e6926"></script>
+    <script type="app" src="js/data/versions.js?v=6b842518"></script>
+    <script type="app" src="js/data/costs.js?v=cad79737"></script>
+    <script type="app" src="js/data/concepts/orig.js?v=a9fb318a"></script>
+    <script type="app" src="js/data/concepts/v2.js?v=822a75af"></script>
+    <script type="app" src="js/data/concepts/v7.js?v=f5bbccfd"></script>
+    <script type="app" src="js/data/concepts/v9.js?v=328e7733"></script>
+    <script type="app" src="js/data/concepts/v10.js?v=013725fb"></script>
+    <script type="app" src="js/data/concepts/v11.js?v=5f0afb3e"></script>
+    <script type="app" src="js/data/concepts/v12.js?v=5a491e59"></script>
+    <script type="app" src="js/data/concepts/v15.js?v=a0a1e2cb"></script>
+    <script type="app" src="js/data/concepts/v16.js?v=e5a32be6"></script>
+    <script type="app" src="js/data/concepts/v17.js?v=5535ddfc"></script>
+    <script type="app" src="js/data/concepts/v18.js?v=73547d4e"></script>
+    <script type="app" src="js/data/concepts/v21.js?v=0340f973"></script>
+    <script type="app" src="js/data/concepts/v22.js?v=9d80eea7"></script>
+    <script type="app" src="js/data/concepts/v23.js?v=700601ac"></script>
+    <script type="app" src="js/data/concepts/v24.js?v=2784fae4"></script>
+    <script type="app" src="js/data/concepts/v25.js?v=e27782e1"></script>
+    <script type="app" src="js/data/concepts/v26.js?v=892fbd76"></script>
+    <script type="app" src="js/data/shell.js?v=3ddc08fb"></script>
+    <script type="app" src="js/core/scene.js?v=09d6b13e"></script>
+    <script type="app" src="js/model/geometry.js?v=58035a67"></script>
+    <script type="app" src="js/model/wall-art.js?v=f3414ad0"></script>
+    <script type="app" src="js/model/furniture.js?v=4ccfafc5"></script>
+    <script type="app" src="js/model/build-model.js?v=281d4d5f"></script>
+    <script type="app" src="js/ui/versions.js?v=82eb5af6"></script>
+    <script type="app" src="js/view/camera.js?v=5f61131e"></script>
+    <script type="app" src="js/ui/saved-views.js?v=8696686b"></script>
+    <script type="app" src="js/ui/misc.js?v=1c65438e"></script>
+    <script type="app" src="js/walk/walk.js?v=7fa7109e"></script>
+    <script type="app" src="js/ask/ask-claude.js?v=0732ee89"></script>
+    <script type="app" src="js/render/realistic.js?v=55fa6883"></script>
+    <script type="app" src="js/render/hq.js?v=0fa247cb"></script>
+    <script type="app" src="js/ui/variants.js?v=7d70a769"></script>
+    <script type="app" src="js/ui/cabinets.js?v=0f7f99b5"></script>
+    <script type="app" src="js/render/sun.js?v=3bd6515b"></script>
+    <script type="app" src="js/ui/editor.js?v=bf5d7a66"></script>
+    <script type="app" src="js/ui/drawings.js?v=73d2e37e"></script>
+    <script type="app" src="js/ui/ruler.js?v=76bfe190"></script>
+    <script type="app" src="js/ui/textures.js?v=eac29396"></script>
+    <script type="app" src="js/ui/mobile.js?v=47c7ead8"></script>
+    <script type="app" src="js/start.js?v=29971faa"></script>
   </body>
 </html>
