@@ -539,6 +539,7 @@ function setReal0(on) {
     gr.material = RL.gm0;
     dl.intensity = 0.65 * LU;
     HL.intensity = 0.75 * LU; // back to the plain-mode sky light
+    if (typeof walkLight == "function") walkLight();
     dl.color.setHex(0xffffff);
     sc.fog = null;
     if (RL.fill) RL.fill.visible = false;

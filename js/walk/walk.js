@@ -607,3 +607,14 @@ const tend = (e) => {
 };
 rn.domElement.addEventListener("touchend", tend);
 rn.domElement.addEventListener("touchcancel", tend);
+// Plain (non-realistic) walk: indoors only the sky light reaches, and its green-grey ground tint turns
+// white rooms grey, so while walking use a brighter, neutral room light.
+function walkLight() {
+  if (typeof RL != "undefined" && RL.on) return;
+  HL.groundColor.setHex(S.walk ? 0xdcd8d0 : 0x7f8f86);
+  HL.intensity = (S.walk ? 1.0 : 0.75) * LU;
+}
+["enterWalk", "exitWalk"].forEach((n) => {
+  const f = window[n];
+  window[n] = function () { const r = f.apply(this, arguments); walkLight(); return r; };
+});

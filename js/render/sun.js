@@ -152,7 +152,7 @@ function applySun() {
   try {
     const s = localStorage.getItem("remodel-real");
     if (s !== null) v = s == "1";
-    else if (matchMedia("(pointer:coarse)").matches) v = false;
+    // realistic on phones too: the page only redraws while something moves, so it stays cheap
   } catch (e) {}
   $("o-real").checked = v;
   if (v) setReal(true);
