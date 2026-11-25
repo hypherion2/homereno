@@ -584,7 +584,7 @@ DATA["v26"] = {
     ["level-e7276441-09e6-40e5-b0fe-e49e557499fc", 562.5, 918.5, 188.9, 6.3, -0.6465, 0.0, 91.4, 0, "Rounded edges railing", 0]
   ],
   "fireStone": 13617340,
-  "wallColor": 15854818,
+  "wallColor": 16316404,
   "treadColor": 14270356,
   "stepLights": true,
   "variants": [

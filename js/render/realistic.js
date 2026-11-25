@@ -469,9 +469,18 @@ function realRefresh() {
   });
   if (RL.glassM) RL.glassM.needsUpdate = false;
   const lit = S.walk;
+  rn.toneMappingExposure = lit ? 1.7 : 1.05; // indoors at eye level needs more exposure, or white paint reads grey
   HL.intensity = (lit ? 0.52 : 0.65) * LU; // with environmentIntensity below: matched to the older renderer
   RL.fill.visible = lit;
   RL.fill.position.set(W.x, W.feet + 150, W.z);
+  // white walls at eye level sit mostly in shade and read grey: lift them a little while walking
+  S.root.traverse((o) => {
+    const t = o.userData && o.userData.ed, m = o.material;
+    if (!o.isMesh || !t || t[0] != "B" || !m || !m.emissive || m.userData.ut) return;
+    if (m.color.r < 0.85 || m.color.g < 0.85 || m.color.b < 0.8) return; // white / off-white paint only
+    m.emissive.setHex(0xffffff);
+    m.emissiveIntensity = lit ? 0.45 : 0;
+  });
   W.ceil.forEach((m) => {
     m.castShadow = true;
     if (m.material.emissive) {
@@ -523,7 +532,7 @@ function setReal0(on) {
     sc.environment = RL.env;
     sc.environmentIntensity = 0.45; // matched to the older renderer's image-based lighting
     rn.toneMapping = THREE.ACESFilmicToneMapping;
-    rn.toneMappingExposure = 1.05;
+    rn.toneMappingExposure = S.walk ? 1.7 : 1.05; // see realify
     rn.shadowMap.type = THREE.PCFShadowMap;
     gr.material = RL.gm;
     dl.intensity = 1.15 * LU;
