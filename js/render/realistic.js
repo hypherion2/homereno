@@ -475,8 +475,8 @@ function realRefresh() {
   W.ceil.forEach((m) => {
     m.castShadow = true;
     if (m.material.emissive) {
-      m.material.emissive.setHex(0xf4f2ee);
-      m.material.emissiveIntensity = 0.5;
+      m.material.emissive.setHex(0xffffff); // white paint, lit from below
+      m.material.emissiveIntensity = 1.0;
     }
   });
 }

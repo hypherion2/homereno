@@ -136,7 +136,8 @@ function prepWalk() {
     m.geometry.dispose();
   });
   W.ceil = [];
-  const cm = new THREE.MeshLambertMaterial({ color: 0xf4f2ee, side: 2 });
+  // ceilings are lit only from below, so they glow a little to read as white paint
+  const cm = new THREE.MeshLambertMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.55, side: 2 });
   D.rooms.forEach((r) => {
     if (nm0(D, r[0]) != "Level 1" || r[4] < 0) return;
     const sh = new THREE.Shape(r[1].map((p) => new THREE.Vector2(p[0], p[1])));
